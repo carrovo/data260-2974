@@ -1,0 +1,570 @@
+{
+  "generatedAt": "2026-08-30T08:24:42Z",
+  "model": "qwen3:8b",
+  "runsPerTemperature": 20,
+  "fixedInput": {
+    "title": "Studio Near SJSU",
+    "content": "This furnished studio is located within walking distance of the SJSU campus."
+  },
+  "runs": [
+    {
+      "temperature": 0.0,
+      "runNumber": 1,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 16201.53,
+      "timestamp": "2026-08-30T08:11:30Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 2,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 13593.26,
+      "timestamp": "2026-08-30T08:11:43Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 3,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 13673.04,
+      "timestamp": "2026-08-30T08:11:57Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 4,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 13718.58,
+      "timestamp": "2026-08-30T08:12:11Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 5,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 13631.67,
+      "timestamp": "2026-08-30T08:12:24Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 6,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 13966.22,
+      "timestamp": "2026-08-30T08:12:38Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 7,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 13773.62,
+      "timestamp": "2026-08-30T08:12:52Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 8,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 14053.82,
+      "timestamp": "2026-08-30T08:13:06Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 9,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 15932.43,
+      "timestamp": "2026-08-30T08:13:22Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 10,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 16965.87,
+      "timestamp": "2026-08-30T08:13:39Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 11,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 16908.52,
+      "timestamp": "2026-08-30T08:13:56Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 12,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 16591.93,
+      "timestamp": "2026-08-30T08:14:13Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 13,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 17669.14,
+      "timestamp": "2026-08-30T08:14:30Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 14,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 17081.07,
+      "timestamp": "2026-08-30T08:14:47Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 15,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 17537.37,
+      "timestamp": "2026-08-30T08:15:05Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 16,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 16613.2,
+      "timestamp": "2026-08-30T08:15:22Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 17,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 17975.44,
+      "timestamp": "2026-08-30T08:15:40Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 18,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 17278.17,
+      "timestamp": "2026-08-30T08:15:57Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 19,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 17575.35,
+      "timestamp": "2026-08-30T08:16:15Z"
+    },
+    {
+      "temperature": 0.0,
+      "runNumber": 20,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 18116.11,
+      "timestamp": "2026-08-30T08:16:33Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 1,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Near SJSU",
+        "Walkable SJSU Location",
+        "Student Housing Near Campus"
+      ],
+      "summary": "Furnished studio near SJSU with walkable campus access.",
+      "latencyMs": 23226.3,
+      "timestamp": "2026-08-30T08:16:56Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 2,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio apartment near SJSU campus with easy walkability.",
+      "latencyMs": 21773.75,
+      "timestamp": "2026-08-30T08:17:18Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 3,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Living"
+      ],
+      "summary": "Furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 22088.22,
+      "timestamp": "2026-08-30T08:17:40Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 4,
+      "attempts": 1,
+      "tags": [
+        "furnished studio",
+        "near SJSU campus",
+        "walking distance"
+      ],
+      "summary": "Furnished studio near SJSU campus, within walking distance.",
+      "latencyMs": 22529.84,
+      "timestamp": "2026-08-30T08:18:02Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 5,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Living",
+        "SJSU Campus Proximity",
+        "Walkable Studio Location"
+      ],
+      "summary": "A furnished studio near SJSU campus with easy walking access to the university.",
+      "latencyMs": 25004.7,
+      "timestamp": "2026-08-30T08:18:27Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 6,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Near SJSU",
+        "Walkable SJSU Location",
+        "Student Housing Near Campus"
+      ],
+      "summary": "A furnished studio near SJSU with easy walk access to campus.",
+      "latencyMs": 28240.04,
+      "timestamp": "2026-08-30T08:18:56Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 7,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 22208.97,
+      "timestamp": "2026-08-30T08:19:18Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 8,
+      "attempts": 1,
+      "tags": [
+        "furnished studio rental",
+        "sjsu campus nearby",
+        "walkable studio location"
+      ],
+      "summary": "Furnished studio near SJSU campus, ideal for students and professionals.",
+      "latencyMs": 25182.84,
+      "timestamp": "2026-08-30T08:19:43Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 9,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Living",
+        "SJSU Proximity",
+        "Walkable Campus Area"
+      ],
+      "summary": "Furnished studio near SJSU campus with easy walking access to campus.",
+      "latencyMs": 25799.79,
+      "timestamp": "2026-08-30T08:20:09Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 10,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 24280.49,
+      "timestamp": "2026-08-30T08:20:33Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 11,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for students.",
+      "latencyMs": 24164.37,
+      "timestamp": "2026-08-30T08:20:57Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 12,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio apartment near SJSU campus, within walking distance.",
+      "latencyMs": 22914.18,
+      "timestamp": "2026-08-30T08:21:20Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 13,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, within walking distance for students and staff.",
+      "latencyMs": 23656.77,
+      "timestamp": "2026-08-30T08:21:44Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 14,
+      "attempts": 1,
+      "tags": [
+        "furnished studio rental",
+        "near SJSU campus",
+        "walking distance accommodation"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for students.",
+      "latencyMs": 23304.15,
+      "timestamp": "2026-08-30T08:22:07Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 15,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio near SJSU campus, within walking distance for convenience.",
+      "latencyMs": 25227.96,
+      "timestamp": "2026-08-30T08:22:33Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 16,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Near SJSU",
+        "Student Housing Near Campus",
+        "Walkable SJSU Studio"
+      ],
+      "summary": "A furnished studio near SJSU campus, ideal for students seeking convenient living.",
+      "latencyMs": 30283.91,
+      "timestamp": "2026-08-30T08:23:03Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 17,
+      "attempts": 1,
+      "tags": [
+        "furnished studio rental",
+        "sjsu campus nearby",
+        "student housing near sjsu"
+      ],
+      "summary": "Furnished studio near SJSU campus, ideal for students.",
+      "latencyMs": 24952.23,
+      "timestamp": "2026-08-30T08:23:28Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 18,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walking Distance Living"
+      ],
+      "summary": "A furnished studio located near SJSU campus with easy walking access.",
+      "latencyMs": 23887.07,
+      "timestamp": "2026-08-30T08:23:52Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 19,
+      "attempts": 1,
+      "tags": [
+        "furnished studio near SJSU",
+        "walkable SJSU location",
+        "student-friendly housing"
+      ],
+      "summary": "A furnished studio near SJSU with walkable access to campus.",
+      "latencyMs": 25917.77,
+      "timestamp": "2026-08-30T08:24:18Z"
+    },
+    {
+      "temperature": 0.7,
+      "runNumber": 20,
+      "attempts": 1,
+      "tags": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "A furnished studio apartment near SJSU campus, within walking distance.",
+      "latencyMs": 23722.91,
+      "timestamp": "2026-08-30T08:24:42Z"
+    }
+  ],
+  "metrics": {
+    "0.0": {
+      "runCount": 20,
+      "distinctTagSets": 1,
+      "tagsInAllRuns": [
+        "Furnished Studio Apartment",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "tagsInExactlyOneRun": [],
+      "latencyMs": {
+        "p50": 16602.57,
+        "p95": 17982.47,
+        "p99": 18089.38
+      }
+    },
+    "0.7": {
+      "runCount": 20,
+      "distinctTagSets": 13,
+      "tagsInAllRuns": [],
+      "tagsInExactlyOneRun": [
+        "SJSU Campus Proximity",
+        "SJSU Proximity",
+        "Walkable Campus Area",
+        "Walkable Living",
+        "Walkable SJSU Studio",
+        "Walking Distance Living",
+        "student housing near sjsu",
+        "student-friendly housing",
+        "walking distance",
+        "walking distance accommodation"
+      ],
+      "latencyMs": {
+        "p50": 24025.72,
+        "p95": 28342.23,
+        "p99": 29895.57
+      }
+    }
+  }
+}

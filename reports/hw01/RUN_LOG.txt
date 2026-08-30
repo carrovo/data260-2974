@@ -1,4 +1,4 @@
-[2026-08-29 22:02 PDT]
+[2026-08-29 22:02:54 PDT]
 
 Command:
 docker run -d -p 8274:80 --name data260-hw1-container data260-hw1
@@ -20,7 +20,8 @@ Result:
 The application loaded successfully.
 
 
-[2026-08-30 00:31 PDT]
+
+[2026-08-30 00:31:53 PDT]
 
 Task:
 Run the Planner, Reviewer, and Finalizer pipeline with qwen3:8b.
@@ -48,3 +49,36 @@ Temperature: 0.0
 Latency: 24352.15 ms
 Submission date: 2026-08-30T06:57:43Z
 Result: Successful
+
+
+[2026-08-30 01:11:02 PDT]
+
+Task:
+Run the non-determinism experiment using one fixed input.
+
+Command:
+python code/experiment_runner.py --email "xuanhua.li@sjsu.edu" --model "qwen3:8b" --runs 20
+
+Configuration:
+Model: qwen3:8b
+Temperature 0.0: 20 successful runs
+Temperature 0.7: 20 successful runs
+Total: 40 successful runs
+
+Temperature 0.0 results:
+Distinct tag sets: 1
+Tags in all 20 runs: Furnished Studio Apartment; Near SJSU Campus; Walkable Location
+Tags appearing in exactly one run: None
+Latency p50 / p95 / p99: 16602.57 / 17982.47 / 18089.38 ms
+
+Temperature 0.7 results:
+Distinct tag sets: 13
+Tags in all 20 runs: None
+Tags appearing in exactly one run: 10 tags
+Latency p50 / p95 / p99: 24025.72 / 28342.23 / 29895.57 ms
+
+Raw results:
+reports/hw01/raw/nondeterminism_runs.json
+
+Result:
+Successful
