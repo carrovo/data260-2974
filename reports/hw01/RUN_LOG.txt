@@ -1,0 +1,20 @@
+[2026-08-29 22:02:54 PDT]
+
+Command:
+docker run -d -p 8274:80 --name data260-hw1-container data260-hw1
+
+Output:
+08aac160ee1a66459872b4ff3de37068ec3bfebc89e05b3ce0176dc591973846
+
+Command:
+docker ps --filter name=data260-hw1-container
+
+Output:
+CONTAINER ID   IMAGE         STATUS   PORTS
+08aac160ee1a   data260-hw1   Up       0.0.0.0:8274->80/tcp
+
+Application:
+http://localhost:8274
+
+Result:
+The application loaded successfully.
