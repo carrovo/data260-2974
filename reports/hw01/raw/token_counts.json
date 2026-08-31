@@ -1,0 +1,61 @@
+{
+    "model": "qwen3:8b",
+    "reasoningEnabled": false,
+    "turnCount": 5,
+    "turns": [
+      {
+        "turn": 1,
+        "inputTokens": 214,
+        "outputTokens": 91,
+        "totalTokens": 305,
+        "cumulativeTotalTokens": 305,
+        "bulletOnlyPass": true
+      },
+      {
+        "turn": 2,
+        "inputTokens": 339,
+        "outputTokens": 93,
+        "totalTokens": 432,
+        "cumulativeTotalTokens": 737,
+        "bulletOnlyPass": true
+      },
+      {
+        "turn": 3,
+        "inputTokens": 464,
+        "outputTokens": 64,
+        "totalTokens": 528,
+        "cumulativeTotalTokens": 1265,
+        "bulletOnlyPass": true
+      },
+      {
+        "turn": 4,
+        "inputTokens": 567,
+        "outputTokens": 81,
+        "totalTokens": 648,
+        "cumulativeTotalTokens": 1913,
+        "bulletOnlyPass": true
+      },
+      {
+        "turn": 5,
+        "inputTokens": 684,
+        "outputTokens": 22,
+        "totalTokens": 706,
+        "cumulativeTotalTokens": 2619,
+        "bulletOnlyPass": true
+      }
+    ],
+    "checkpoints": {
+      "afterTurn3": {
+        "cumulativeInputTokens": 1017,
+        "cumulativeOutputTokens": 248,
+        "cumulativeTotalTokens": 1265,
+        "serializedHistoryLength": 1673
+      },
+      "afterTurn5": {
+        "cumulativeInputTokens": 2268,
+        "cumulativeOutputTokens": 351,
+        "cumulativeTotalTokens": 2619,
+        "serializedHistoryLength": 2507
+      }
+    }
+  }

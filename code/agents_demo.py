@@ -1,11 +1,18 @@
 import argparse
 import json
 import re
+import sys
 import time
+from pathlib import Path
 from typing import Any
 
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_ollama import ChatOllama
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
+
+from src.model_client import ModelClient
 
 
 OUTPUT_SCHEMA = """
@@ -86,19 +93,25 @@ def validate_final_output(result: dict[str, Any]) -> None:
 
 
 def call_agent(
-    model: ChatOllama,
+    model: ModelClient,
     role_instructions: str,
     task: str
 ) -> dict[str, Any]:
-    """Send one role-specific request to the local model."""
-    response = model.invoke(
+    """Send one role-specific request through the model adapter."""
+    response = model.complete(
         [
-            SystemMessage(content=role_instructions),
-            HumanMessage(content=task)
+            {
+                "role": "system",
+                "content": role_instructions
+            },
+            {
+                "role": "user",
+                "content": task
+            }
         ]
     )
 
-    return parse_json_response(str(response.content))
+    return parse_json_response(response.content)
 
 
 def run_pipeline(
@@ -110,14 +123,12 @@ def run_pipeline(
     strict: bool
 ) -> dict[str, Any]:
     """Run Planner, Reviewer, and Finalizer in sequence."""
-    model = ChatOllama(
-        model=model_name,
+    model = ModelClient(
+        model_name=model_name,
         temperature=temperature,
-        format="json",
-        reasoning=False,
-        num_ctx=2048,
-        num_predict=300
-    )
+        output_format="json",
+        reasoning=False
+)
 
     strict_instruction = ""
 

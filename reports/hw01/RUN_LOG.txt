@@ -51,10 +51,86 @@ Submission date: 2026-08-30T06:57:43Z
 Result: Successful
 
 
-[2026-08-30 01:11:02 PDT]
+
+
+
+[2026-08-30 16:06:56 PDT]
 
 Task:
-Run the non-determinism experiment using one fixed input.
+Run the five-turn interactive code-review client and record token usage.
+
+Command:
+python code/hw1_client.py --model "qwen3:8b"
+
+Configuration:
+Model: qwen3:8b
+Temperature: 0.0
+Reasoning mode: disabled
+System instructions: AGENT.md
+
+Checkpoint after turn 3:
+Turn count: 3
+Cumulative input tokens: 1017
+Cumulative output tokens: 248
+Cumulative total tokens: 1265
+Serialized history length: 1673
+
+Checkpoint after turn 5:
+Turn count: 5
+Cumulative input tokens: 2268
+Cumulative output tokens: 351
+Cumulative total tokens: 2619
+Serialized history length: 2507
+
+Format validation:
+All five responses passed the bullet-only check.
+
+Observed model errors:
+Turn 2 referred to division even though the submitted function only returned the first list item.
+Turn 5 referred to /no_think even though it was not part of the submitted Python code.
+
+Raw token results:
+reports/hw01/raw/token_counts.json
+
+Result:
+Successful
+
+
+
+
+[2026-08-30 17:38:27 PDT]
+
+Task:
+Verify the Planner, Reviewer, and Finalizer pipeline after routing model calls through src/model_client.py.
+
+Command:
+python code/agents_demo.py --title "Studio Near SJSU" --content "This furnished studio is located within walking distance of the SJSU campus." --email "xuanhua.li@sjsu.edu" --model "qwen3:8b" --temperature 0.0 --strict
+
+Configuration:
+Model: qwen3:8b
+Temperature: 0.0
+Model adapter: src/model_client.py
+
+Final tags:
+Furnished Studio Apartment; Near SJSU Campus; Walkable Location
+
+Final summary:
+A furnished studio near SJSU campus, within walking distance for convenience.
+
+Latency:
+24471.43 ms
+
+Submission date:
+2026-08-31T00:38:27Z
+
+Result:
+Successful
+
+
+[2026-08-30 17:55:49 PDT]
+
+Task:
+Run the final non-determinism experiment through src/model_client.py using one fixed input.
 
 Command:
 python code/experiment_runner.py --email "xuanhua.li@sjsu.edu" --model "qwen3:8b" --runs 20
@@ -64,18 +140,22 @@ Model: qwen3:8b
 Temperature 0.0: 20 successful runs
 Temperature 0.7: 20 successful runs
 Total: 40 successful runs
+Model adapter: src/model_client.py
 
 Temperature 0.0 results:
 Distinct tag sets: 1
 Tags in all 20 runs: Furnished Studio Apartment; Near SJSU Campus; Walkable Location
 Tags appearing in exactly one run: None
-Latency p50 / p95 / p99: 16602.57 / 17982.47 / 18089.38 ms
+Latency p50 / p95 / p99: 18078.26 / 19686.47 / 19889.03 ms
 
 Temperature 0.7 results:
-Distinct tag sets: 13
+Distinct tag sets: 10
 Tags in all 20 runs: None
-Tags appearing in exactly one run: 10 tags
-Latency p50 / p95 / p99: 24025.72 / 28342.23 / 29895.57 ms
+Tags appearing in exactly one run: 11 tags
+Latency p50 / p95 / p99: 27728.17 / 31670.03 / 32451.89 ms
+
+Generated at:
+2026-08-31T00:55:49Z
 
 Raw results:
 reports/hw01/raw/nondeterminism_runs.json

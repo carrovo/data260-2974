@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-08-31T01:10:52.552649+00:00",
+  "sid4": "2974",
+  "portBase": 8274,
+  "model": "qwen3:8b",
+  "overallPassed": true,
+  "checks": [
+    {
+      "name": "required_files",
+      "passed": true,
+      "details": "All required files are present."
+    },
+    {
+      "name": "nondeterminism_experiment",
+      "passed": true,
+      "details": "Total runs: 40; temperature 0.0: 20; temperature 0.7: 20."
+    },
+    {
+      "name": "token_accounting",
+      "passed": true,
+      "details": "Turns: 5; final cumulative tokens: 2619."
+    },
+    {
+      "name": "model_adapter",
+      "passed": true,
+      "details": "Application model calls use src/model_client.py."
+    },
+    {
+      "name": "agent_instructions",
+      "passed": true,
+      "details": "AGENT.md contains bullet-only response instructions."
+    },
+    {
+      "name": "docker_web_application",
+      "passed": true,
+      "details": "HTTP status: 200; expected page heading detected."
+    }
+  ]
+}
