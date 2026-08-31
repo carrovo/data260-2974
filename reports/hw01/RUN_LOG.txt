@@ -162,3 +162,72 @@ reports/hw01/raw/nondeterminism_runs.json
 
 Result:
 Successful
+
+
+
+[2026-08-30 19:30:59 PDT]
+
+Task:
+Build an AMD64 Docker image and push it to Amazon ECR.
+
+Local build command:
+docker buildx build --platform linux/amd64 -t data260-hw1:latest -f code/Dockerfile --load code
+
+Configuration:
+Region: us-east-1
+Repository: s2974-hw1-web-app
+Image tag: latest
+Image architecture: amd64
+Image size shown by ECR: 26.27 MB
+
+Result:
+The Docker image was successfully pushed to the private ECR repository.
+
+Evidence:
+reports/hw01/screenshots/aws-ecr-image.png
+
+
+[2026-08-30 19:54:00 PDT]
+
+Task:
+Deploy the rental-listing web application to Amazon ECS using AWS Fargate.
+
+Configuration:
+Region: us-east-1
+Cluster: s2974-hw1-cluster
+Task definition: s2974-hw1-task:1
+Service: s2974-hw1-service
+Launch type: Fargate
+Desired tasks: 1
+CPU: 0.25 vCPU
+Memory: 0.5 GB
+Container port: 80
+Security group: s2974-hw1-sg
+Public IP assignment: Enabled
+Load balancer: None
+
+Result:
+One ECS task reached RUNNING status.
+The application loaded successfully in a browser through the assigned public IPv4 address using HTTP port 80.
+
+Evidence:
+reports/hw01/screenshots/aws-ecs-running-task.png
+reports/hw01/screenshots/aws-ecs-public-ip-details.png
+reports/hw01/screenshots/aws-public-ip-application.png
+
+
+[2026-08-30 20:00:00 PDT]
+
+Task:
+Stop the AWS deployment and remove active resources after collecting evidence.
+
+Cleanup completed:
+Desired task count changed from 1 to 0.
+Fargate task stopped.
+ECS service deleted.
+ECS cluster deleted.
+Temporary CLI access key deleted.
+Temporary IAM user s2974-hw1-cli deleted.
+
+Result:
+No ECS Fargate tasks remain running.
