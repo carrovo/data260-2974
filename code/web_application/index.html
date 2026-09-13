@@ -5,154 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Homework requires the title to be HW1-{Your Name}. -->
-    <title>HW1-Xuanhua Li</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #f4f6f8;
-            color: #263238;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        form {
-            background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input,
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #9e9e9e;
-            border-radius: 4px;
-        }
-
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .terms {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .terms input {
-            width: auto;
-        }
-
-        .terms label {
-            margin: 0;
-            font-weight: normal;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #125aa0;
-        }
-    </style>
+    <title>HW2-Xuanhua Li</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:,">
 </head>
 
 <body>
-    <!-- The largest heading identifies the assigned domain. -->
-    <h1>Rental Housing Listings</h1>
+    <main class="page-container">
+        <h1>Rental Housing Listings</h1>
 
-    <form id="rentalForm">
-        <!-- Primary field: required and automatically focused. -->
-        <label for="listingTitle">Listing Title</label>
-        <input
-            type="text"
-            id="listingTitle"
-            name="listingTitle"
-            placeholder="Enter a title for the rental listing"
-            required
-            autofocus
-        >
+        <section class="panel" aria-labelledby="formHeading">
+            <h2 id="formHeading">Submit a Rental Listing</h2>
 
-        <!-- Secondary field. -->
-        <label for="address">Property Address</label>
-        <input
-            type="text"
-            id="address"
-            name="address"
-            placeholder="Enter the rental property address"
-            required
-        >
+            <form id="rentalForm">
+                <label for="listingTitle">Listing Title</label>
+                <input
+                    type="text"
+                    id="listingTitle"
+                    name="listingTitle"
+                    placeholder="Enter a title for the rental listing"
+                    required
+                    autofocus
+                >
 
-        <!-- Submitter email. -->
-        <label for="submitterEmail">Submitter Email</label>
-        <input
-            type="email"
-            id="submitterEmail"
-            name="submitterEmail"
-            placeholder="Enter your email address"
-            required
-        >
+                <label for="address">Property Address</label>
+                <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="Enter the rental property address"
+                    required
+                >
 
-        <!-- Content field. JavaScript will require more than 25 characters. -->
-        <label for="description">Property Description</label>
-        <textarea
-            id="description"
-            name="description"
-            placeholder="Describe the rental property in more than 25 characters"
-            required
-        ></textarea>
+                <label for="submitterEmail">Submitter Email</label>
+                <input
+                    type="email"
+                    id="submitterEmail"
+                    name="submitterEmail"
+                    placeholder="Enter your email address"
+                    required
+                >
 
-        <!-- Four domain-appropriate categories. -->
-        <label for="propertyType">Property Type</label>
-        <select id="propertyType" name="propertyType" required>
-            <option value="" disabled selected>Select a property type</option>
-            <option value="Apartment">Apartment</option>
-            <option value="House">House</option>
-            <option value="Studio">Studio</option>
-            <option value="Shared Room">Shared Room</option>
-        </select>
+                <label for="description">Property Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Describe the rental property in more than 25 characters"
+                    required
+                ></textarea>
 
-        <!-- Terms and conditions checkbox. -->
-        <div class="terms">
-            <input
-                type="checkbox"
-                id="termsAccepted"
-                name="termsAccepted"
+                <label for="propertyType">Property Type</label>
+                <select
+                    id="propertyType"
+                    name="propertyType"
+                    required
+                >
+                    <option value="" disabled selected>
+                        Select a property type
+                    </option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Studio">Studio</option>
+                    <option value="Shared Room">Shared Room</option>
+                </select>
+
+                <div class="terms">
+                    <input
+                        type="checkbox"
+                        id="termsAccepted"
+                        name="termsAccepted"
+                    >
+                    <label for="termsAccepted">
+                        I agree to the terms and conditions.
+                    </label>
+                </div>
+
+                <button type="submit">
+                    Submit Rental Listing
+                </button>
+            </form>
+        </section>
+
+        <section class="panel" aria-labelledby="listHeading">
+            <h2 id="listHeading">Available Rental Listings</h2>
+
+            <div
+                id="loadingState"
+                class="status loading-state"
+                role="status"
+                aria-live="polite"
+                hidden
             >
-            <label for="termsAccepted">
-                I agree to the terms and conditions.
-            </label>
-        </div>
+                Loading rental listings...
+            </div>
 
-        <button type="submit">Submit Rental Listing</button>
-    </form>
+            <div
+                id="emptyState"
+                class="status empty-state"
+                role="status"
+                hidden
+            >
+                No rental listings are currently available.
+            </div>
 
-    <!-- JavaScript is linked at the end of the HTML body. -->
+            <div
+                id="errorState"
+                class="status error-state"
+                role="alert"
+                hidden
+            >
+                Unable to load rental listings. Please try again.
+            </div>
+
+            <ul
+                id="listingList"
+                class="listing-list"
+                aria-live="polite"
+            ></ul>
+        </section>
+    </main>
+
     <script src="feedback.js"></script>
 </body>
 </html>

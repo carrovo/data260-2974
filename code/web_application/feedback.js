@@ -2,6 +2,66 @@
 
 // Get the rental listing form from the HTML page.
 const rentalForm = document.getElementById("rentalForm");
+const listingList = document.getElementById("listingList");
+const loadingState = document.getElementById("loadingState");
+const emptyState = document.getElementById("emptyState");
+const errorState = document.getElementById("errorState");
+
+
+const hideListStates = () => {
+    loadingState.hidden = true;
+    emptyState.hidden = true;
+    errorState.hidden = true;
+    listingList.hidden = true;
+};
+
+const showLoadingState = () => {
+    hideListStates();
+    loadingState.hidden = false;
+};
+
+const showEmptyState = () => {
+    hideListStates();
+    emptyState.hidden = false;
+};
+
+const showErrorState = (message) => {
+    hideListStates();
+
+    errorState.textContent =
+        message ||
+        "Unable to load rental listings. Please try again.";
+
+    errorState.hidden = false;
+};
+
+const showListingResults = (listings) => {
+    hideListStates();
+
+    if (listings.length === 0) {
+        showEmptyState();
+        return;
+    }
+
+    listingList.innerHTML = "";
+
+    listings.forEach((listing) => {
+        const item = document.createElement("li");
+        item.className = "listing-card";
+
+        const title = document.createElement("h3");
+        title.textContent = listing.listingTitle;
+
+        const address = document.createElement("p");
+        address.textContent = `Address: ${listing.address}`;
+
+        item.append(title, address); // Add the title and address to the item.
+        listingList.appendChild(item); // Add the item to the listing list.
+    });
+
+    listingList.hidden = false; // Show the listing list.
+};
+
 
 // Closure: keeps track of successful form submissions.
 const createSubmissionCounter = () => {
@@ -115,3 +175,5 @@ rentalForm.addEventListener("submit", (event) => {
     rentalForm.reset();
     document.getElementById("listingTitle").focus();
 });
+
+showEmptyState();
