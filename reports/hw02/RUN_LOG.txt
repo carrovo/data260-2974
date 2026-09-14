@@ -1,0 +1,341 @@
+Mon Sep 14 05:48:44 UTC 2026
+--- NODE: Supervisor ---
+Supervisor decision: planner attempt 1 of 4
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {
+    "turn_count": 1,
+    "status": "running"
+  }
+}
+--- NODE: Planner ---
+{
+  "tags": [
+    "Furnished Studio",
+    "Near SJSU Campus",
+    "Walkable Location"
+  ],
+  "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+}
+
+--- STREAM UPDATE ---
+{
+  "planner": {
+    "planner_proposal": {
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+    },
+    "reviewer_feedback": {},
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: route to reviewer
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {}
+}
+--- NODE: Reviewer ---
+{
+  "has_issues": false,
+  "issues": []
+}
+
+--- STREAM UPDATE ---
+{
+  "reviewer": {
+    "reviewer_feedback": {
+      "has_issues": false,
+      "issues": []
+    },
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: task completed
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {
+    "status": "completed"
+  }
+}
+
+=== FINAL GRAPH RESULT ===
+{
+  "status": "completed",
+  "turn_count": 1,
+  "max_turns": 4,
+  "planner_proposal": {
+    "tags": [
+      "Furnished Studio",
+      "Near SJSU Campus",
+      "Walkable Location"
+    ],
+    "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+  },
+  "reviewer_feedback": {
+    "has_issues": false,
+    "issues": []
+  },
+  "last_error": "",
+  "total_latency_ms": 21044.49
+}
+Mon Sep 14 05:54:07 UTC 2026
+--- NODE: Supervisor ---
+Supervisor decision: planner attempt 1 of 2
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {
+    "turn_count": 1,
+    "status": "running"
+  }
+}
+--- NODE: Planner ---
+{
+  "tags": [
+    "Furnished Studio",
+    "Near SJSU Campus",
+    "Walkable Location"
+  ],
+  "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+}
+
+--- STREAM UPDATE ---
+{
+  "planner": {
+    "planner_proposal": {
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+    },
+    "reviewer_feedback": {},
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: route to reviewer
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {}
+}
+--- NODE: Reviewer ---
+{
+  "has_issues": true,
+  "issues": [
+    "Forced issue for correction-loop testing."
+  ],
+  "source": "forced_test"
+}
+
+--- STREAM UPDATE ---
+{
+  "reviewer": {
+    "reviewer_feedback": {
+      "has_issues": true,
+      "issues": [
+        "Forced issue for correction-loop testing."
+      ],
+      "source": "forced_test"
+    },
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: planner attempt 2 of 2
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {
+    "turn_count": 2,
+    "status": "running"
+  }
+}
+--- NODE: Planner ---
+{
+  "tags": [
+    "Furnished Studio",
+    "Near SJSU Campus",
+    "Walkable to SJSU"
+  ],
+  "summary": "Furnished studio near SJSU campus, walkable to campus, ideal for students."
+}
+
+--- STREAM UPDATE ---
+{
+  "planner": {
+    "planner_proposal": {
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable to SJSU"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable to campus, ideal for students."
+    },
+    "reviewer_feedback": {},
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: route to reviewer
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {}
+}
+--- NODE: Reviewer ---
+{
+  "has_issues": true,
+  "issues": [
+    "Forced issue for correction-loop testing."
+  ],
+  "source": "forced_test"
+}
+
+--- STREAM UPDATE ---
+{
+  "reviewer": {
+    "reviewer_feedback": {
+      "has_issues": true,
+      "issues": [
+        "Forced issue for correction-loop testing."
+      ],
+      "source": "forced_test"
+    },
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: turn ceiling reached
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {
+    "status": "abandoned",
+    "last_error": "The graph reached the turn ceiling before producing an approved proposal."
+  }
+}
+
+=== FINAL GRAPH RESULT ===
+{
+  "status": "abandoned",
+  "turn_count": 2,
+  "max_turns": 2,
+  "planner_proposal": {
+    "tags": [
+      "Furnished Studio",
+      "Near SJSU Campus",
+      "Walkable to SJSU"
+    ],
+    "summary": "Furnished studio near SJSU campus, walkable to campus, ideal for students."
+  },
+  "reviewer_feedback": {
+    "has_issues": true,
+    "issues": [
+      "Forced issue for correction-loop testing."
+    ],
+    "source": "forced_test"
+  },
+  "last_error": "The graph reached the turn ceiling before producing an approved proposal.",
+  "total_latency_ms": 6310.86
+}
+Mon Sep 14 06:07:31 UTC 2026
+--- NODE: Supervisor ---
+Supervisor decision: planner attempt 1 of 4
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {
+    "turn_count": 1,
+    "status": "running"
+  }
+}
+--- NODE: Planner ---
+{
+  "tags": [
+    "Furnished Studio",
+    "Near SJSU Campus",
+    "Walkable Location"
+  ],
+  "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+}
+
+--- STREAM UPDATE ---
+{
+  "planner": {
+    "planner_proposal": {
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+    },
+    "reviewer_feedback": {},
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: route to reviewer
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {}
+}
+--- NODE: Reviewer ---
+{
+  "has_issues": false,
+  "issues": []
+}
+
+--- STREAM UPDATE ---
+{
+  "reviewer": {
+    "reviewer_feedback": {
+      "has_issues": false,
+      "issues": []
+    },
+    "last_error": ""
+  }
+}
+--- NODE: Supervisor ---
+Supervisor decision: task completed
+
+--- STREAM UPDATE ---
+{
+  "supervisor": {
+    "status": "completed"
+  }
+}
+
+=== FINAL GRAPH RESULT ===
+{
+  "status": "completed",
+  "turn_count": 1,
+  "max_turns": 4,
+  "planner_proposal": {
+    "tags": [
+      "Furnished Studio",
+      "Near SJSU Campus",
+      "Walkable Location"
+    ],
+    "summary": "Furnished studio near SJSU campus, walkable location for students and commuters."
+  },
+  "reviewer_feedback": {
+    "has_issues": false,
+    "issues": []
+  },
+  "last_error": "",
+  "total_latency_ms": 26233.95
+}
