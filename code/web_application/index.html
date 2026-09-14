@@ -6,7 +6,7 @@
 
     <!-- Homework requires the title to be HW1-{Your Name}. -->
     <title>HW2-Xuanhua Li</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
     <link rel="icon" href="data:,">
 </head>
 
@@ -86,8 +86,87 @@
             </form>
         </section>
 
+        <section class="panel" aria-labelledby="updateHeading">
+            <h2 id="updateHeading">Update Rental Listing ID 1</h2>
+
+            <form id="updateForm">
+                <label for="updateListingTitle">
+                    New Listing Title
+                </label>
+                <input
+                    type="text"
+                    id="updateListingTitle"
+                    name="updateListingTitle"
+                    placeholder="Enter a new title for listing ID 1"
+                    autocomplete="off"
+                    required
+                >
+
+                <label for="updateAddress">
+                    New Property Address
+                </label>
+                <input
+                    type="text"
+                    id="updateAddress"
+                    name="updateAddress"
+                    placeholder="Enter a new address for listing ID 1"
+                    autocomplete="street-address"
+                    required
+                >
+
+                <button type="submit">
+                    Update Listing ID 1
+                </button>
+            </form>
+        </section>
+
+        <section class="panel" aria-labelledby="deleteHeading">
+            <h2 id="deleteHeading">
+                Delete Highest-ID Rental Listing
+            </h2>
+
+            <p>
+                Remove the rental listing with the current highest ID.
+            </p>
+
+            <button
+                type="button"
+                id="deleteHighestButton"
+                class="button-danger"
+            >
+                Delete Highest-ID Listing
+            </button>
+        </section>
+
         <section class="panel" aria-labelledby="listHeading">
             <h2 id="listHeading">Available Rental Listings</h2>
+            <form id="searchForm" class="search-form">
+                <label for="searchInput">
+                    Search by Listing Title or Property Address
+                </label>
+
+                <div class="search-controls">
+                    <input
+                        type="search"
+                        id="searchInput"
+                        name="searchInput"
+                        placeholder="Enter a title or address"
+                        autocomplete="off"
+                    >
+
+                    <button type="submit">
+                        Search
+                    </button>
+
+                    <button
+                        type="button"
+                        id="clearSearchButton"
+                        class="button-secondary"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </form>
 
             <div
                 id="loadingState"
@@ -125,6 +204,6 @@
         </section>
     </main>
 
-    <script src="feedback.js"></script>
+    <script src="/static/feedback.js"></script>
 </body>
 </html>

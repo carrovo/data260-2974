@@ -98,6 +98,37 @@ button {
 button:hover {
     background-color: #125aa0;
 }
+.button-danger {
+    background-color: #c62828;
+}
+
+.button-danger:hover {
+    background-color: #8e0000;
+}
+
+.button-secondary {
+    background-color: #546e7a;
+}
+
+.button-secondary:hover {
+    background-color: #37474f;
+}
+
+.search-form {
+    margin-bottom: 20px;
+}
+
+.search-controls {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-controls button {
+    margin-top: 0;
+    white-space: nowrap;
+}
 
 button:focus-visible,
 input:focus-visible,
@@ -169,6 +200,14 @@ select:focus-visible {
     }
 
     button {
+        width: 100%;
+    }
+
+    .search-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .search-controls button {
         width: 100%;
     }
 }
