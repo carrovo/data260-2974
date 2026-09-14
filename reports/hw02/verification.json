@@ -1,0 +1,40 @@
+{
+  "homework": "HW2",
+  "sid4": 2974,
+  "commit_hash": "780ce8268774d38f6ebb0ed4f586bce96aeac547",
+  "tag": "hw2-final",
+  "model_configuration": {
+    "model": "qwen3:8b",
+    "temperature": 0.0
+  },
+  "seed": 2974,
+  "verify_seed": 262974,
+  "checks": [
+    {
+      "name": "final_tag_points_to_head",
+      "passed": true,
+      "details": "Tag: hw2-final; tag commit: 780ce8268774d38f6ebb0ed4f586bce96aeac547; HEAD: 780ce8268774d38f6ebb0ed4f586bce96aeac547"
+    },
+    {
+      "name": "python_files_compile",
+      "passed": true,
+      "details": "All Python files compiled."
+    },
+    {
+      "name": "fastapi_responds_on_port_8274",
+      "passed": true,
+      "details": "HTTP 200; response is a list: True"
+    },
+    {
+      "name": "langgraph_smoke_test_finishes",
+      "passed": true,
+      "details": "Experiment runner finished successfully."
+    },
+    {
+      "name": "planner_returns_exactly_three_tags",
+      "passed": true,
+      "details": "Status: completed; number of tags: 3"
+    }
+  ],
+  "overall_pass": true
+}
