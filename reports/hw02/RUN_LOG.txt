@@ -339,3 +339,238 @@ Supervisor decision: task completed
   "last_error": "",
   "total_latency_ms": 26233.95
 }
+Mon Sep 14 07:37:49 UTC 2026
+Experiment configuration:
+{
+  "experiment": "schema_validation",
+  "input_file": "reports/hw02/cases/schema_input.json",
+  "runs": 30,
+  "max_turns": 10,
+  "model": "qwen3:8b",
+  "temperature": 0.0,
+  "seed": 2974
+}
+[schema_validation] run 01/30 outcome=valid_first_attempt turns=1 latency_ms=11704.01
+[schema_validation] run 02/30 outcome=valid_first_attempt turns=1 latency_ms=3103.11
+[schema_validation] run 03/30 outcome=valid_first_attempt turns=1 latency_ms=3072.68
+[schema_validation] run 04/30 outcome=valid_first_attempt turns=1 latency_ms=3074.97
+[schema_validation] run 05/30 outcome=valid_first_attempt turns=1 latency_ms=3057.6
+[schema_validation] run 06/30 outcome=valid_first_attempt turns=1 latency_ms=3044.92
+[schema_validation] run 07/30 outcome=valid_first_attempt turns=1 latency_ms=3351.16
+[schema_validation] run 08/30 outcome=valid_first_attempt turns=1 latency_ms=3158.96
+[schema_validation] run 09/30 outcome=valid_first_attempt turns=1 latency_ms=3121.36
+[schema_validation] run 10/30 outcome=valid_first_attempt turns=1 latency_ms=3054.1
+[schema_validation] run 11/30 outcome=valid_first_attempt turns=1 latency_ms=3090.87
+[schema_validation] run 12/30 outcome=valid_first_attempt turns=1 latency_ms=3040.36
+[schema_validation] run 13/30 outcome=valid_first_attempt turns=1 latency_ms=3030.3
+[schema_validation] run 14/30 outcome=valid_first_attempt turns=1 latency_ms=3075.38
+[schema_validation] run 15/30 outcome=valid_first_attempt turns=1 latency_ms=3054.27
+[schema_validation] run 16/30 outcome=valid_first_attempt turns=1 latency_ms=3053.46
+[schema_validation] run 17/30 outcome=valid_first_attempt turns=1 latency_ms=3120.0
+[schema_validation] run 18/30 outcome=valid_first_attempt turns=1 latency_ms=3257.27
+[schema_validation] run 19/30 outcome=valid_first_attempt turns=1 latency_ms=3353.42
+[schema_validation] run 20/30 outcome=valid_first_attempt turns=1 latency_ms=3125.07
+[schema_validation] run 21/30 outcome=valid_first_attempt turns=1 latency_ms=3085.97
+[schema_validation] run 22/30 outcome=valid_first_attempt turns=1 latency_ms=3091.84
+[schema_validation] run 23/30 outcome=valid_first_attempt turns=1 latency_ms=3087.84
+[schema_validation] run 24/30 outcome=valid_first_attempt turns=1 latency_ms=3140.09
+[schema_validation] run 25/30 outcome=valid_first_attempt turns=1 latency_ms=3047.06
+[schema_validation] run 26/30 outcome=valid_first_attempt turns=1 latency_ms=3041.15
+[schema_validation] run 27/30 outcome=valid_first_attempt turns=1 latency_ms=3081.67
+[schema_validation] run 28/30 outcome=valid_first_attempt turns=1 latency_ms=3275.24
+[schema_validation] run 29/30 outcome=valid_first_attempt turns=1 latency_ms=3935.94
+[schema_validation] run 30/30 outcome=valid_first_attempt turns=1 latency_ms=3732.98
+
+Experiment summary:
+{
+  "total_runs": 30,
+  "completed_runs": 30,
+  "completion_rate_percent": 100.0,
+  "overall_mean_latency_ms": 3448.77,
+  "outcomes": {
+    "valid_first_attempt": {
+      "count": 30,
+      "mean_latency_ms": 3448.77
+    },
+    "valid_after_one_retry": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "valid_after_two_or_more_retries": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "hit_turn_ceiling": {
+      "count": 0,
+      "mean_latency_ms": null
+    }
+  }
+}
+
+JSON saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/schema_runs.json
+CSV saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/schema_runs.csv
+Mon Sep 14 07:50:35 UTC 2026
+Experiment configuration:
+{
+  "experiment": "ceiling_2",
+  "input_file": "reports/hw02/cases/schema_input.json",
+  "runs": 20,
+  "max_turns": 2,
+  "model": "qwen3:8b",
+  "temperature": 0.0,
+  "seed": 2974
+}
+[ceiling_2] run 01/20 outcome=valid_first_attempt turns=1 latency_ms=12148.43
+[ceiling_2] run 02/20 outcome=valid_first_attempt turns=1 latency_ms=3095.09
+[ceiling_2] run 03/20 outcome=valid_first_attempt turns=1 latency_ms=3117.82
+[ceiling_2] run 04/20 outcome=valid_first_attempt turns=1 latency_ms=3311.56
+[ceiling_2] run 05/20 outcome=valid_first_attempt turns=1 latency_ms=3146.78
+[ceiling_2] run 06/20 outcome=valid_first_attempt turns=1 latency_ms=3024.84
+[ceiling_2] run 07/20 outcome=valid_first_attempt turns=1 latency_ms=3255.01
+[ceiling_2] run 08/20 outcome=valid_first_attempt turns=1 latency_ms=3183.91
+[ceiling_2] run 09/20 outcome=valid_first_attempt turns=1 latency_ms=3103.54
+[ceiling_2] run 10/20 outcome=valid_first_attempt turns=1 latency_ms=3103.04
+[ceiling_2] run 11/20 outcome=valid_first_attempt turns=1 latency_ms=3018.65
+[ceiling_2] run 12/20 outcome=valid_first_attempt turns=1 latency_ms=3028.26
+[ceiling_2] run 13/20 outcome=valid_first_attempt turns=1 latency_ms=3083.93
+[ceiling_2] run 14/20 outcome=valid_first_attempt turns=1 latency_ms=3016.66
+[ceiling_2] run 15/20 outcome=valid_first_attempt turns=1 latency_ms=3004.37
+[ceiling_2] run 16/20 outcome=valid_first_attempt turns=1 latency_ms=3012.88
+[ceiling_2] run 17/20 outcome=valid_first_attempt turns=1 latency_ms=3114.98
+[ceiling_2] run 18/20 outcome=valid_first_attempt turns=1 latency_ms=3184.18
+[ceiling_2] run 19/20 outcome=valid_first_attempt turns=1 latency_ms=3180.02
+[ceiling_2] run 20/20 outcome=valid_first_attempt turns=1 latency_ms=3043.82
+
+Experiment summary:
+{
+  "total_runs": 20,
+  "completed_runs": 20,
+  "completion_rate_percent": 100.0,
+  "overall_mean_latency_ms": 3558.89,
+  "outcomes": {
+    "valid_first_attempt": {
+      "count": 20,
+      "mean_latency_ms": 3558.89
+    },
+    "valid_after_one_retry": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "valid_after_two_or_more_retries": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "hit_turn_ceiling": {
+      "count": 0,
+      "mean_latency_ms": null
+    }
+  }
+}
+
+JSON saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/ceiling_2_runs.json
+CSV saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/ceiling_2_runs.csv
+Mon Sep 14 07:56:37 UTC 2026
+Experiment configuration:
+{
+  "experiment": "ceiling_10",
+  "input_file": "reports/hw02/cases/schema_input.json",
+  "runs": 20,
+  "max_turns": 10,
+  "model": "qwen3:8b",
+  "temperature": 0.0,
+  "seed": 2974
+}
+[ceiling_10] run 01/20 outcome=valid_first_attempt turns=1 latency_ms=3715.72
+[ceiling_10] run 02/20 outcome=valid_first_attempt turns=1 latency_ms=3240.36
+[ceiling_10] run 03/20 outcome=valid_first_attempt turns=1 latency_ms=3097.74
+[ceiling_10] run 04/20 outcome=valid_first_attempt turns=1 latency_ms=3068.97
+[ceiling_10] run 05/20 outcome=valid_first_attempt turns=1 latency_ms=3134.18
+[ceiling_10] run 06/20 outcome=valid_first_attempt turns=1 latency_ms=3274.72
+[ceiling_10] run 07/20 outcome=valid_first_attempt turns=1 latency_ms=3069.39
+[ceiling_10] run 08/20 outcome=valid_first_attempt turns=1 latency_ms=3018.86
+[ceiling_10] run 09/20 outcome=valid_first_attempt turns=1 latency_ms=3028.4
+[ceiling_10] run 10/20 outcome=valid_first_attempt turns=1 latency_ms=3063.43
+[ceiling_10] run 11/20 outcome=valid_first_attempt turns=1 latency_ms=3035.07
+[ceiling_10] run 12/20 outcome=valid_first_attempt turns=1 latency_ms=3184.76
+[ceiling_10] run 13/20 outcome=valid_first_attempt turns=1 latency_ms=3198.13
+[ceiling_10] run 14/20 outcome=valid_first_attempt turns=1 latency_ms=3068.44
+[ceiling_10] run 15/20 outcome=valid_first_attempt turns=1 latency_ms=3128.95
+[ceiling_10] run 16/20 outcome=valid_first_attempt turns=1 latency_ms=3072.73
+[ceiling_10] run 17/20 outcome=valid_first_attempt turns=1 latency_ms=3029.62
+[ceiling_10] run 18/20 outcome=valid_first_attempt turns=1 latency_ms=3014.95
+[ceiling_10] run 19/20 outcome=valid_first_attempt turns=1 latency_ms=3026.77
+[ceiling_10] run 20/20 outcome=valid_first_attempt turns=1 latency_ms=3023.34
+
+Experiment summary:
+{
+  "total_runs": 20,
+  "completed_runs": 20,
+  "completion_rate_percent": 100.0,
+  "overall_mean_latency_ms": 3124.73,
+  "outcomes": {
+    "valid_first_attempt": {
+      "count": 20,
+      "mean_latency_ms": 3124.73
+    },
+    "valid_after_one_retry": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "valid_after_two_or_more_retries": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "hit_turn_ceiling": {
+      "count": 0,
+      "mean_latency_ms": null
+    }
+  }
+}
+
+JSON saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/ceiling_10_runs.json
+CSV saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/ceiling_10_runs.csv
+Mon Sep 14 08:06:02 UTC 2026
+Experiment configuration:
+{
+  "experiment": "adversarial",
+  "input_file": "reports/hw02/cases/adversarial_input.json",
+  "runs": 5,
+  "max_turns": 2,
+  "model": "qwen3:8b",
+  "temperature": 0.0,
+  "seed": 2974
+}
+[adversarial] run 01/5 outcome=hit_turn_ceiling turns=2 latency_ms=12670.11
+[adversarial] run 02/5 outcome=hit_turn_ceiling turns=2 latency_ms=5826.61
+[adversarial] run 03/5 outcome=hit_turn_ceiling turns=2 latency_ms=5714.56
+[adversarial] run 04/5 outcome=hit_turn_ceiling turns=2 latency_ms=5644.39
+[adversarial] run 05/5 outcome=hit_turn_ceiling turns=2 latency_ms=5629.14
+
+Experiment summary:
+{
+  "total_runs": 5,
+  "completed_runs": 0,
+  "completion_rate_percent": 0.0,
+  "overall_mean_latency_ms": 7096.96,
+  "outcomes": {
+    "valid_first_attempt": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "valid_after_one_retry": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "valid_after_two_or_more_retries": {
+      "count": 0,
+      "mean_latency_ms": null
+    },
+    "hit_turn_ceiling": {
+      "count": 5,
+      "mean_latency_ms": 7096.96
+    }
+  }
+}
+
+JSON saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/adversarial_runs.json
+CSV saved to: /Users/carol/Documents/data260-2974/reports/hw02/raw/adversarial_runs.csv

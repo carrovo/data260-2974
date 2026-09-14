@@ -25,7 +25,8 @@ class ModelClient:
         temperature: float = 0.0,
         output_format: str | dict[str, Any] | None = None,
         reasoning: bool = False,
-        base_url: str = "http://localhost:11434"
+        base_url: str = "http://localhost:11434",
+        seed: int | None = None,
     ) -> None:
         model_options: dict[str, Any] = {
             "model": model_name,
@@ -37,7 +38,9 @@ class ModelClient:
         }
 
         if output_format is not None:
-            model_options["format"] = output_format
+            model_options["format"] = output_format # Set the output format to the output format.
+        if seed is not None:
+            model_options["seed"] = seed # Set the seed to the seed.
 
         self._model = ChatOllama(**model_options)
 

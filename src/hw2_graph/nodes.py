@@ -3,6 +3,9 @@ import time
 from typing import Any
 
 from .state import AgentState
+from pydantic import ValidationError
+
+from .schemas import PlannerProposal
 
 
 def _parse_json_object(content: str) -> dict[str, Any]: # Parse the json object.
@@ -99,6 +102,12 @@ def planner_node(state: AgentState) -> dict[str, Any]: # Planner node.
         response = state["llm"].complete(messages) # Complete the messages.
         proposal = _parse_json_object(response.content) # Parse the json object.
 
+        validated_proposal = PlannerProposal.model_validate(
+            proposal # Set the proposal to the validated proposal.
+        ) # Return the validated proposal.
+
+        proposal = validated_proposal.model_dump() # Dump the validated proposal.
+
         latency_ms = round( # Round the latency to 2 decimal places.
             (time.perf_counter() - start_time) * 1000,
             2,
@@ -124,7 +133,11 @@ def planner_node(state: AgentState) -> dict[str, Any]: # Planner node.
             ),
         }
 
-    except (ValueError, KeyError) as error: # Catch the error.
+    except (
+        ValidationError, # Catch the validation error.
+        ValueError, # Catch the value error.
+        KeyError, # Catch the key error.
+    ) as error: # Catch the error.
         latency_ms = round( # Round the latency to 2 decimal places.
             (time.perf_counter() - start_time) * 1000,
             2,

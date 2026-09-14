@@ -1,0 +1,457 @@
+{
+  "configuration": {
+    "experiment": "ceiling_10",
+    "input_file": "reports/hw02/cases/schema_input.json",
+    "runs": 20,
+    "max_turns": 10,
+    "model": "qwen3:8b",
+    "temperature": 0.0,
+    "seed": 2974
+  },
+  "summary": {
+    "total_runs": 20,
+    "completed_runs": 20,
+    "completion_rate_percent": 100.0,
+    "overall_mean_latency_ms": 3124.73,
+    "outcomes": {
+      "valid_first_attempt": {
+        "count": 20,
+        "mean_latency_ms": 3124.73
+      },
+      "valid_after_one_retry": {
+        "count": 0,
+        "mean_latency_ms": null
+      },
+      "valid_after_two_or_more_retries": {
+        "count": 0,
+        "mean_latency_ms": null
+      },
+      "hit_turn_ceiling": {
+        "count": 0,
+        "mean_latency_ms": null
+      }
+    }
+  },
+  "runs": [
+    {
+      "experiment": "ceiling_10",
+      "run_number": 1,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3715.72,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:56:41Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 2,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3240.36,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:56:44Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 3,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3097.74,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:56:47Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 4,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3068.97,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:56:50Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 5,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3134.18,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:56:53Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 6,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3274.72,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:56:57Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 7,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3069.39,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:00Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 8,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3018.86,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:03Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 9,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3028.4,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:06Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 10,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3063.43,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:09Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 11,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3035.07,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:12Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 12,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3184.76,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:15Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 13,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3198.13,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:18Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 14,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3068.44,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:21Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 15,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3128.95,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:24Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 16,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3072.73,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:28Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 17,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3029.62,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:31Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 18,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3014.95,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:34Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 19,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3026.77,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:37Z"
+    },
+    {
+      "experiment": "ceiling_10",
+      "run_number": 20,
+      "status": "completed",
+      "outcome": "valid_first_attempt",
+      "turn_count": 1,
+      "retry_count": 0,
+      "max_turns": 10,
+      "latency_ms": 3023.34,
+      "tags": [
+        "Furnished Studio",
+        "Near SJSU Campus",
+        "Walkable Location"
+      ],
+      "summary": "Furnished studio near SJSU campus, walkable location for students and commuters.",
+      "last_error": "",
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "timestamp_utc": "2026-09-14T07:57:40Z"
+    }
+  ]
+}

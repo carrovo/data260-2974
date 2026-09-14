@@ -1,0 +1,6 @@
+experiment,run_number,status,outcome,turn_count,retry_count,max_turns,latency_ms,tags,summary,last_error,model,temperature,seed,timestamp_utc
+adversarial,1,abandoned,hit_turn_ceiling,2,1,2,12670.11,[],,The graph reached the turn ceiling before producing an approved proposal.,qwen3:8b,0.0,2974,2026-09-14T08:06:15Z
+adversarial,2,abandoned,hit_turn_ceiling,2,1,2,5826.61,[],,The graph reached the turn ceiling before producing an approved proposal.,qwen3:8b,0.0,2974,2026-09-14T08:06:21Z
+adversarial,3,abandoned,hit_turn_ceiling,2,1,2,5714.56,[],,The graph reached the turn ceiling before producing an approved proposal.,qwen3:8b,0.0,2974,2026-09-14T08:06:27Z
+adversarial,4,abandoned,hit_turn_ceiling,2,1,2,5644.39,[],,The graph reached the turn ceiling before producing an approved proposal.,qwen3:8b,0.0,2974,2026-09-14T08:06:32Z
+adversarial,5,abandoned,hit_turn_ceiling,2,1,2,5629.14,[],,The graph reached the turn ceiling before producing an approved proposal.,qwen3:8b,0.0,2974,2026-09-14T08:06:38Z
