@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Dashboard · Rental Housing Portal
+{% endblock %}
+
+{% block content %}
+
+  <div
+    class="d-flex flex-column flex-md-row
+           justify-content-between align-items-md-center
+           gap-3 mb-4"
+  >
+
+    <div>
+
+      <span class="badge text-bg-success mb-2">
+        Protected Route
+      </span>
+
+      <h1 class="h2 mb-1">
+        Welcome, {{ user }}!
+      </h1>
+
+      <p class="text-secondary mb-0">
+        Your authenticated rental housing dashboard is active.
+      </p>
+
+    </div>
+
+    <a
+      class="btn btn-outline-danger"
+      href="/logout"
+    >
+      Logout
+    </a>
+
+  </div>
+
+  <div class="row g-4">
+
+    <div class="col-md-6">
+
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+
+          <h2 class="h5">
+            Session Protection
+          </h2>
+
+          <p class="card-text">
+            This page is available only when a valid user session
+            is present.
+          </p>
+
+          <span class="badge text-bg-light">
+            Idle timeout: {{ idle_timeout_seconds }} seconds
+          </span>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+
+          <h2 class="h5">
+            Rental Listing Application
+          </h2>
+
+          <p class="card-text">
+            The rental listing form and API from the earlier
+            homework remain available.
+          </p>
+
+          <a
+            class="btn btn-primary"
+            href="/listing-form"
+          >
+            Open Listing Form
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}

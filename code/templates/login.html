@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Login · Rental Housing Portal
+{% endblock %}
+
+{% block content %}
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-8 col-lg-5">
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+
+          <h1 class="h3 mb-2">
+            Portal Login
+          </h1>
+
+          <p class="text-secondary mb-4">
+            Enter your account information to access the
+            protected rental housing dashboard.
+          </p>
+
+          {% if request.query_params.get("session_required") == "true" %}
+
+            <div
+              class="alert alert-warning"
+              role="alert"
+            >
+              Please log in. Your session may be missing or expired.
+            </div>
+
+          {% endif %}
+
+          {% if error %}
+
+            <div
+              class="alert alert-danger"
+              role="alert"
+            >
+              {{ error }}
+            </div>
+
+          {% endif %}
+
+          <form method="post" action="/login"> 
+
+            <div class="mb-3">
+
+              <label
+                class="form-label"
+                for="username"
+              >
+                Username
+              </label>
+
+              <input
+                class="form-control"
+                id="username"
+                name="username"
+                type="text"
+                value="{{ entered_username | default('') }}"
+                autocomplete="username"
+                required
+                autofocus
+              >
+
+            </div>
+
+            <div class="mb-4">
+
+              <label
+                class="form-label"
+                for="password"
+              >
+                Password
+              </label>
+
+              <input
+                class="form-control"
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+              >
+
+            </div>
+
+            <button
+              class="btn btn-primary w-100"
+              type="submit"
+            >
+              Login
+            </button>
+
+          </form>
+
+          <div class="text-center mt-3">
+
+            <a href="/">
+              Return to Home
+            </a>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

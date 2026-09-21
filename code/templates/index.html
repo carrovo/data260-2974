@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Home · Rental Housing Portal
+{% endblock %}
+
+{% block content %}
+
+  {% if request.query_params.get("logged_out") == "true" %}
+    <div
+      class="alert alert-success alert-dismissible fade show"
+      role="alert"
+    >
+      You have been logged out successfully.
+
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+  {% endif %}
+
+  <div class="row align-items-center g-4">
+
+    <div class="col-lg-7">
+
+      <span class="badge text-bg-primary mb-3">
+        DATA 260 · Homework 3
+      </span>
+
+      <h1 class="display-5 fw-bold">
+        Rental Housing Information Portal
+      </h1>
+
+      <p class="lead text-secondary">
+        A secure portal for accessing rental housing information
+        and managing authenticated user sessions.
+      </p>
+
+      {% if user %}
+
+        <p>
+          You are signed in as
+          <strong>{{ user }}</strong>.
+        </p>
+
+        <a
+          class="btn btn-primary btn-lg"
+          href="/dashboard"
+        >
+          Open Dashboard
+        </a>
+
+        <a
+          class="btn btn-outline-danger btn-lg ms-2"
+          href="/logout"
+        >
+          Logout
+        </a>
+
+      {% else %}
+
+        <p>
+          Please log in to access the protected rental housing
+          dashboard.
+        </p>
+
+        <a
+          class="btn btn-primary btn-lg"
+          href="/login"
+        >
+          Login
+        </a>
+
+      {% endif %}
+
+    </div>
+
+    <div class="col-lg-5">
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+          <h2 class="h4 mb-3">
+            Portal Features
+          </h2>
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-0">
+              Secure signed session cookies
+            </li>
+
+            <li class="list-group-item px-0">
+              Protected rental housing dashboard
+            </li>
+
+            <li class="list-group-item px-0">
+              Automatic idle-session timeout
+            </li>
+
+            <li class="list-group-item px-0">
+              Login and logout controls
+            </li>
+          </ul>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Literal
 
@@ -5,6 +6,9 @@ from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
+from starlette.middleware.sessions import SessionMiddleware
+
+from routers.auth import router as auth_router
 
 
 PORT_BASE = 8274
@@ -12,10 +16,31 @@ PORT_BASE = 8274
 BASE_DIR = Path(__file__).resolve().parent
 WEB_DIR = BASE_DIR / "web_application"
 
+SESSION_SECRET = os.getenv(
+    "HW3_SESSION_SECRET",
+    "data260-hw3-development-secret-2974",
+) # Get the session secret from the environment variables.
+
+SESSION_HTTPS_ONLY = os.getenv(
+    "HW3_HTTPS_ONLY",
+    "true",
+).lower() not in {"false", "0", "no"} # Check if the session is https only.
+
 app = FastAPI(
     title="Rental Housing Listings API",
-    version="2.0.0"
+    version="3.0.0"
 )
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SESSION_SECRET,
+    session_cookie="session",
+    max_age=3600,
+    same_site="lax",
+    https_only=SESSION_HTTPS_ONLY,
+)
+
+app.include_router(auth_router)
 
 
 class RentalListingBase(BaseModel):
@@ -93,8 +118,8 @@ listings: list[RentalListing] = [
 ]
 
 
-@app.get("/")
-async def read_home() -> FileResponse:
+@app.get("/listing-form")
+async def read_listing_form() -> FileResponse:
     return FileResponse(WEB_DIR / "index.html")
 
 
