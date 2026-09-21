@@ -12,7 +12,7 @@
     "technique": "sentence_window",
     "chunks": 3797,
     "avg_chunk_length_chars": 130.55728206478798,
-    "top1_cosine": 0.5933571100234986,
+    "top1_cosine": 0.7231454014778137,
     "mean_at_k_cosine": 0.6514828288555146,
     "recall_at_k": 1,
     "mean_retrieval_latency_ms": 36.60945822484791

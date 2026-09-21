@@ -115,7 +115,7 @@ def main() -> None:
                 for result in results
             ]
 
-            top1_cosine = cosine_values[0]
+            top1_cosine = max(cosine_values)
 
             mean_at_k_cosine = mean(
                 cosine_values
