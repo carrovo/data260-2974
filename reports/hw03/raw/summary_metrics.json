@@ -1,0 +1,29 @@
+[
+  {
+    "technique": "semantic",
+    "chunks": 441,
+    "avg_chunk_length_chars": 1124.095238095238,
+    "top1_cosine": 0.7373165607452392,
+    "mean_at_k_cosine": 0.6716410791873931,
+    "recall_at_k": 1,
+    "mean_retrieval_latency_ms": 9.391291625797749
+  },
+  {
+    "technique": "sentence_window",
+    "chunks": 3797,
+    "avg_chunk_length_chars": 130.55728206478798,
+    "top1_cosine": 0.5933571100234986,
+    "mean_at_k_cosine": 0.6514828288555146,
+    "recall_at_k": 1,
+    "mean_retrieval_latency_ms": 36.60945822484791
+  },
+  {
+    "technique": "token",
+    "chunks": 584,
+    "avg_chunk_length_chars": 968.8407534246576,
+    "top1_cosine": 0.726727819442749,
+    "mean_at_k_cosine": 0.6864322447776795,
+    "recall_at_k": 1,
+    "mean_retrieval_latency_ms": 9.770625038072467
+  }
+]

@@ -1,0 +1,85 @@
+{
+  "technique": "token",
+  "query_id": "q2",
+  "query": "How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?",
+  "expected_answer": "The landlord has 21 days after the tenant moves out to return the deposit or provide the required itemized statement and any remaining refund.",
+  "expected_source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.05889129266142845,
+    0.034048229455947876,
+    0.02953071892261505,
+    0.043535515666007996,
+    0.019900131970643997,
+    0.0047522904351353645,
+    -0.03806595131754875,
+    -0.04374045506119728
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 8.926374837756157,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7284974871526823,
+      "cosine_sim": 0.7284975051879883,
+      "chunk_len": 575,
+      "context_len": 575,
+      "preview": "a landlord is required to take photographs of a rental unit within a reasonable time after the tenant has returned possession of the unit to the landlord , but ",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 82,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.718336189817673,
+      "cosine_sim": 0.7183362245559692,
+      "chunk_len": 1241,
+      "context_len": 1241,
+      "preview": "80 \u2022 The parties have not agreed on a date and time, and the tenant withdraws the request for the inspection, in which case the inspection will not be conducted",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 86,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.6918846499031545,
+      "cosine_sim": 0.6918846964836121,
+      "chunk_len": 1220,
+      "context_len": 1220,
+      "preview": "also gives you a copy of the required sections of the security deposit statute. The itemized statement lists the following: \u2022 Repair cigarette burns on windowsi",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 88,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.6906804974204782,
+      "cosine_sim": 0.6906805038452148,
+      "chunk_len": 863,
+      "context_len": 863,
+      "preview": "81 \u2022 That was not identified during the initial inspection due to the presence of the tenant\u2019s possessions. 364 Any deduction must be reasonable in amount and m",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 87,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.687857140940799,
+      "cosine_sim": 0.6878570914268494,
+      "chunk_len": 1203,
+      "context_len": 1203,
+      "preview": "76 month\u2019s rent, as security deposit.335 REFUND OF SECURITY DEPOSITS Common problems and how to avoid them One of the most common disagreements between landlord",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 82,
+      "source_match": true
+    }
+  ]
+}

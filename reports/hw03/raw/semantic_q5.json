@@ -1,0 +1,85 @@
+{
+  "technique": "semantic",
+  "query_id": "q5",
+  "query": "How long after an alleged housing discrimination incident occurs or ends does a person have to file a complaint with HUD?",
+  "expected_answer": "A person has one year after the alleged discrimination occurred or ended to file a complaint with HUD.",
+  "expected_source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    -0.03255224600434303,
+    0.010403217747807503,
+    0.03188278153538704,
+    0.04800838977098465,
+    0.046332065016031265,
+    -0.02068500407040119,
+    -0.08861401677131653,
+    -0.08840128779411316
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 9.26583306863904,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.8083746686634746,
+      "cosine_sim": 0.8083747029304504,
+      "chunk_len": 981,
+      "context_len": 981,
+      "preview": "In Addition You May File a Private Lawsuit: You may file a private civil lawsuit without first filing a complaint with HUD. You must file your lawsuit within tw",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 18,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7493310643679041,
+      "cosine_sim": 0.7493311166763306,
+      "chunk_len": 1050,
+      "context_len": 1050,
+      "preview": "If you think your rights have been violated, you may file a complaint online, write a letter or telephone the HUD office nearest you. You have one year after th",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 10,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.7490681523440944,
+      "cosine_sim": 0.7490682005882263,
+      "chunk_len": 676,
+      "context_len": 676,
+      "preview": "HUD also will: \u2022 Notify the alleged violator (respondent) of the filing of your complaint, and allow the respondent time to submit a written answer to the compl",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 14,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.6985367173510599,
+      "cosine_sim": 0.69853675365448,
+      "chunk_len": 1333,
+      "context_len": 1333,
+      "preview": "23 status. To contact HUD, look in the governmental section of the phone book under United States Government Offices, or go to www.hud.gov. \u2022 Legal aid organiza",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 29,
+      "source_match": false
+    },
+    {
+      "rank": 5,
+      "store_score": 0.6960943188456472,
+      "cosine_sim": 0.6960943341255188,
+      "chunk_len": 1759,
+      "context_len": 1759,
+      "preview": "FAIR HOUSING Equal Opportunity for All A Conciliation Agreement provides individual relief to you, and protects the public interest by deterring future discrimi",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 15,
+      "source_match": true
+    }
+  ]
+}

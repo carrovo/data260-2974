@@ -1,0 +1,85 @@
+{
+  "technique": "token",
+  "query_id": "q4",
+  "query": "What must happen when a California residential lease is negotiated in a language other than English?",
+  "expected_answer": "The lease must be translated into the language used to negotiate it.",
+  "expected_source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.05572320520877838,
+    0.017491551116108894,
+    -0.0056902337819337845,
+    -0.02428814023733139,
+    -0.11797232180833817,
+    0.07887930423021317,
+    0.03192397207021713,
+    -0.07747972011566162
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 10.390958050265908,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.6884933161920738,
+      "cosine_sim": 0.6884933710098267,
+      "chunk_len": 1244,
+      "context_len": 1244,
+      "preview": "is a water submeter for the rental unit.105 TRANSLATION OF PROPOSED RENTAL AGREEMENT Although most lease negotiations are conducted in English, English may not ",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 32,
+      "source_match": false
+    },
+    {
+      "rank": 2,
+      "store_score": 0.659609694141358,
+      "cosine_sim": 0.6596097350120544,
+      "chunk_len": 1193,
+      "context_len": 1193,
+      "preview": "27 landlord must provide the tenant with the written translation of the rental agreement prior to the execution, or signing, of the rental agreement. However, t",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 33,
+      "source_match": false
+    },
+    {
+      "rank": 3,
+      "store_score": 0.6159134342443225,
+      "cosine_sim": 0.6159135103225708,
+      "chunk_len": 720,
+      "context_len": 720,
+      "preview": "Vietnamese, and Korean. A tenant who has made a payment to a utility pursuant to Public Utilities Code \u00a7\u00a7 777, 777.1, 10009, 10009.1, 12822, 12822.1, or 16481 m",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 144,
+      "source_match": false
+    },
+    {
+      "rank": 4,
+      "store_score": 0.6119424131295891,
+      "cosine_sim": 0.6119424700737,
+      "chunk_len": 1008,
+      "context_len": 1008,
+      "preview": "4. Roommates 10 11 If You Have Room, You Have The Right To Roommates Occupancy standards \u2014 limiting the number of people who can live together \u2014 can be discrimi",
+      "source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "page_number": 6,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.5936141027919947,
+      "cosine_sim": 0.5936142206192017,
+      "chunk_len": 282,
+      "context_len": 282,
+      "preview": "agreement, but may retain elements in English such as names, addresses, numerals, dollar amounts and dates. It is never acceptable for the landlord to give the ",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 32,
+      "source_match": false
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "technique": "token",
+    "chunks": 584,
+    "avg_chunk_length_chars": 968.8407534246576,
+    "chunking_latency_ms": 383.1811670679599,
+    "indexing_latency_ms": 6082.066083094105,
+    "parameters": {
+      "chunk_size": 256,
+      "chunk_overlap": 40
+    }
+  },
+  {
+    "technique": "semantic",
+    "chunks": 441,
+    "avg_chunk_length_chars": 1124.095238095238,
+    "chunking_latency_ms": 17784.87120801583,
+    "indexing_latency_ms": 4539.884791942313,
+    "parameters": {
+      "buffer_size": 1,
+      "breakpoint_percentile_threshold": 95
+    }
+  },
+  {
+    "technique": "sentence_window",
+    "chunks": 3797,
+    "avg_chunk_length_chars": 130.55728206478798,
+    "chunking_latency_ms": 291.6003328282386,
+    "indexing_latency_ms": 12427.30400012806,
+    "parameters": {
+      "window_size": 3
+    }
+  }
+]

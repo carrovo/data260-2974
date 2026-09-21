@@ -1,0 +1,85 @@
+{
+  "technique": "semantic",
+  "query_id": "q3",
+  "query": "May a California housing provider charge a pet deposit or extra rent for an assistance animal needed because of a disability?",
+  "expected_answer": "No. A necessary assistance animal must be allowed as a reasonable accommodation without a pet deposit or extra rent, although a request may be denied if the animal creates a direct health or safety threat or substantial property damage.",
+  "expected_source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.018302608281373978,
+    0.005099670961499214,
+    0.06726841628551483,
+    0.07940012961626053,
+    -0.044557079672813416,
+    0.061520546674728394,
+    0.0023757307790219784,
+    -0.05217330530285835
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 9.00716707110405,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7524284171538553,
+      "cosine_sim": 0.7524284720420837,
+      "chunk_len": 1889,
+      "context_len": 1889,
+      "preview": "However, the landlord can require that some form of financial guarantee be put in place that is sufficient to pay for the properly required restoration. This ca",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 36,
+      "source_match": false
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7241566497323533,
+      "cosine_sim": 0.7241566777229309,
+      "chunk_len": 866,
+      "context_len": 866,
+      "preview": "6. Assistance Animals 12 13 You Have The Right To Your Assistance Animal Housing providers must allow you to keep or acquire an assistance animal if necessary a",
+      "source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "page_number": 7,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.6152392077387793,
+      "cosine_sim": 0.6152392625808716,
+      "chunk_len": 993,
+      "context_len": 993,
+      "preview": "28 The written rental agreement should contain key terms, such as the following: \u2022 The names of the landlord and the tenant. \u2022 The address of the rental unit. \u2022",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 34,
+      "source_match": false
+    },
+    {
+      "rank": 4,
+      "store_score": 0.6145963449203001,
+      "cosine_sim": 0.6145963668823242,
+      "chunk_len": 573,
+      "context_len": 573,
+      "preview": "Disability You Have The Right To Access Housing Regardless Of Disability You have the right to an interactive process with your housing provider to identify rea",
+      "source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "page_number": 7,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.6080733933049988,
+      "cosine_sim": 0.6080734729766846,
+      "chunk_len": 1575,
+      "context_len": 1575,
+      "preview": "30 Alterations to Accommodate a Tenant with a Disability Under fair housing laws, housing providers must make reasonable exceptions to neutral policies, practic",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 36,
+      "source_match": false
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "technique": "token",
+  "query_id": "q5",
+  "query": "How long after an alleged housing discrimination incident occurs or ends does a person have to file a complaint with HUD?",
+  "expected_answer": "A person has one year after the alleged discrimination occurred or ended to file a complaint with HUD.",
+  "expected_source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    -0.03255224600434303,
+    0.010403217747807503,
+    0.03188278153538704,
+    0.04800838977098465,
+    0.046332065016031265,
+    -0.02068500407040119,
+    -0.08861401677131653,
+    -0.08840128779411316
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 9.625625098124146,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7634614570927768,
+      "cosine_sim": 0.7634614109992981,
+      "chunk_len": 924,
+      "context_len": 924,
+      "preview": "a private civil lawsuit without first filing a complaint with HUD. You must file your lawsuit within two (2) years of the most recent date of alleged discrimina",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 18,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7561006761469174,
+      "cosine_sim": 0.756100594997406,
+      "chunk_len": 618,
+      "context_len": 618,
+      "preview": "of the filing of your complaint, and allow the respondent time to submit a written answer to the complaint. \u2022 Investigate your complaint, and determine whether ",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 14,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.7403097918545999,
+      "cosine_sim": 0.7403098344802856,
+      "chunk_len": 1230,
+      "context_len": 1230,
+      "preview": "FAIR HOUSING Equal Opportunity for All \u2022 Irreparable (irreversible) harm or injury to housing rights is likely to occur without HUD\u2019s intervention; and \u2022 There ",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 16,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.7386227355799136,
+      "cosine_sim": 0.7386226654052734,
+      "chunk_len": 1020,
+      "context_len": 1020,
+      "preview": "that agency for investigation, and must promptly notify you of the referral. The State or local agency will investigate your complaint under the \u201csubstantially ",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 15,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.7067538340698416,
+      "cosine_sim": 0.7067538499832153,
+      "chunk_len": 1096,
+      "context_len": 1096,
+      "preview": "FAIR HOUSING Equal Opportunity for All Determination of No Reasonable Cause and Dismissal: If HUD finds that there is no reasonable cause to believe that the re",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 18,
+      "source_match": true
+    }
+  ]
+}

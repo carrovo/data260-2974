@@ -1,0 +1,319 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading evaluation questions...
+Loading formal PDF corpus...
+Questions loaded: 5
+Readable PDF pages loaded: 187
+Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 11144.70it/s]
+
+================================================================================
+Creating chunks for: token
+Chunks produced: 584
+Average indexed chunk length: 968.84 characters
+Chunking time: 383.181 ms
+Building in-memory index for: token
+Generating embeddings:   0%|          | 0/584 [00:00<?, ?it/s]Generating embeddings:   2%|▏         | 10/584 [00:00<00:14, 39.69it/s]Generating embeddings:   3%|▎         | 20/584 [00:00<00:09, 58.80it/s]Generating embeddings:   5%|▌         | 30/584 [00:00<00:07, 69.50it/s]Generating embeddings:   7%|▋         | 40/584 [00:00<00:07, 75.59it/s]Generating embeddings:   9%|▊         | 50/584 [00:00<00:07, 76.00it/s]Generating embeddings:  10%|█         | 60/584 [00:00<00:06, 80.02it/s]Generating embeddings:  12%|█▏        | 70/584 [00:00<00:06, 74.25it/s]Generating embeddings:  14%|█▎        | 80/584 [00:01<00:06, 79.17it/s]Generating embeddings:  15%|█▌        | 90/584 [00:01<00:05, 83.12it/s]Generating embeddings:  17%|█▋        | 100/584 [00:01<00:05, 84.92it/s]Generating embeddings:  19%|█▉        | 110/584 [00:01<00:05, 87.50it/s]Generating embeddings:  21%|██        | 120/584 [00:01<00:05, 89.20it/s]Generating embeddings:  22%|██▏       | 130/584 [00:01<00:05, 90.47it/s]Generating embeddings:  24%|██▍       | 140/584 [00:01<00:04, 92.85it/s]Generating embeddings:  27%|██▋       | 160/584 [00:01<00:04, 97.04it/s]Generating embeddings:  31%|███       | 180/584 [00:02<00:04, 98.99it/s]Generating embeddings:  34%|███▍      | 200/584 [00:02<00:03, 100.27it/s]Generating embeddings:  36%|███▌      | 210/584 [00:02<00:03, 99.48it/s] Generating embeddings:  39%|███▉      | 230/584 [00:02<00:03, 100.39it/s]Generating embeddings:  43%|████▎     | 250/584 [00:02<00:03, 101.47it/s]Generating embeddings:  46%|████▌     | 270/584 [00:03<00:03, 100.90it/s]Generating embeddings:  50%|████▉     | 290/584 [00:03<00:02, 101.40it/s]Generating embeddings:  53%|█████▎    | 310/584 [00:03<00:02, 102.71it/s]Generating embeddings:  55%|█████▍    | 321/584 [00:03<00:02, 104.01it/s]Generating embeddings:  57%|█████▋    | 332/584 [00:03<00:02, 104.44it/s]Generating embeddings:  59%|█████▊    | 343/584 [00:03<00:02, 104.65it/s]Generating embeddings:  62%|██████▏   | 360/584 [00:03<00:02, 99.29it/s] Generating embeddings:  65%|██████▌   | 380/584 [00:04<00:02, 101.26it/s]Generating embeddings:  68%|██████▊   | 400/584 [00:04<00:01, 102.26it/s]Generating embeddings:  72%|███████▏  | 420/584 [00:04<00:01, 102.35it/s]Generating embeddings:  75%|███████▌  | 440/584 [00:04<00:01, 101.61it/s]Generating embeddings:  77%|███████▋  | 451/584 [00:04<00:01, 103.02it/s]Generating embeddings:  80%|████████  | 470/584 [00:04<00:01, 101.75it/s]Generating embeddings:  84%|████████▍ | 490/584 [00:05<00:00, 102.37it/s]Generating embeddings:  87%|████████▋ | 510/584 [00:05<00:00, 103.09it/s]Generating embeddings:  91%|█████████ | 530/584 [00:05<00:00, 103.34it/s]Generating embeddings:  94%|█████████▍| 550/584 [00:05<00:00, 103.09it/s]Generating embeddings:  98%|█████████▊| 570/584 [00:05<00:00, 105.07it/s]Generating embeddings: 100%|██████████| 584/584 [00:06<00:00, 107.84it/s]Generating embeddings: 100%|██████████| 584/584 [00:06<00:00, 96.67it/s] 
+Indexing time: 6082.066 ms
+
+Technique: token
+Query ID: q1
+Query: What is the maximum security deposit a California landlord may generally charge, and what exception applies to qualifying small landlords?
+Embedding dimension: 384
+First 8 query embedding values: [0.136349618434906, 0.020249418914318085, -0.025697939097881317, 0.04742516204714775, 0.008216301910579205, 0.02836373820900917, 0.006583324167877436, -0.01705320179462433]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 10.128 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                   source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.726185    0.726185       1163         1163 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True 35 security deposit, unless the landlord uses the deposit for a lawful purpose, as described on pages 75-78. Almost all landlords charge tenants a security depo
+    2     0.706347    0.706347       1260         1260 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True allowance for an additional pet deposit for tenants living with a service or emotional support animal. Regardless of the landlord’s justification or name for an
+    3     0.700644    0.700644        282          282 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           42          True small landlords ( as defined on page 35) can only charge a service member up to one month’s rent for a security deposit unlike the greater security deposit amou
+    4     0.679880    0.679880        543          543 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True , in addition to the $ 1,000 security deposit. This is because the first month’s rent and the application screening fee are not part of the security deposit. • 
+    5     0.667083    0.667083       1236         1236 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           42          True through a property management website) if the tenant paid for their security deposit or made rental payments by a digital payment method , unless the tenant and
+
+Technique: token
+Query ID: q2
+Query: How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?
+Embedding dimension: 384
+First 8 query embedding values: [0.05889129266142845, 0.034048229455947876, 0.02953071892261505, 0.043535515666007996, 0.019900131970643997, 0.0047522904351353645, -0.03806595131754875, -0.04374045506119728]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 8.926 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                   source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.728497    0.728498        575          575 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           82          True a landlord is required to take photographs of a rental unit within a reasonable time after the tenant has returned possession of the unit to the landlord , but 
+    2     0.718336    0.718336       1241         1241 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           86          True 80 • The parties have not agreed on a date and time, and the tenant withdraws the request for the inspection, in which case the inspection will not be conducted
+    3     0.691885    0.691885       1220         1220 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           88          True also gives you a copy of the required sections of the security deposit statute. The itemized statement lists the following: • Repair cigarette burns on windowsi
+    4     0.690680    0.690681        863          863 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           87          True 81 • That was not identified during the initial inspection due to the presence of the tenant’s possessions. 364 Any deduction must be reasonable in amount and m
+    5     0.687857    0.687857       1203         1203 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           82          True 76 month’s rent, as security deposit.335 REFUND OF SECURITY DEPOSITS Common problems and how to avoid them One of the most common disagreements between landlord
+
+Technique: token
+Query ID: q3
+Query: May a California housing provider charge a pet deposit or extra rent for an assistance animal needed because of a disability?
+Embedding dimension: 384
+First 8 query embedding values: [0.018302608281373978, 0.005099670961499214, 0.06726841628551483, 0.07940012961626053, -0.044557079672813416, 0.061520546674728394, 0.0023757307790219784, -0.05217330530285835]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 9.782 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                    source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.727002    0.727002       1266         1266 corpus/hw03/ca_fair_housing_rights_booklet.pdf            7          True 6. Assistance Animals 12 13 You Have The Right To Your Assistance Animal Housing providers must allow you to keep or acquire an assistance animal if necessary a
+    2     0.724684    0.724684       1276         1276  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           36         False policy or practice - which the property owner cannot charge for, even if they involve some costs. As a condition of making certain modifications, the landlord m
+    3     0.634856    0.634856       1344         1344  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           36         False 30 Alterations to Accommodate a Tenant with a Disability Under fair housing laws, housing providers must make reasonable exceptions to neutral policies, practic
+    4     0.608934    0.608934       1141         1141  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           34         False 28 The written rental agreement should contain key terms, such as the following: • The names of the landlord and the tenant. • The address of the rental unit. •
+    5     0.593113    0.593113       1260         1260  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41         False allowance for an additional pet deposit for tenants living with a service or emotional support animal. Regardless of the landlord’s justification or name for an
+
+Technique: token
+Query ID: q4
+Query: What must happen when a California residential lease is negotiated in a language other than English?
+Embedding dimension: 384
+First 8 query embedding values: [0.05572320520877838, 0.017491551116108894, -0.0056902337819337845, -0.02428814023733139, -0.11797232180833817, 0.07887930423021317, 0.03192397207021713, -0.07747972011566162]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 10.391 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                    source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.688493    0.688493       1244         1244  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           32         False is a water submeter for the rental unit.105 TRANSLATION OF PROPOSED RENTAL AGREEMENT Although most lease negotiations are conducted in English, English may not 
+    2     0.659610    0.659610       1193         1193  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           33         False 27 landlord must provide the tenant with the written translation of the rental agreement prior to the execution, or signing, of the rental agreement. However, t
+    3     0.615913    0.615914        720          720  corpus/hw03/ca_landlord_tenant_guide_2026.pdf          144         False Vietnamese, and Korean. A tenant who has made a payment to a utility pursuant to Public Utilities Code §§ 777, 777.1, 10009, 10009.1, 12822, 12822.1, or 16481 m
+    4     0.611942    0.611942       1008         1008 corpus/hw03/ca_fair_housing_rights_booklet.pdf            6          True 4. Roommates 10 11 If You Have Room, You Have The Right To Roommates Occupancy standards — limiting the number of people who can live together — can be discrimi
+    5     0.593614    0.593614        282          282  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           32         False agreement, but may retain elements in English such as names, addresses, numerals, dollar amounts and dates. It is never acceptable for the landlord to give the 
+
+Technique: token
+Query ID: q5
+Query: How long after an alleged housing discrimination incident occurs or ends does a person have to file a complaint with HUD?
+Embedding dimension: 384
+First 8 query embedding values: [-0.03255224600434303, 0.010403217747807503, 0.03188278153538704, 0.04800838977098465, 0.046332065016031265, -0.02068500407040119, -0.08861401677131653, -0.08840128779411316]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 9.626 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                              source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.763461    0.763461        924          924 corpus/hw03/hud_fair_housing_booklet.pdf           18          True a private civil lawsuit without first filing a complaint with HUD. You must file your lawsuit within two (2) years of the most recent date of alleged discrimina
+    2     0.756101    0.756101        618          618 corpus/hw03/hud_fair_housing_booklet.pdf           14          True of the filing of your complaint, and allow the respondent time to submit a written answer to the complaint. • Investigate your complaint, and determine whether 
+    3     0.740310    0.740310       1230         1230 corpus/hw03/hud_fair_housing_booklet.pdf           16          True FAIR HOUSING Equal Opportunity for All • Irreparable (irreversible) harm or injury to housing rights is likely to occur without HUD’s intervention; and • There 
+    4     0.738623    0.738623       1020         1020 corpus/hw03/hud_fair_housing_booklet.pdf           15          True that agency for investigation, and must promptly notify you of the referral. The State or local agency will investigate your complaint under the “substantially 
+    5     0.706754    0.706754       1096         1096 corpus/hw03/hud_fair_housing_booklet.pdf           18          True FAIR HOUSING Equal Opportunity for All Determination of No Reasonable Cause and Dismissal: If HUD finds that there is no reasonable cause to believe that the re
+
+================================================================================
+Creating chunks for: semantic
+Chunks produced: 441
+Average indexed chunk length: 1124.10 characters
+Chunking time: 17784.871 ms
+Building in-memory index for: semantic
+Generating embeddings:   0%|          | 0/441 [00:00<?, ?it/s]Generating embeddings:   2%|▏         | 10/441 [00:00<00:06, 69.64it/s]Generating embeddings:   7%|▋         | 30/441 [00:00<00:04, 90.68it/s]Generating embeddings:   9%|▉         | 40/441 [00:00<00:04, 90.37it/s]Generating embeddings:  11%|█▏        | 50/441 [00:00<00:04, 88.06it/s]Generating embeddings:  14%|█▎        | 60/441 [00:00<00:04, 88.75it/s]Generating embeddings:  16%|█▌        | 70/441 [00:00<00:04, 85.80it/s]Generating embeddings:  18%|█▊        | 80/441 [00:00<00:04, 85.89it/s]Generating embeddings:  23%|██▎       | 100/441 [00:01<00:03, 92.45it/s]Generating embeddings:  27%|██▋       | 120/441 [00:01<00:03, 95.90it/s]Generating embeddings:  29%|██▉       | 130/441 [00:01<00:03, 95.63it/s]Generating embeddings:  34%|███▍      | 150/441 [00:01<00:02, 98.20it/s]Generating embeddings:  36%|███▋      | 160/441 [00:01<00:02, 98.17it/s]Generating embeddings:  39%|███▊      | 170/441 [00:01<00:02, 98.39it/s]Generating embeddings:  43%|████▎     | 190/441 [00:02<00:02, 98.38it/s]Generating embeddings:  48%|████▊     | 210/441 [00:02<00:02, 99.72it/s]Generating embeddings:  52%|█████▏    | 230/441 [00:02<00:02, 100.01it/s]Generating embeddings:  54%|█████▍    | 240/441 [00:02<00:02, 99.75it/s] Generating embeddings:  59%|█████▉    | 260/441 [00:02<00:01, 99.71it/s]Generating embeddings:  63%|██████▎   | 280/441 [00:02<00:01, 100.22it/s]Generating embeddings:  66%|██████▌   | 290/441 [00:03<00:01, 98.19it/s] Generating embeddings:  68%|██████▊   | 300/441 [00:03<00:01, 97.84it/s]Generating embeddings:  70%|███████   | 310/441 [00:03<00:01, 96.41it/s]Generating embeddings:  75%|███████▍  | 330/441 [00:03<00:01, 100.26it/s]Generating embeddings:  79%|███████▉  | 350/441 [00:03<00:00, 101.19it/s]Generating embeddings:  84%|████████▍ | 370/441 [00:03<00:00, 101.27it/s]Generating embeddings:  88%|████████▊ | 390/441 [00:04<00:00, 101.35it/s]Generating embeddings:  93%|█████████▎| 410/441 [00:04<00:00, 101.48it/s]Generating embeddings:  98%|█████████▊| 430/441 [00:04<00:00, 100.46it/s]Generating embeddings: 100%|██████████| 441/441 [00:04<00:00, 97.82it/s] 
+Indexing time: 4539.885 ms
+
+Technique: semantic
+Query ID: q1
+Query: What is the maximum security deposit a California landlord may generally charge, and what exception applies to qualifying small landlords?
+Embedding dimension: 384
+First 8 query embedding values: [0.136349618434906, 0.020249418914318085, -0.025697939097881317, 0.04742516204714775, 0.008216301910579205, 0.02836373820900917, 0.006583324167877436, -0.01705320179462433]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 9.028 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                   source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.723798    0.723798       1761         1761 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True 35 security deposit, unless the landlord uses the deposit for a lawful purpose, as described on pages 75-78. Almost all landlords charge tenants a security depo
+    2     0.662940    0.662940        748          748 corpus/hw03/ca_landlord_tenant_guide_2026.pdf          142          True Code § 1950.6. The maximum fee is adjusted each year based on changes in the Consumer Price Index since January 1, 1998. As of December 2023, the maximum allowa
+    3     0.643469    0.643469       2025         2025 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           82          True 76 month’s rent, as security deposit.335 REFUND OF SECURITY DEPOSITS Common problems and how to avoid them One of the most common disagreements between landlord
+    4     0.617812    0.617812       1707         1707 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True The landlord will almost always be able to insist a tenant pay rent for their last month or partial portion thereof. EXCEPTION: Application screening fee The la
+    5     0.614908    0.614908        783          783 corpus/hw03/ca_landlord_tenant_guide_2026.pdf          151          True Code § 1950.5(k). Exception: Pursuant to Civil Code section 1050.5(j)(3), if the new landlord acted in the good faith belief based upon an inquiry and reasonabl
+
+Technique: semantic
+Query ID: q2
+Query: How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?
+Embedding dimension: 384
+First 8 query embedding values: [0.05889129266142845, 0.034048229455947876, 0.02953071892261505, 0.043535515666007996, 0.019900131970643997, 0.0047522904351353645, -0.03806595131754875, -0.04374045506119728]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 10.853 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                   source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.738375    0.738375        587          587 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           82          True As of 2025, a landlord is required to take photographs of a rental unit within a reasonable time after the tenant has returned possession of the unit to the lan
+    2     0.694428    0.694428        748          748 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           87          True 364 Any deduction must be reasonable in amount and must be for a purpose permitted by the security deposit statute. 365 Twenty-one calendar days (or less) after
+    3     0.694391    0.694391       2831         2831 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           86          True Itemized statement The landlord or the landlord’s agent may perform the inspection if the tenant is not present, unless the tenant previously withdrew their req
+    4     0.688571    0.688571       2025         2025 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           82          True 76 month’s rent, as security deposit.335 REFUND OF SECURITY DEPOSITS Common problems and how to avoid them One of the most common disagreements between landlord
+    5     0.678950    0.678950       1058         1058 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           97          True See additional suggestions regarding the inventory checklist on page 131, and “Refunds of Security Deposits,” pages 75-78. TERMINATIONS AND EVICTIONS COVID-19 R
+
+Technique: semantic
+Query ID: q3
+Query: May a California housing provider charge a pet deposit or extra rent for an assistance animal needed because of a disability?
+Embedding dimension: 384
+First 8 query embedding values: [0.018302608281373978, 0.005099670961499214, 0.06726841628551483, 0.07940012961626053, -0.044557079672813416, 0.061520546674728394, 0.0023757307790219784, -0.05217330530285835]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 9.007 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                    source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.752428    0.752428       1889         1889  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           36         False However, the landlord can require that some form of financial guarantee be put in place that is sufficient to pay for the properly required restoration. This ca
+    2     0.724157    0.724157        866          866 corpus/hw03/ca_fair_housing_rights_booklet.pdf            7          True 6. Assistance Animals 12 13 You Have The Right To Your Assistance Animal Housing providers must allow you to keep or acquire an assistance animal if necessary a
+    3     0.615239    0.615239        993          993  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           34         False 28 The written rental agreement should contain key terms, such as the following: • The names of the landlord and the tenant. • The address of the rental unit. •
+    4     0.614596    0.614596        573          573 corpus/hw03/ca_fair_housing_rights_booklet.pdf            7          True Disability You Have The Right To Access Housing Regardless Of Disability You have the right to an interactive process with your housing provider to identify rea
+    5     0.608073    0.608073       1575         1575  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           36         False 30 Alterations to Accommodate a Tenant with a Disability Under fair housing laws, housing providers must make reasonable exceptions to neutral policies, practic
+
+Technique: semantic
+Query ID: q4
+Query: What must happen when a California residential lease is negotiated in a language other than English?
+Embedding dimension: 384
+First 8 query embedding values: [0.05572320520877838, 0.017491551116108894, -0.0056902337819337845, -0.02428814023733139, -0.11797232180833817, 0.07887930423021317, 0.03192397207021713, -0.07747972011566162]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 8.802 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                    source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.663607    0.663607       1048         1048  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           32         False If the parties specifically negotiate in Spanish, Chinese, Tagalog, Vietnamese or Korean, the landlord must give the tenant a written translation of the propose
+    2     0.660308    0.660308       1770         1770  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           33         False 27 landlord must provide the tenant with the written translation of the rental agreement prior to the execution, or signing, of the rental agreement. However, t
+    3     0.648600    0.648600        536          536 corpus/hw03/ca_fair_housing_rights_booklet.pdf            6          True 5. Language You Have The Right To Use Your Preferred Language Private housing providers don’t have to provide you with a translator, but they must speak with a 
+    4     0.547459    0.547459       2152         2152  corpus/hw03/ca_landlord_tenant_guide_2026.pdf          145         False 139 132 Civ. Code § 1940.7. 133 Civ. Code § 1710.2. 134 Gov. Code § 66459; California Practice Guide, Landlord-Tenant, §§ 5:306-5:313.9 (Rutter Group 2021). See
+    5     0.497511    0.497511        481          481  corpus/hw03/ca_landlord_tenant_guide_2026.pdf          144         False Code §§ 1954.201, 1954.204 and 1954.216. 106 Civ. Code § 1632(b). The purpose of this law is to ensure that the Spanish-, Chinese-, Tagalog-, Vietnamese-, or Ko
+
+Technique: semantic
+Query ID: q5
+Query: How long after an alleged housing discrimination incident occurs or ends does a person have to file a complaint with HUD?
+Embedding dimension: 384
+First 8 query embedding values: [-0.03255224600434303, 0.010403217747807503, 0.03188278153538704, 0.04800838977098465, 0.046332065016031265, -0.02068500407040119, -0.08861401677131653, -0.08840128779411316]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 9.266 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                   source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.808375    0.808375        981          981      corpus/hw03/hud_fair_housing_booklet.pdf           18          True In Addition You May File a Private Lawsuit: You may file a private civil lawsuit without first filing a complaint with HUD. You must file your lawsuit within tw
+    2     0.749331    0.749331       1050         1050      corpus/hw03/hud_fair_housing_booklet.pdf           10          True If you think your rights have been violated, you may file a complaint online, write a letter or telephone the HUD office nearest you. You have one year after th
+    3     0.749068    0.749068        676          676      corpus/hw03/hud_fair_housing_booklet.pdf           14          True HUD also will: • Notify the alleged violator (respondent) of the filing of your complaint, and allow the respondent time to submit a written answer to the compl
+    4     0.698537    0.698537       1333         1333 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           29         False 23 status. To contact HUD, look in the governmental section of the phone book under United States Government Offices, or go to www.hud.gov. • Legal aid organiza
+    5     0.696094    0.696094       1759         1759      corpus/hw03/hud_fair_housing_booklet.pdf           15          True FAIR HOUSING Equal Opportunity for All A Conciliation Agreement provides individual relief to you, and protects the public interest by deterring future discrimi
+
+================================================================================
+Creating chunks for: sentence_window
+Chunks produced: 3797
+Average indexed chunk length: 130.56 characters
+Chunking time: 291.600 ms
+Building in-memory index for: sentence_window
+Generating embeddings:   0%|          | 0/2048 [00:00<?, ?it/s]Generating embeddings:   1%|          | 20/2048 [00:00<00:14, 136.99it/s]Generating embeddings:   2%|▏         | 50/2048 [00:00<00:09, 203.92it/s]Generating embeddings:   4%|▍         | 80/2048 [00:00<00:11, 169.60it/s]Generating embeddings:   5%|▍         | 100/2048 [00:00<00:11, 170.20it/s]Generating embeddings:   8%|▊         | 160/2048 [00:00<00:06, 277.65it/s]Generating embeddings:  10%|▉         | 200/2048 [00:00<00:07, 260.42it/s]Generating embeddings:  13%|█▎        | 260/2048 [00:00<00:05, 341.09it/s]Generating embeddings:  15%|█▌        | 310/2048 [00:01<00:05, 338.98it/s]Generating embeddings:  17%|█▋        | 347/2048 [00:01<00:05, 339.39it/s]Generating embeddings:  19%|█▊        | 383/2048 [00:01<00:05, 286.10it/s]Generating embeddings:  21%|██        | 420/2048 [00:01<00:05, 285.74it/s]Generating embeddings:  22%|██▏       | 451/2048 [00:01<00:05, 272.56it/s]Generating embeddings:  24%|██▍       | 500/2048 [00:01<00:05, 299.99it/s]Generating embeddings:  26%|██▌       | 531/2048 [00:01<00:05, 269.06it/s]Generating embeddings:  28%|██▊       | 570/2048 [00:02<00:04, 296.00it/s]Generating embeddings:  30%|██▉       | 610/2048 [00:02<00:04, 319.64it/s]Generating embeddings:  31%|███▏      | 644/2048 [00:02<00:04, 324.35it/s]Generating embeddings:  33%|███▎      | 678/2048 [00:02<00:04, 313.79it/s]Generating embeddings:  35%|███▍      | 711/2048 [00:02<00:07, 181.34it/s]Generating embeddings:  36%|███▌      | 737/2048 [00:02<00:06, 192.12it/s]Generating embeddings:  37%|███▋      | 762/2048 [00:03<00:06, 191.84it/s]Generating embeddings:  39%|███▉      | 800/2048 [00:03<00:05, 215.47it/s]Generating embeddings:  41%|████      | 840/2048 [00:03<00:04, 246.23it/s]Generating embeddings:  42%|████▏     | 870/2048 [00:03<00:04, 256.25it/s]Generating embeddings:  44%|████▍     | 900/2048 [00:03<00:04, 253.35it/s]Generating embeddings:  45%|████▌     | 930/2048 [00:03<00:04, 248.57it/s]Generating embeddings:  47%|████▋     | 960/2048 [00:03<00:04, 240.03it/s]Generating embeddings:  49%|████▉     | 1000/2048 [00:03<00:03, 263.80it/s]Generating embeddings:  50%|█████     | 1030/2048 [00:04<00:04, 227.05it/s]Generating embeddings:  52%|█████▏    | 1060/2048 [00:04<00:04, 230.84it/s]Generating embeddings:  53%|█████▎    | 1090/2048 [00:04<00:03, 242.18it/s]Generating embeddings:  55%|█████▌    | 1130/2048 [00:04<00:03, 272.58it/s]Generating embeddings:  57%|█████▋    | 1170/2048 [00:04<00:03, 279.33it/s]Generating embeddings:  60%|██████    | 1230/2048 [00:04<00:02, 333.23it/s]Generating embeddings:  62%|██████▏   | 1270/2048 [00:04<00:02, 333.93it/s]Generating embeddings:  64%|██████▎   | 1304/2048 [00:05<00:03, 204.86it/s]Generating embeddings:  65%|██████▍   | 1331/2048 [00:05<00:03, 181.79it/s]Generating embeddings:  66%|██████▋   | 1360/2048 [00:05<00:03, 200.00it/s]Generating embeddings:  68%|██████▊   | 1385/2048 [00:05<00:03, 202.36it/s]Generating embeddings:  69%|██████▉   | 1410/2048 [00:05<00:03, 178.72it/s]Generating embeddings:  70%|██████▉   | 1431/2048 [00:05<00:03, 165.73it/s]Generating embeddings:  71%|███████   | 1450/2048 [00:06<00:03, 158.84it/s]Generating embeddings:  73%|███████▎  | 1490/2048 [00:06<00:02, 189.38it/s]Generating embeddings:  75%|███████▍  | 1530/2048 [00:06<00:02, 227.93it/s]Generating embeddings:  77%|███████▋  | 1580/2048 [00:06<00:01, 280.47it/s]Generating embeddings:  79%|███████▉  | 1620/2048 [00:06<00:01, 294.21it/s]Generating embeddings:  81%|████████  | 1660/2048 [00:06<00:01, 302.50it/s]Generating embeddings:  83%|████████▎ | 1692/2048 [00:06<00:01, 276.62it/s]Generating embeddings:  84%|████████▍ | 1721/2048 [00:06<00:01, 272.63it/s]Generating embeddings:  86%|████████▌ | 1760/2048 [00:07<00:00, 297.55it/s]Generating embeddings:  88%|████████▊ | 1800/2048 [00:07<00:00, 293.28it/s]Generating embeddings:  89%|████████▉ | 1830/2048 [00:07<00:00, 285.37it/s]Generating embeddings:  91%|█████████ | 1860/2048 [00:07<00:00, 275.46it/s]Generating embeddings:  92%|█████████▏| 1890/2048 [00:07<00:00, 276.79it/s]Generating embeddings:  95%|█████████▍| 1940/2048 [00:07<00:00, 318.34it/s]Generating embeddings:  97%|█████████▋| 1980/2048 [00:07<00:00, 319.87it/s]Generating embeddings:  99%|█████████▊| 2020/2048 [00:07<00:00, 336.31it/s]Generating embeddings: 100%|██████████| 2048/2048 [00:07<00:00, 257.20it/s]
+Generating embeddings:   0%|          | 0/1749 [00:00<?, ?it/s]Generating embeddings:   2%|▏         | 40/1749 [00:00<00:04, 345.22it/s]Generating embeddings:   6%|▌         | 100/1749 [00:00<00:04, 386.59it/s]Generating embeddings:   9%|▊         | 150/1749 [00:00<00:03, 417.37it/s]Generating embeddings:  11%|█▏        | 200/1749 [00:00<00:03, 418.25it/s]Generating embeddings:  14%|█▍        | 242/1749 [00:00<00:04, 370.64it/s]Generating embeddings:  16%|█▌        | 280/1749 [00:00<00:03, 368.85it/s]Generating embeddings:  18%|█▊        | 320/1749 [00:00<00:03, 367.42it/s]Generating embeddings:  22%|██▏       | 380/1749 [00:00<00:03, 425.81it/s]Generating embeddings:  25%|██▍       | 430/1749 [00:01<00:03, 346.10it/s]Generating embeddings:  27%|██▋       | 468/1749 [00:01<00:05, 213.96it/s]Generating embeddings:  29%|██▊       | 500/1749 [00:01<00:05, 230.58it/s]Generating embeddings:  31%|███▏      | 550/1749 [00:01<00:04, 277.35it/s]Generating embeddings:  33%|███▎      | 585/1749 [00:01<00:04, 279.06it/s]Generating embeddings:  37%|███▋      | 640/1749 [00:01<00:03, 325.49it/s]Generating embeddings:  39%|███▉      | 690/1749 [00:02<00:02, 359.09it/s]Generating embeddings:  44%|████▍     | 770/1749 [00:02<00:02, 454.70it/s]Generating embeddings:  47%|████▋     | 830/1749 [00:02<00:01, 486.38it/s]Generating embeddings:  52%|█████▏    | 910/1749 [00:02<00:01, 564.43it/s]Generating embeddings:  56%|█████▌    | 980/1749 [00:02<00:01, 581.70it/s]Generating embeddings:  60%|█████▉    | 1041/1749 [00:02<00:01, 565.90it/s]Generating embeddings:  63%|██████▎   | 1099/1749 [00:02<00:01, 567.39it/s]Generating embeddings:  66%|██████▌   | 1157/1749 [00:02<00:01, 549.41it/s]Generating embeddings:  71%|███████   | 1240/1749 [00:02<00:00, 610.50it/s]Generating embeddings:  74%|███████▍  | 1302/1749 [00:03<00:00, 586.16it/s]Generating embeddings:  78%|███████▊  | 1370/1749 [00:03<00:00, 601.14it/s]Generating embeddings:  83%|████████▎ | 1450/1749 [00:03<00:00, 652.99it/s]Generating embeddings:  87%|████████▋ | 1520/1749 [00:03<00:00, 654.31it/s]Generating embeddings:  91%|█████████ | 1590/1749 [00:03<00:00, 658.11it/s]Generating embeddings:  95%|█████████▍| 1657/1749 [00:03<00:00, 451.80it/s]Generating embeddings:  98%|█████████▊| 1711/1749 [00:03<00:00, 389.92it/s]Generating embeddings: 100%|██████████| 1749/1749 [00:04<00:00, 430.97it/s]
+Indexing time: 12427.304 ms
+
+Technique: sentence_window
+Query ID: q1
+Query: What is the maximum security deposit a California landlord may generally charge, and what exception applies to qualifying small landlords?
+Embedding dimension: 384
+First 8 query embedding values: [0.136349618434906, 0.020249418914318085, -0.025697939097881317, 0.04742516204714775, 0.008216301910579205, 0.02836373820900917, 0.006583324167877436, -0.01705320179462433]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 40.896 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                   source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.781444    0.442946         67          835 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           33          True If a landlord who is required to provide a written translation of a lease or rental agreement in one of these languages fails to do so, the tenant can rescind (
+    2     0.765292    0.721364        265         1116 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True 141 This new law applies to furnished and unfurnished residences. The law does not allow for exceptions for pet deposits, key fees, or cleaning fees. For exampl
+    3     0.744953    0.681944        244         1425 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True The law does not allow for exceptions for pet deposits, key fees, or cleaning fees. For example, there is no allowance for an additional pet deposit for tenants
+    4     0.743389    0.742179        294          815 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True Almost all landlords charge tenants a security deposit. The security deposit may be called last month’s rent, security deposit, pet deposit, key fee, or cleanin
+    5     0.720477    0.663147        144          811 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41          True Before you move in, the landlord can only require you to pay up to one month’s rent as a security deposit ($1,000). The landlord also can require you to pay the
+
+Technique: sentence_window
+Query ID: q2
+Query: How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?
+Embedding dimension: 384
+First 8 query embedding values: [0.05889129266142845, 0.034048229455947876, 0.02953071892261505, 0.043535515666007996, 0.019900131970643997, 0.0047522904351353645, -0.03806595131754875, -0.04374045506119728]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 34.303 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                   source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.766208    0.566778        159          657 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           88          True • Clean soap scum in bathtub. Suppose that you scrub the bathtub until it sparkles, but do not undertake any of the repairs or wash the windows. After you move 
+    2     0.743481    0.661942        173         1003 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           84          True If you have a rental agreement, you may waive this right no earlier than 60 days before the term ends. The waiver form given to you by the landlord must include
+    3     0.734283    0.705494        309         1154 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           82          True The security deposit cannot be used for repairing defects that existed in the unit before you moved in, for conditions caused by normal wear and tear during you
+    4     0.701588    0.657936        419         2689 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           42          True 36 A landlord cannot require that a se curity deposit be nonrefundable.146 However, when you move out of the rental, the law allows the landlord to keep all or 
+    5     0.700544    0.650769        593         1305 corpus/hw03/ca_landlord_tenant_guide_2026.pdf           89          True Neither defect was listed in the landlord’s itemized statement. Suppose that yo ur landlord nonetheless makes deductions from your security deposit to repair th
+
+Technique: sentence_window
+Query ID: q3
+Query: May a California housing provider charge a pet deposit or extra rent for an assistance animal needed because of a disability?
+Embedding dimension: 384
+First 8 query embedding values: [0.018302608281373978, 0.005099670961499214, 0.06726841628551483, 0.07940012961626053, -0.044557079672813416, 0.061520546674728394, 0.0023757307790219784, -0.05217330530285835]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 35.395 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                    source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.738818    0.716897        269          713 corpus/hw03/ca_fair_housing_rights_booklet.pdf            7          True 6. Assistance Animals 12 13 You Have The Right To Your Assistance Animal Housing providers must allow you to keep or acquire an assistance animal if necessary a
+    2     0.718322    0.748160        462         1361  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           36         False Yet, most modifications will not require restoration. The landlord cannot require an additional security deposit in this situation. However, the landlord can re
+    3     0.711547    0.578066        128         1136  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           41         False As of July 1, 2024, landlords will be limited to an amount of no more than one month’s rent that they can charge as a security deposit. 141 This new law applies
+    4     0.660629    0.734754        210          867 corpus/hw03/ca_fair_housing_rights_booklet.pdf            7          True 6. Assistance Animals 12 13 You Have The Right To Your Assistance Animal Housing providers must allow you to keep or acquire an assistance animal if necessary a
+    5     0.644178    0.650077        180         1027  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           36         False 30 Alterations to Accommodate a Tenant with a Disability Under fair housing laws, housing providers must make reasonable exceptions to neutral policies, practic
+
+Technique: sentence_window
+Query ID: q4
+Query: What must happen when a California residential lease is negotiated in a language other than English?
+Embedding dimension: 384
+First 8 query embedding values: [0.05572320520877838, 0.017491551116108894, -0.0056902337819337845, -0.02428814023733139, -0.11797232180833817, 0.07887930423021317, 0.03192397207021713, -0.07747972011566162]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 35.948 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                                    source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.768815    0.555869         65         1772  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           32         False 102 If a public municipal utility company provides utility service to a dwelling unit and the utility service is in the landlord’s name, a tenant may be able to
+    2     0.750120    0.578644         86          189  corpus/hw03/ca_landlord_tenant_guide_2026.pdf          144         False 113 Civ. Code § 2079.10a; Penal (“Pen.”) Code § 290.46. The required language differs depending on the date of the lease or rental agreement. See Appendix 5. 11
+    3     0.749319    0.636951         98          738 corpus/hw03/ca_fair_housing_rights_booklet.pdf            6          True What constitutes a reasonable limitation depends on a variety of considerations, including local building codes, square footage, sewage system limitations, and 
+    4     0.692226    0.667865        411         1576  corpus/hw03/ca_landlord_tenant_guide_2026.pdf           32         False Ask the landlord if the dwelling unit that you plan to rent has its own water meter or submeter. If it does not, and if the landlord will bill you for water or 
+    5     0.656971    0.453313         53          786  corpus/hw03/ca_landlord_tenant_guide_2026.pdf            9         False Hiring of Real Property: Dwellings: Untenantability. Requires a rental unit on or after January 1, 2026, to have a working stove and refrigerator to be deemed h
+
+Technique: sentence_window
+Query ID: q5
+Query: How long after an alleged housing discrimination incident occurs or ends does a person have to file a complaint with HUD?
+Embedding dimension: 384
+First 8 query embedding values: [-0.03255224600434303, 0.010403217747807503, 0.03188278153538704, 0.04800838977098465, 0.046332065016031265, -0.02068500407040119, -0.08861401677131653, -0.08840128779411316]
+Query vector shape: (384,)
+Stacked document vector shape: (5, 384)
+Retrieval latency: 36.506 ms
+ rank  store_score  cosine_sim  chunk_len  context_len                              source_file  page_number  source_match                                                                                                                                                          preview
+    1     0.847280    0.684296        144         1253 corpus/hw03/hud_fair_housing_booklet.pdf           10          True The “housing for older persons” exemption does not protect senior housing facilities or communities from liability for housing discrimination based on race, col
+    2     0.805030    0.725642        217         1172 corpus/hw03/hud_fair_housing_booklet.pdf           15          True Department of Justice to file suit against the respondent in Federal District Court to enforce the terms of the Agreement. Complaint Referrals to State or Local
+    3     0.725302    0.721541        150          784 corpus/hw03/hud_fair_housing_booklet.pdf           14          True HUD will notify you in writing when your complaint is accepted for filing under the Fair Housing Act. HUD also will: • Notify the alleged violator (respondent) 
+    4     0.718331    0.588467        102         1234 corpus/hw03/hud_fair_housing_booklet.pdf           14          True FAIR HOUSING Equal Opportunity for All If after contacting the local office nearest you, you still have questions – you may contact HUD further at: U.S. Departm
+    5     0.702766    0.752029        167          948 corpus/hw03/hud_fair_housing_booklet.pdf           15          True The State or local agency will investigate your complaint under the “substantially equivalent” State or local civil rights law or ordinance. The State or local 
+Saved combined JSONL: /Users/carol/Documents/data260-2974/reports/hw03/raw/retrieval_results.jsonl
+Saved combined CSV: /Users/carol/Documents/data260-2974/reports/hw03/raw/retrieval_results.csv
+Saved chunking statistics: /Users/carol/Documents/data260-2974/reports/hw03/raw/chunking_statistics.json
+Query-technique runs completed: 15
+Formal retrieval experiment completed.
+Summary metrics:
+      technique  chunks  avg_chunk_length_chars  top1_cosine  mean_at_k_cosine  recall_at_k  mean_retrieval_latency_ms
+       semantic     441             1124.095238     0.737317          0.671641            1                   9.391292
+sentence_window    3797              130.557282     0.723145          0.651483            1                  36.609458
+          token     584              968.840753     0.726728          0.686432            1                   9.770625
+
+Per-query metrics:
+      technique query_id  top1_cosine  mean_at_k_cosine  recall_at_k  retrieval_latency_ms
+       semantic       q1     0.723798          0.652585            1              9.028333
+       semantic       q2     0.738375          0.698943            1             10.853375
+       semantic       q3     0.752428          0.662899            1              9.007167
+       semantic       q4     0.663607          0.603497            1              8.801750
+       semantic       q5     0.808375          0.740281            1              9.265833
+sentence_window       q1     0.742179          0.650316            1             40.895792
+sentence_window       q2     0.705494          0.648584            1             34.302750
+sentence_window       q3     0.748160          0.685591            1             35.395375
+sentence_window       q4     0.667865          0.578528            1             35.947708
+sentence_window       q5     0.752029          0.694395            1             36.505666
+          token       q1     0.726185          0.696028            1             10.127834
+          token       q2     0.728498          0.703451            1              8.926375
+          token       q3     0.727002          0.657718            1              9.782333
+          token       q4     0.688493          0.633915            1             10.390958
+          token       q5     0.763461          0.741050            1              9.625625
+
+Saved summary CSV: /Users/carol/Documents/data260-2974/reports/hw03/raw/summary_metrics.csv
+Saved summary JSON: /Users/carol/Documents/data260-2974/reports/hw03/raw/summary_metrics.json
+Saved per-query CSV: /Users/carol/Documents/data260-2974/reports/hw03/raw/per_query_metrics.csv
+Summary metrics:
+      technique  chunks  avg_chunk_length_chars  top1_cosine  mean_at_k_cosine  recall_at_k  mean_retrieval_latency_ms
+       semantic     441             1124.095238     0.737317          0.671641            1                   9.391292
+sentence_window    3797              130.557282     0.593357          0.651483            1                  36.609458
+          token     584              968.840753     0.726728          0.686432            1                   9.770625
+
+Per-query metrics:
+      technique query_id  top1_cosine  mean_at_k_cosine  recall_at_k  retrieval_latency_ms
+       semantic       q1     0.723798          0.652585            1              9.028333
+       semantic       q2     0.738375          0.698943            1             10.853375
+       semantic       q3     0.752428          0.662899            1              9.007167
+       semantic       q4     0.663607          0.603497            1              8.801750
+       semantic       q5     0.808375          0.740281            1              9.265833
+sentence_window       q1     0.442946          0.650316            1             40.895792
+sentence_window       q2     0.566778          0.648584            1             34.302750
+sentence_window       q3     0.716897          0.685591            1             35.395375
+sentence_window       q4     0.555869          0.578528            1             35.947708
+sentence_window       q5     0.684296          0.694395            1             36.505666
+          token       q1     0.726185          0.696028            1             10.127834
+          token       q2     0.728498          0.703451            1              8.926375
+          token       q3     0.727002          0.657718            1              9.782333
+          token       q4     0.688493          0.633915            1             10.390958
+          token       q5     0.763461          0.741050            1              9.625625
+
+Saved summary CSV: /Users/carol/Documents/data260-2974/reports/hw03/raw/summary_metrics.csv
+Saved summary JSON: /Users/carol/Documents/data260-2974/reports/hw03/raw/summary_metrics.json
+Saved per-query CSV: /Users/carol/Documents/data260-2974/reports/hw03/raw/per_query_metrics.csv

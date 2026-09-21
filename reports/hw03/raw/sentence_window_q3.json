@@ -1,0 +1,85 @@
+{
+  "technique": "sentence_window",
+  "query_id": "q3",
+  "query": "May a California housing provider charge a pet deposit or extra rent for an assistance animal needed because of a disability?",
+  "expected_answer": "No. A necessary assistance animal must be allowed as a reasonable accommodation without a pet deposit or extra rent, although a request may be denied if the animal creates a direct health or safety threat or substantial property damage.",
+  "expected_source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.018302608281373978,
+    0.005099670961499214,
+    0.06726841628551483,
+    0.07940012961626053,
+    -0.044557079672813416,
+    0.061520546674728394,
+    0.0023757307790219784,
+    -0.05217330530285835
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 35.39537498727441,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7388183080972852,
+      "cosine_sim": 0.7168967723846436,
+      "chunk_len": 269,
+      "context_len": 713,
+      "preview": "6. Assistance Animals 12 13 You Have The Right To Your Assistance Animal Housing providers must allow you to keep or acquire an assistance animal if necessary a",
+      "source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "page_number": 7,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7183220416853658,
+      "cosine_sim": 0.7481600642204285,
+      "chunk_len": 462,
+      "context_len": 1361,
+      "preview": "Yet, most modifications will not require restoration. The landlord cannot require an additional security deposit in this situation. However, the landlord can re",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 36,
+      "source_match": false
+    },
+    {
+      "rank": 3,
+      "store_score": 0.7115474047590891,
+      "cosine_sim": 0.5780655145645142,
+      "chunk_len": 128,
+      "context_len": 1136,
+      "preview": "As of July 1, 2024, landlords will be limited to an amount of no more than one month\u2019s rent that they can charge as a security deposit. 141 This new law applies",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": false
+    },
+    {
+      "rank": 4,
+      "store_score": 0.6606290992920304,
+      "cosine_sim": 0.7347538471221924,
+      "chunk_len": 210,
+      "context_len": 867,
+      "preview": "6. Assistance Animals 12 13 You Have The Right To Your Assistance Animal Housing providers must allow you to keep or acquire an assistance animal if necessary a",
+      "source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "page_number": 7,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.6441779630652573,
+      "cosine_sim": 0.6500774025917053,
+      "chunk_len": 180,
+      "context_len": 1027,
+      "preview": "30 Alterations to Accommodate a Tenant with a Disability Under fair housing laws, housing providers must make reasonable exceptions to neutral policies, practic",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 36,
+      "source_match": false
+    }
+  ]
+}

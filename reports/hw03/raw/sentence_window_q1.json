@@ -1,0 +1,85 @@
+{
+  "technique": "sentence_window",
+  "query_id": "q1",
+  "query": "What is the maximum security deposit a California landlord may generally charge, and what exception applies to qualifying small landlords?",
+  "expected_answer": "A California landlord may generally charge no more than one month's rent as a security deposit. A qualifying small landlord may charge up to two months' rent.",
+  "expected_source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.136349618434906,
+    0.020249418914318085,
+    -0.025697939097881317,
+    0.04742516204714775,
+    0.008216301910579205,
+    0.02836373820900917,
+    0.006583324167877436,
+    -0.01705320179462433
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 40.89579195715487,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7814435997663047,
+      "cosine_sim": 0.4429461359977722,
+      "chunk_len": 67,
+      "context_len": 835,
+      "preview": "If a landlord who is required to provide a written translation of a lease or rental agreement in one of these languages fails to do so, the tenant can rescind (",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 33,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7652921077042578,
+      "cosine_sim": 0.721364438533783,
+      "chunk_len": 265,
+      "context_len": 1116,
+      "preview": "141 This new law applies to furnished and unfurnished residences. The law does not allow for exceptions for pet deposits, key fees, or cleaning fees. For exampl",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.7449530616810323,
+      "cosine_sim": 0.6819440126419067,
+      "chunk_len": 244,
+      "context_len": 1425,
+      "preview": "The law does not allow for exceptions for pet deposits, key fees, or cleaning fees. For example, there is no allowance for an additional pet deposit for tenants",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.743389497953664,
+      "cosine_sim": 0.7421788573265076,
+      "chunk_len": 294,
+      "context_len": 815,
+      "preview": "Almost all landlords charge tenants a security deposit. The security deposit may be called last month\u2019s rent, security deposit, pet deposit, key fee, or cleanin",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.7204769944443762,
+      "cosine_sim": 0.6631467342376709,
+      "chunk_len": 144,
+      "context_len": 811,
+      "preview": "Before you move in, the landlord can only require you to pay up to one month\u2019s rent as a security deposit ($1,000). The landlord also can require you to pay the",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": true
+    }
+  ]
+}

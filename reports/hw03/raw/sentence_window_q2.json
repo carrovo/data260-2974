@@ -1,0 +1,85 @@
+{
+  "technique": "sentence_window",
+  "query_id": "q2",
+  "query": "How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?",
+  "expected_answer": "The landlord has 21 days after the tenant moves out to return the deposit or provide the required itemized statement and any remaining refund.",
+  "expected_source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.05889129266142845,
+    0.034048229455947876,
+    0.02953071892261505,
+    0.043535515666007996,
+    0.019900131970643997,
+    0.0047522904351353645,
+    -0.03806595131754875,
+    -0.04374045506119728
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 34.30275013670325,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7662081989174863,
+      "cosine_sim": 0.5667780041694641,
+      "chunk_len": 159,
+      "context_len": 657,
+      "preview": "\u2022 Clean soap scum in bathtub. Suppose that you scrub the bathtub until it sparkles, but do not undertake any of the repairs or wash the windows. After you move ",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 88,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7434807306632883,
+      "cosine_sim": 0.6619424223899841,
+      "chunk_len": 173,
+      "context_len": 1003,
+      "preview": "If you have a rental agreement, you may waive this right no earlier than 60 days before the term ends. The waiver form given to you by the landlord must include",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 84,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.734283440465884,
+      "cosine_sim": 0.7054944634437561,
+      "chunk_len": 309,
+      "context_len": 1154,
+      "preview": "The security deposit cannot be used for repairing defects that existed in the unit before you moved in, for conditions caused by normal wear and tear during you",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 82,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.7015882140754859,
+      "cosine_sim": 0.6579362750053406,
+      "chunk_len": 419,
+      "context_len": 2689,
+      "preview": "36 A landlord cannot require that a se curity deposit be nonrefundable.146 However, when you move out of the rental, the law allows the landlord to keep all or ",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 42,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.7005438359888738,
+      "cosine_sim": 0.6507694721221924,
+      "chunk_len": 593,
+      "context_len": 1305,
+      "preview": "Neither defect was listed in the landlord\u2019s itemized statement. Suppose that yo ur landlord nonetheless makes deductions from your security deposit to repair th",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 89,
+      "source_match": true
+    }
+  ]
+}

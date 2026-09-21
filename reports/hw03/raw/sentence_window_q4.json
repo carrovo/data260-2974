@@ -1,0 +1,85 @@
+{
+  "technique": "sentence_window",
+  "query_id": "q4",
+  "query": "What must happen when a California residential lease is negotiated in a language other than English?",
+  "expected_answer": "The lease must be translated into the language used to negotiate it.",
+  "expected_source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.05572320520877838,
+    0.017491551116108894,
+    -0.0056902337819337845,
+    -0.02428814023733139,
+    -0.11797232180833817,
+    0.07887930423021317,
+    0.03192397207021713,
+    -0.07747972011566162
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 35.94770818017423,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7688150519144267,
+      "cosine_sim": 0.5558685064315796,
+      "chunk_len": 65,
+      "context_len": 1772,
+      "preview": "102 If a public municipal utility company provides utility service to a dwelling unit and the utility service is in the landlord\u2019s name, a tenant may be able to",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 32,
+      "source_match": false
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7501202588460884,
+      "cosine_sim": 0.5786436796188354,
+      "chunk_len": 86,
+      "context_len": 189,
+      "preview": "113 Civ. Code \u00a7 2079.10a; Penal (\u201cPen.\u201d) Code \u00a7 290.46. The required language differs depending on the date of the lease or rental agreement. See Appendix 5. 11",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 144,
+      "source_match": false
+    },
+    {
+      "rank": 3,
+      "store_score": 0.7493192850107468,
+      "cosine_sim": 0.6369513273239136,
+      "chunk_len": 98,
+      "context_len": 738,
+      "preview": "What constitutes a reasonable limitation depends on a variety of considerations, including local building codes, square footage, sewage system limitations, and ",
+      "source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "page_number": 6,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.6922261168061399,
+      "cosine_sim": 0.6678645014762878,
+      "chunk_len": 411,
+      "context_len": 1576,
+      "preview": "Ask the landlord if the dwelling unit that you plan to rent has its own water meter or submeter. If it does not, and if the landlord will bill you for water or ",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 32,
+      "source_match": false
+    },
+    {
+      "rank": 5,
+      "store_score": 0.6569709503476061,
+      "cosine_sim": 0.45331278443336487,
+      "chunk_len": 53,
+      "context_len": 786,
+      "preview": "Hiring of Real Property: Dwellings: Untenantability. Requires a rental unit on or after January 1, 2026, to have a working stove and refrigerator to be deemed h",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 9,
+      "source_match": false
+    }
+  ]
+}

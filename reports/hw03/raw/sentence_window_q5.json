@@ -1,0 +1,85 @@
+{
+  "technique": "sentence_window",
+  "query_id": "q5",
+  "query": "How long after an alleged housing discrimination incident occurs or ends does a person have to file a complaint with HUD?",
+  "expected_answer": "A person has one year after the alleged discrimination occurred or ended to file a complaint with HUD.",
+  "expected_source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    -0.03255224600434303,
+    0.010403217747807503,
+    0.03188278153538704,
+    0.04800838977098465,
+    0.046332065016031265,
+    -0.02068500407040119,
+    -0.08861401677131653,
+    -0.08840128779411316
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 36.5056658629328,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.8472799313605429,
+      "cosine_sim": 0.6842961311340332,
+      "chunk_len": 144,
+      "context_len": 1253,
+      "preview": "The \u201chousing for older persons\u201d exemption does not protect senior housing facilities or communities from liability for housing discrimination based on race, col",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 10,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.8050299900243979,
+      "cosine_sim": 0.7256417870521545,
+      "chunk_len": 217,
+      "context_len": 1172,
+      "preview": "Department of Justice to file suit against the respondent in Federal District Court to enforce the terms of the Agreement. Complaint Referrals to State or Local",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 15,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.7253017937642307,
+      "cosine_sim": 0.7215409874916077,
+      "chunk_len": 150,
+      "context_len": 784,
+      "preview": "HUD will notify you in writing when your complaint is accepted for filing under the Fair Housing Act. HUD also will: \u2022 Notify the alleged violator (respondent) ",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 14,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.7183314350923105,
+      "cosine_sim": 0.5884674787521362,
+      "chunk_len": 102,
+      "context_len": 1234,
+      "preview": "FAIR HOUSING Equal Opportunity for All If after contacting the local office nearest you, you still have questions \u2013 you may contact HUD further at: U.S. Departm",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 14,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.7027657965454143,
+      "cosine_sim": 0.7520291209220886,
+      "chunk_len": 167,
+      "context_len": 948,
+      "preview": "The State or local agency will investigate your complaint under the \u201csubstantially equivalent\u201d State or local civil rights law or ordinance. The State or local ",
+      "source_file": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "page_number": 15,
+      "source_match": true
+    }
+  ]
+}

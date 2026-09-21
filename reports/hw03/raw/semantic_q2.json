@@ -1,0 +1,85 @@
+{
+  "technique": "semantic",
+  "query_id": "q2",
+  "query": "How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?",
+  "expected_answer": "The landlord has 21 days after the tenant moves out to return the deposit or provide the required itemized statement and any remaining refund.",
+  "expected_source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.05889129266142845,
+    0.034048229455947876,
+    0.02953071892261505,
+    0.043535515666007996,
+    0.019900131970643997,
+    0.0047522904351353645,
+    -0.03806595131754875,
+    -0.04374045506119728
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 10.85337484255433,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7383747148990517,
+      "cosine_sim": 0.7383747696876526,
+      "chunk_len": 587,
+      "context_len": 587,
+      "preview": "As of 2025, a landlord is required to take photographs of a rental unit within a reasonable time after the tenant has returned possession of the unit to the lan",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 82,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.6944279580276769,
+      "cosine_sim": 0.694428026676178,
+      "chunk_len": 748,
+      "context_len": 748,
+      "preview": "364 Any deduction must be reasonable in amount and must be for a purpose permitted by the security deposit statute. 365 Twenty-one calendar days (or less) after",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 87,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.6943908192822877,
+      "cosine_sim": 0.6943908929824829,
+      "chunk_len": 2831,
+      "context_len": 2831,
+      "preview": "Itemized statement The landlord or the landlord\u2019s agent may perform the inspection if the tenant is not present, unless the tenant previously withdrew their req",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 86,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.6885712811511453,
+      "cosine_sim": 0.6885712742805481,
+      "chunk_len": 2025,
+      "context_len": 2025,
+      "preview": "76 month\u2019s rent, as security deposit.335 REFUND OF SECURITY DEPOSITS Common problems and how to avoid them One of the most common disagreements between landlord",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 82,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.6789503242042669,
+      "cosine_sim": 0.678950309753418,
+      "chunk_len": 1058,
+      "context_len": 1058,
+      "preview": "See additional suggestions regarding the inventory checklist on page 131, and \u201cRefunds of Security Deposits,\u201d pages 75-78. TERMINATIONS AND EVICTIONS COVID-19 R",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 97,
+      "source_match": true
+    }
+  ]
+}

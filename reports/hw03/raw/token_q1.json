@@ -1,0 +1,85 @@
+{
+  "technique": "token",
+  "query_id": "q1",
+  "query": "What is the maximum security deposit a California landlord may generally charge, and what exception applies to qualifying small landlords?",
+  "expected_answer": "A California landlord may generally charge no more than one month's rent as a security deposit. A qualifying small landlord may charge up to two months' rent.",
+  "expected_source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.136349618434906,
+    0.020249418914318085,
+    -0.025697939097881317,
+    0.04742516204714775,
+    0.008216301910579205,
+    0.02836373820900917,
+    0.006583324167877436,
+    -0.01705320179462433
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 10.127834044396877,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.7261851033836567,
+      "cosine_sim": 0.7261850833892822,
+      "chunk_len": 1163,
+      "context_len": 1163,
+      "preview": "35 security deposit, unless the landlord uses the deposit for a lawful purpose, as described on pages 75-78. Almost all landlords charge tenants a security depo",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": true
+    },
+    {
+      "rank": 2,
+      "store_score": 0.7063467415228485,
+      "cosine_sim": 0.7063467502593994,
+      "chunk_len": 1260,
+      "context_len": 1260,
+      "preview": "allowance for an additional pet deposit for tenants living with a service or emotional support animal. Regardless of the landlord\u2019s justification or name for an",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": true
+    },
+    {
+      "rank": 3,
+      "store_score": 0.7006436502683454,
+      "cosine_sim": 0.7006436586380005,
+      "chunk_len": 282,
+      "context_len": 282,
+      "preview": "small landlords ( as defined on page 35) can only charge a service member up to one month\u2019s rent for a security deposit unlike the greater security deposit amou",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 42,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.679880135758269,
+      "cosine_sim": 0.6798801422119141,
+      "chunk_len": 543,
+      "context_len": 543,
+      "preview": ", in addition to the $ 1,000 security deposit. This is because the first month\u2019s rent and the application screening fee are not part of the security deposit. \u2022 ",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 41,
+      "source_match": true
+    },
+    {
+      "rank": 5,
+      "store_score": 0.6670833819516718,
+      "cosine_sim": 0.6670833826065063,
+      "chunk_len": 1236,
+      "context_len": 1236,
+      "preview": "through a property management website) if the tenant paid for their security deposit or made rental payments by a digital payment method , unless the tenant and",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 42,
+      "source_match": true
+    }
+  ]
+}

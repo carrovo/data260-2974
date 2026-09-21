@@ -1,0 +1,85 @@
+{
+  "technique": "semantic",
+  "query_id": "q4",
+  "query": "What must happen when a California residential lease is negotiated in a language other than English?",
+  "expected_answer": "The lease must be translated into the language used to negotiate it.",
+  "expected_source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "query_embedding_first_8": [
+    0.05572320520877838,
+    0.017491551116108894,
+    -0.0056902337819337845,
+    -0.02428814023733139,
+    -0.11797232180833817,
+    0.07887930423021317,
+    0.03192397207021713,
+    -0.07747972011566162
+  ],
+  "query_vector_shape": [
+    384
+  ],
+  "document_vectors_shape": [
+    5,
+    384
+  ],
+  "retrieval_latency_ms": 8.80175014026463,
+  "top_k": 5,
+  "results": [
+    {
+      "rank": 1,
+      "store_score": 0.6636068600561595,
+      "cosine_sim": 0.6636068820953369,
+      "chunk_len": 1048,
+      "context_len": 1048,
+      "preview": "If the parties specifically negotiate in Spanish, Chinese, Tagalog, Vietnamese or Korean, the landlord must give the tenant a written translation of the propose",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 32,
+      "source_match": false
+    },
+    {
+      "rank": 2,
+      "store_score": 0.6603083134596447,
+      "cosine_sim": 0.6603083610534668,
+      "chunk_len": 1770,
+      "context_len": 1770,
+      "preview": "27 landlord must provide the tenant with the written translation of the rental agreement prior to the execution, or signing, of the rental agreement. However, t",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 33,
+      "source_match": false
+    },
+    {
+      "rank": 3,
+      "store_score": 0.6485997960872593,
+      "cosine_sim": 0.6485998630523682,
+      "chunk_len": 536,
+      "context_len": 536,
+      "preview": "5. Language You Have The Right To Use Your Preferred Language Private housing providers don\u2019t have to provide you with a translator, but they must speak with a ",
+      "source_file": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "page_number": 6,
+      "source_match": true
+    },
+    {
+      "rank": 4,
+      "store_score": 0.5474591303639217,
+      "cosine_sim": 0.5474591851234436,
+      "chunk_len": 2152,
+      "context_len": 2152,
+      "preview": "139 132 Civ. Code \u00a7 1940.7. 133 Civ. Code \u00a7 1710.2. 134 Gov. Code \u00a7 66459; California Practice Guide, Landlord-Tenant, \u00a7\u00a7 5:306-5:313.9 (Rutter Group 2021). See",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 145,
+      "source_match": false
+    },
+    {
+      "rank": 5,
+      "store_score": 0.49751105071193336,
+      "cosine_sim": 0.4975111186504364,
+      "chunk_len": 481,
+      "context_len": 481,
+      "preview": "Code \u00a7\u00a7 1954.201, 1954.204 and 1954.216. 106 Civ. Code \u00a7 1632(b). The purpose of this law is to ensure that the Spanish-, Chinese-, Tagalog-, Vietnamese-, or Ko",
+      "source_file": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "page_number": 144,
+      "source_match": false
+    }
+  ]
+}
