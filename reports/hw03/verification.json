@@ -1,0 +1,133 @@
+{
+  "assignment": "HW3",
+  "domain_id": 6,
+  "assigned_domain": "Rental housing listings",
+  "verify_seed": 262974,
+  "generated_at_utc": "2026-09-21T05:52:32.396096+00:00",
+  "overall_passed": true,
+  "checks_passed": 8,
+  "checks_total": 8,
+  "checks": [
+    {
+      "name": "part1_application",
+      "passed": true,
+      "details": {
+        "home_status": 200,
+        "home_passed": true,
+        "protected_status": 303,
+        "protected_location": "/login?session_required=true",
+        "protected_passed": true,
+        "invalid_login_status": 401,
+        "invalid_login_passed": true,
+        "valid_login_status": 303,
+        "valid_login_location": "/dashboard",
+        "valid_login_passed": true,
+        "cookie_httponly": true,
+        "cookie_samesite_lax": true,
+        "cookie_max_age": true,
+        "dashboard_status": 200,
+        "dashboard_passed": true,
+        "logout_status": 303,
+        "logout_passed": true,
+        "after_logout_status": 303,
+        "after_logout_passed": true,
+        "timeout_login_status": 303,
+        "timeout_status": 303,
+        "timeout_location": "/login?session_required=true",
+        "timeout_passed": true,
+        "secure_cookie_configured": true
+      }
+    },
+    {
+      "name": "part2_corpus",
+      "passed": true,
+      "details": {
+        "file_count": 3,
+        "total_bytes": 12951092,
+        "minimum_required_bytes": 200000,
+        "files": [
+          {
+            "filename": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+            "byte_size": 3530369,
+            "sha256": "7f7b2c882d4c36ada963d4bb000994c16f40a5255458dc75f858dd5ab0c4b249"
+          },
+          {
+            "filename": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+            "byte_size": 3952345,
+            "sha256": "ed177b2b2c05f17f64eabe9a7a7ac4909103900cec1cfc53100c07c1d7a1688f"
+          },
+          {
+            "filename": "corpus/hw03/hud_fair_housing_booklet.pdf",
+            "byte_size": 5468378,
+            "sha256": "03467e13022a3a2b3a0c99b2def6b419949bc93cbdca0d5f3e91077168c16fd2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "corpus_manifest",
+      "passed": true,
+      "details": {
+        "domain_id": 6,
+        "file_count": 3,
+        "recorded_total_bytes": 12951092,
+        "actual_total_bytes": 12951092,
+        "meets_minimum_size": true
+      }
+    },
+    {
+      "name": "evaluation_questions",
+      "passed": true,
+      "details": {
+        "question_count": 5,
+        "question_ids": [
+          "q1",
+          "q2",
+          "q3",
+          "q4",
+          "q5"
+        ]
+      }
+    },
+    {
+      "name": "questions_precommitted",
+      "passed": true,
+      "details": {
+        "questions_first_commit": "d2b3372789fae78561008ff2deb9054dfa54c6ab",
+        "experiment_first_commit": "c37a7c884c9836e3869c11f7a4ebe4794b5f6a54",
+        "questions_committed_before_experiment": true
+      }
+    },
+    {
+      "name": "retrieval_outputs",
+      "passed": true,
+      "details": {
+        "expected_query_technique_runs": 15,
+        "individual_json_files_found": 15,
+        "jsonl_records": 15,
+        "csv_lines_including_header": 76,
+        "missing_files": [],
+        "invalid_top_k": []
+      }
+    },
+    {
+      "name": "metrics_and_analysis",
+      "passed": true,
+      "details": {
+        "missing_files": [],
+        "summary_record_count": 3,
+        "contains_false_positive_analysis": true,
+        "contains_ai_verification": true
+      }
+    },
+    {
+      "name": "screenshots",
+      "passed": true,
+      "details": {
+        "required_count": 15,
+        "found_count": 15,
+        "missing_screenshots": []
+      }
+    }
+  ]
+}
