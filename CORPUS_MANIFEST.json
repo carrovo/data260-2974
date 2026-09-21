@@ -1,0 +1,25 @@
+{
+  "domain_id": 6,
+  "assigned_domain": "Rental housing listings",
+  "minimum_required_bytes": 200000,
+  "total_bytes": 12951092,
+  "meets_minimum_size": true,
+  "file_count": 3,
+  "files": [
+    {
+      "filename": "corpus/hw03/ca_fair_housing_rights_booklet.pdf",
+      "byte_size": 3530369,
+      "sha256": "7f7b2c882d4c36ada963d4bb000994c16f40a5255458dc75f858dd5ab0c4b249"
+    },
+    {
+      "filename": "corpus/hw03/ca_landlord_tenant_guide_2026.pdf",
+      "byte_size": 3952345,
+      "sha256": "ed177b2b2c05f17f64eabe9a7a7ac4909103900cec1cfc53100c07c1d7a1688f"
+    },
+    {
+      "filename": "corpus/hw03/hud_fair_housing_booklet.pdf",
+      "byte_size": 5468378,
+      "sha256": "03467e13022a3a2b3a0c99b2def6b419949bc93cbdca0d5f3e91077168c16fd2"
+    }
+  ]
+}

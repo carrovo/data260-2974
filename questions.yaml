@@ -1,0 +1,29 @@
+domain_id: 6
+assigned_domain: "Rental housing listings"
+question_count: 5
+
+questions:
+  - id: "q1"
+    question: "What is the maximum security deposit a California landlord may generally charge, and what exception applies to qualifying small landlords?"
+    expected_answer: "A California landlord may generally charge no more than one month's rent as a security deposit. A qualifying small landlord may charge up to two months' rent."
+    expected_source_file: "corpus/hw03/ca_landlord_tenant_guide_2026.pdf"
+
+  - id: "q2"
+    question: "How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?"
+    expected_answer: "The landlord has 21 days after the tenant moves out to return the deposit or provide the required itemized statement and any remaining refund."
+    expected_source_file: "corpus/hw03/ca_landlord_tenant_guide_2026.pdf"
+
+  - id: "q3"
+    question: "May a California housing provider charge a pet deposit or extra rent for an assistance animal needed because of a disability?"
+    expected_answer: "No. A necessary assistance animal must be allowed as a reasonable accommodation without a pet deposit or extra rent, although a request may be denied if the animal creates a direct health or safety threat or substantial property damage."
+    expected_source_file: "corpus/hw03/ca_fair_housing_rights_booklet.pdf"
+
+  - id: "q4"
+    question: "What must happen when a California residential lease is negotiated in a language other than English?"
+    expected_answer: "The lease must be translated into the language used to negotiate it."
+    expected_source_file: "corpus/hw03/ca_fair_housing_rights_booklet.pdf"
+
+  - id: "q5"
+    question: "How long after an alleged housing discrimination incident occurs or ends does a person have to file a complaint with HUD?"
+    expected_answer: "A person has one year after the alleged discrimination occurred or ended to file a complaint with HUD."
+    expected_source_file: "corpus/hw03/hud_fair_housing_booklet.pdf"
