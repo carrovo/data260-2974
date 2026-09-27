@@ -1,0 +1,19 @@
+{
+  "model": "qwen3:8b",
+  "seed": 2974,
+  "configurations": [
+    "A_token",
+    "B_semantic",
+    "C_sentence_window"
+  ],
+  "k_values": [
+    1,
+    3,
+    5
+  ],
+  "question_count": 6,
+  "total_runs": 54,
+  "in_domain_runs": 36,
+  "out_of_domain_runs": 18,
+  "refusal_detections": 18
+}
