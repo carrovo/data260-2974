@@ -1,218 +1,225 @@
-import os
-from pathlib import Path
-from typing import Literal
+from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
-from fastapi import FastAPI, HTTPException, Query, Response
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, Field, field_validator
-from starlette.middleware.sessions import SessionMiddleware
+from crud import (
+    create_listing,
+    delete_listing,
+    get_listing,
+    get_listings_fixed,
+    get_listings_naive,
+    update_listing,
+)
+from database import Base, db_session_basede26, get_db
+from models import RentalListing
+from routers.auth import require_session, router as auth_router
+from schemas import ListingCreate, ListingOut, ListingUpdate
 
-from routers.auth import router as auth_router
 
+# Create missing tables when the application starts.
+# The explicit code/init_db.py script remains the reproducible
+# schema initialization script for the assignment.
+Base.metadata.create_all(bind=db_session_basede26)
 
-PORT_BASE = 8274
-
-BASE_DIR = Path(__file__).resolve().parent
-WEB_DIR = BASE_DIR / "web_application"
-
-SESSION_SECRET = os.getenv(
-    "HW3_SESSION_SECRET",
-    "data260-hw3-development-secret-2974",
-) # Get the session secret from the environment variables.
-
-SESSION_HTTPS_ONLY = os.getenv(
-    "HW3_HTTPS_ONLY",
-    "true",
-).lower() not in {"false", "0", "no"} # Check if the session is https only.
 
 app = FastAPI(
     title="Rental Housing Listings API",
-    version="3.0.0"
+    version="4.0.0",
 )
 
+
+# Allow the React development server to send cookie-based requests.
 app.add_middleware(
-    SessionMiddleware,
-    secret_key=SESSION_SECRET,
-    session_cookie="session",
-    max_age=3600,
-    same_site="lax",
-    https_only=SESSION_HTTPS_ONLY,
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
+
+# Register authentication routes such as login, logout, and me.
 app.include_router(auth_router)
 
 
-class RentalListingBase(BaseModel):
-    listingTitle: str = Field(min_length=1, max_length=100)
-    address: str = Field(min_length=1, max_length=200)
-    submitterEmail: str = Field(min_length=3, max_length=200)
-    description: str = Field(min_length=26, max_length=2000)
-    propertyType: Literal[
-        "Apartment",
-        "House",
-        "Studio",
-        "Shared Room"
-    ]
-    termsAccepted: bool
+@app.get("/health")
+def health() -> dict[str, str]:
+    """Public health check used by verification scripts."""
 
-    @field_validator("listingTitle", "address", "submitterEmail")
-    @classmethod
-    def reject_blank_text(cls, value: str) -> str:
-        cleaned_value = value.strip()
-
-        if not cleaned_value:
-            raise ValueError("This field cannot be blank")
-
-        return cleaned_value
-
-    @field_validator("termsAccepted")
-    @classmethod
-    def require_terms(cls, value: bool) -> bool:
-        if not value:
-            raise ValueError(
-                "Terms and conditions must be accepted"
-            )
-
-        return value
+    return {
+        "status": "ok",
+    }
 
 
-class RentalListingCreate(RentalListingBase):
-    pass 
-
-
-class RentalListing(RentalListingBase):
-    id: int
-
-
-class RentalListingUpdate(BaseModel):
-    listingTitle: str = Field(min_length=1, max_length=100)
-    address: str = Field(min_length=1, max_length=200)
-
-
-listings: list[RentalListing] = [
-    RentalListing(
-        id=1,
-        listingTitle="Studio Near SJSU",
-        address="100 East San Carlos Street",
-        submitterEmail="owner1@example.com",
-        description=(
-            "A furnished studio located within walking "
-            "distance of the SJSU campus."
-        ),
-        propertyType="Studio",
-        termsAccepted=True,
-    ),
-    RentalListing(
-        id=2,
-        listingTitle="Downtown Apartment",
-        address="250 South First Street",
-        submitterEmail="owner2@example.com",
-        description=(
-            "A one-bedroom downtown apartment with convenient "
-            "access to public transportation."
-        ),
-        propertyType="Apartment",
-        termsAccepted=True,
-    ),
-]
-
-
-@app.get("/listing-form")
-async def read_listing_form() -> FileResponse:
-    return FileResponse(WEB_DIR / "index.html")
-
-
-@app.get("/api/listings", response_model=list[RentalListing]) #Get the rental listings.
-async def get_listings(
-    q: str | None = Query(default=None) # Get the query.
-) -> list[RentalListing]:
-    if not q or not q.strip():
-        return listings # Return the rental listings.
-
-    search_value = q.strip().lower() # Get the search value.
-
-    return [ # Return the rental listings.
-        listing
-        for listing in listings
-        if search_value in listing.listingTitle.lower() # Check if the search value is in the listing title.
-        or search_value in listing.address.lower() # Check if the search value is in the listing address.
-    ]
-
-
-@app.post(
+@app.get(
     "/api/listings",
-    response_model=RentalListing,
-    status_code=201
+    response_model=list[ListingOut],
 )
-async def create_listing(
-    listing_data: RentalListingCreate
-) -> RentalListing:
-    new_id = max(
-        (listing.id for listing in listings),
-        default=0
-    ) + 1
+def list_listings(
+    page_size: int = Query(
+        default=50,
+        ge=1,
+        le=200,
+    ),
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> list[RentalListing]:
+    """
+    Return listings for authenticated users.
 
-    new_listing = RentalListing(
-        id=new_id,
-        **listing_data.model_dump()
+    The normal list endpoint uses the fixed eager-loading version.
+    """
+
+    return get_listings_fixed(
+        db=db,
+        limit=page_size,
     )
 
-    listings.append(new_listing)
-    return new_listing
 
-
-@app.put(
-    "/api/listings/{listing_id}",
-    response_model=RentalListing
+@app.get(
+    "/api/listings/naive",
+    response_model=list[ListingOut],
 )
-async def update_listing(
+def list_listings_naive(
+    page_size: int = Query(
+        default=10,
+        ge=1,
+        le=200,
+    ),
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> list[RentalListing]:
+    """
+    Intentionally demonstrate the N+1 query pattern.
+
+    This endpoint is required for the Part 3 comparison.
+    """
+
+    return get_listings_naive(
+        db=db,
+        limit=page_size,
+    )
+
+
+@app.get(
+    "/api/listings/fixed",
+    response_model=list[ListingOut],
+)
+def list_listings_fixed(
+    page_size: int = Query(
+        default=10,
+        ge=1,
+        le=200,
+    ),
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> list[RentalListing]:
+    """
+    Return listings with eager-loaded related events.
+
+    This endpoint is the optimized comparison version.
+    """
+
+    return get_listings_fixed(
+        db=db,
+        limit=page_size,
+    )
+
+
+@app.get(
+    "/api/listings/{listing_id}",
+    response_model=ListingOut,
+)
+def read_listing(
     listing_id: int,
-    listing_data: RentalListingUpdate
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
 ) -> RentalListing:
-    listing = next(
-        (
-            item
-            for item in listings
-            if item.id == listing_id
-        ),
-        None,
+    """Return one listing by ID for an authenticated user."""
+
+    listing = get_listing(
+        db=db,
+        listing_id=listing_id,
     )
 
     if listing is None:
         raise HTTPException(
             status_code=404,
-            detail="Rental listing not found"
+            detail="Rental listing not found",
         )
 
-    listing.listingTitle = listing_data.listingTitle.strip()
-    listing.address = listing_data.address.strip()
+    return listing
+
+
+@app.post(
+    "/api/listings",
+    response_model=ListingOut,
+    status_code=201,
+)
+def add_listing(
+    payload: ListingCreate,
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> RentalListing:
+    """Create one listing for an authenticated user."""
+
+    return create_listing(
+        db=db,
+        payload=payload,
+    )
+
+
+@app.put(
+    "/api/listings/{listing_id}",
+    response_model=ListingOut,
+)
+def edit_listing(
+    listing_id: int,
+    payload: ListingUpdate,
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> RentalListing:
+    """Update the primary and secondary listing fields."""
+
+    listing = update_listing(
+        db=db,
+        listing_id=listing_id,
+        payload=payload,
+    )
+
+    if listing is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Rental listing not found",
+        )
 
     return listing
 
 
 @app.delete(
-    "/api/listings/actions/delete-highest",
-    status_code=204
+    "/api/listings/{listing_id}",
 )
-async def delete_highest_listing() -> Response:
-    if not listings: # Check if there are any rental listings.
-        raise HTTPException(
-            status_code=404,
-            detail="No rental listings to delete"
-        )
+def remove_listing(
+    listing_id: int,
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> dict[str, str]:
+    """Delete one listing by ID."""
 
-    highest_listing = max(
-        listings,
-        key=lambda listing: listing.id # Get the highest-id rental listing.
+    listing = delete_listing(
+        db=db,
+        listing_id=listing_id,
     )
 
-    listings.remove(highest_listing) # Remove the highest-id rental listing.
-    return Response(status_code=204)
+    if listing is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Rental listing not found",
+        )
 
-
-app.mount(
-    "/static",
-    StaticFiles(directory=WEB_DIR),
-    name="static",
-)
+    return {
+        "message": "Rental listing deleted successfully",
+    }

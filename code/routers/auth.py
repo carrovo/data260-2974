@@ -1,147 +1,180 @@
 import os
-import secrets
-import time
-from pathlib import Path
 
-from fastapi import APIRouter, Form, Request
-from fastapi.responses import RedirectResponse
-from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from auth_service import (
+    SESSION_TTL_MINUTES,
+    create_session,
+    create_user,
+    delete_session,
+    get_user_by_email,
+    get_valid_session,
+    verify_password,
+)
+from database import get_db
+from models import SessionToken, User
+from schemas import (
+    LoginResponse,
+    UserCreate,
+    UserLogin,
+    UserOut,
+)
 
 
-router = APIRouter() # Create a new API router.
+router = APIRouter(
+    prefix="/api/auth",
+    tags=["authentication"],
+)
 
-TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "templates"
-templates = Jinja2Templates(directory=str(TEMPLATES_DIR)) # Create a new Jinja2 templates.
+SESSION_COOKIE_NAME = "session_id"
 
-VALID_USERNAME = os.getenv("HW3_USERNAME", "admin") # Get the valid username from the environment variables.
-VALID_PASSWORD = os.getenv("HW3_PASSWORD", "password") # Get the valid password from the environment variables.
+# Local development uses HTTP, so Secure must be false.
+# It should be enabled in production behind HTTPS.
+COOKIE_SECURE = os.getenv(
+    "COOKIE_SECURE",
+    "false",
+).lower() in {"true", "1", "yes"}
 
-IDLE_TIMEOUT_SECONDS = int(
-    os.getenv("HW3_IDLE_TIMEOUT_SECONDS", "300")
-) 
 
-
-def get_current_user(request: Request) -> str | None: # Get the current user.
+def require_session(
+    request: Request,
+    db: Session = Depends(get_db),
+) -> SessionToken:
     """
-    Return the logged-in user when the session is valid.
+    Require a valid server-side session.
 
-    If the session has been idle for too long, clear it and
-    treat the visitor as logged out.
+    The browser sends only the opaque session_id cookie.
+    The actual user and expiration data are loaded from MySQL.
     """
-    user = request.session.get("user") # Get the user from the session.
-    last_activity = request.session.get("last_activity") # Get the last activity from the session.
 
-    if not user or last_activity is None:
-        return None
+    token = request.cookies.get(SESSION_COOKIE_NAME)
 
-    current_time = time.time()
-    idle_time = current_time - float(last_activity)
+    if not token:
+        raise HTTPException(
+            status_code=401,
+            detail="Login required",
+        )
 
-    if idle_time > IDLE_TIMEOUT_SECONDS: # Check if the idle time is greater than the idle timeout seconds.
-        request.session.clear() # Clear the session.
-        return None
+    session = get_valid_session(db, token)
 
-    request.session["last_activity"] = current_time # Set the last activity to the current time.
+    if session is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Session expired or invalid",
+        )
+
+    return session
+
+
+@router.post(
+    "/register",
+    response_model=UserOut,
+    status_code=201,
+)
+def register(
+    payload: UserCreate,
+    db: Session = Depends(get_db),
+) -> User:
+    """Create a new user account with a bcrypt password hash."""
+
+    if get_user_by_email(db, str(payload.email)):
+        raise HTTPException(
+            status_code=409,
+            detail="Email already registered",
+        )
+
+    try:
+        return create_user(db, payload)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Email already registered",
+        )
+
+
+@router.post(
+    "/login",
+    response_model=LoginResponse,
+)
+def login(
+    payload: UserLogin,
+    response: Response,
+    db: Session = Depends(get_db),
+) -> LoginResponse:
+    """Verify credentials and issue an HTTP-only session cookie."""
+
+    user = get_user_by_email(db, str(payload.email))
+
+    if user is None or not verify_password(
+        payload.password,
+        user.password_hash,
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password",
+        )
+
+    session = create_session(db, user.id)
+
+    response.set_cookie(
+        key=SESSION_COOKIE_NAME,
+        value=session.id,
+        httponly=True,
+        secure=COOKIE_SECURE,
+        samesite="lax",
+        max_age=SESSION_TTL_MINUTES * 60,
+        path="/",
+    )
+
+    return LoginResponse(
+        message="Logged in successfully",
+        user_id=user.id,
+        email=user.email,
+    )
+
+
+@router.get(
+    "/me",
+    response_model=UserOut,
+)
+def me(
+    session: SessionToken = Depends(require_session),
+    db: Session = Depends(get_db),
+) -> User:
+    """Return the user associated with the current session."""
+
+    user = db.get(User, session.user_id)
+
+    if user is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Session user no longer exists",
+        )
+
     return user
 
 
-@router.get("/")
-def home(request: Request): # Get the home page.
-    user = get_current_user(request) # Get the user from the session.
-
-    return templates.TemplateResponse( # Return the home page.
-        request=request,
-        name="index.html",
-        context={
-            "user": user,
-        },
-    )
-
-
-@router.get("/login")
-def login_page(request: Request): # Get the login page.
-    user = get_current_user(request)
-
-    if user:
-        return RedirectResponse(
-            url="/dashboard",
-            status_code=303,
-        )
-
-    return templates.TemplateResponse(
-        request=request,
-        name="login.html",
-        context={
-            "user": None,
-            "error": None,
-        },
-    )
-
-
-@router.post("/login")
-def login( # Login.
+@router.post("/logout")
+def logout(
     request: Request,
-    username: str = Form(...),
-    password: str = Form(...),
-):
-    username_is_valid = secrets.compare_digest(
-        username,
-        VALID_USERNAME,
-    )
-    password_is_valid = secrets.compare_digest(
-        password,
-        VALID_PASSWORD,
-    )
+    response: Response,
+    db: Session = Depends(get_db),
+) -> dict[str, str]:
+    """Delete the server-side session and browser cookie."""
 
-    if not (username_is_valid and password_is_valid):
-        request.session.clear()
+    token = request.cookies.get(SESSION_COOKIE_NAME)
 
-        return templates.TemplateResponse(
-            request=request,
-            name="login.html",
-            context={
-                "user": None,
-                "error": "Invalid username or password.",
-                "entered_username": username,
-            },
-            status_code=401, # Return the login page with the error message.
-        )
+    if token:
+        delete_session(db, token)
 
-    request.session.clear()
-    request.session["user"] = username
-    request.session["last_activity"] = time.time()
-
-    return RedirectResponse(
-        url="/dashboard",
-        status_code=303, # Redirect to the dashboard.
+    response.delete_cookie(
+        key=SESSION_COOKIE_NAME,
+        path="/",
     )
 
-
-@router.get("/dashboard")
-def dashboard(request: Request):
-    user = get_current_user(request)
-
-    if not user:
-        return RedirectResponse(
-            url="/login?session_required=true",
-            status_code=303,
-        )
-
-    return templates.TemplateResponse(
-        request=request,
-        name="dashboard.html",
-        context={
-            "user": user,
-            "idle_timeout_seconds": IDLE_TIMEOUT_SECONDS,
-        },
-    )
-
-
-@router.get("/logout") 
-def logout(request: Request):
-    request.session.clear()
-
-    return RedirectResponse(
-        url="/?logged_out=true",
-        status_code=303,
-    )
+    return {
+        "message": "Logged out successfully",
+    }

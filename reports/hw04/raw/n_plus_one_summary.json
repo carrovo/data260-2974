@@ -1,0 +1,70 @@
+{
+  "base_url": "http://localhost:8274",
+  "repetitions": 30,
+  "page_sizes": [
+    10,
+    50,
+    200
+  ],
+  "modes": [
+    "naive",
+    "fixed"
+  ],
+  "total_requests": 180,
+  "summary": [
+    {
+      "mode": "naive",
+      "page_size": 10,
+      "requests": 30,
+      "successful_requests": 30,
+      "p50_ms": 4.297,
+      "p95_ms": 6.749,
+      "p99_ms": 12.849
+    },
+    {
+      "mode": "naive",
+      "page_size": 50,
+      "requests": 30,
+      "successful_requests": 30,
+      "p50_ms": 10.195,
+      "p95_ms": 14.038,
+      "p99_ms": 16.079
+    },
+    {
+      "mode": "naive",
+      "page_size": 200,
+      "requests": 30,
+      "successful_requests": 30,
+      "p50_ms": 32.827,
+      "p95_ms": 39.263,
+      "p99_ms": 61.212
+    },
+    {
+      "mode": "fixed",
+      "page_size": 10,
+      "requests": 30,
+      "successful_requests": 30,
+      "p50_ms": 1.863,
+      "p95_ms": 2.286,
+      "p99_ms": 2.968
+    },
+    {
+      "mode": "fixed",
+      "page_size": 50,
+      "requests": 30,
+      "successful_requests": 30,
+      "p50_ms": 3.335,
+      "p95_ms": 3.751,
+      "p99_ms": 3.947
+    },
+    {
+      "mode": "fixed",
+      "page_size": 200,
+      "requests": 30,
+      "successful_requests": 30,
+      "p50_ms": 9.815,
+      "p95_ms": 10.889,
+      "p99_ms": 17.264
+    }
+  ]
+}
