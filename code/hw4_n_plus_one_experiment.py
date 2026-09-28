@@ -59,12 +59,22 @@ def summarize(rows: list[dict]) -> list[dict]:
                 if row["status_code"] == 200
             ]
 
+            sql_counts = [
+                int(row["sql_statements"])
+                for row in matching_rows
+                if row["status_code"] == 200
+            ]
+
             summary.append(
                 {
                     "mode": mode,
                     "page_size": page_size,
                     "requests": len(matching_rows),
                     "successful_requests": len(latencies),
+                    "sql_statements_per_request": round(
+                        sum(sql_counts) / len(sql_counts),
+                        3,
+                    ),
                     "p50_ms": round(percentile(latencies, 50), 3),
                     "p95_ms": round(percentile(latencies, 95), 3),
                     "p99_ms": round(percentile(latencies, 99), 3),
@@ -126,6 +136,20 @@ def main() -> None:
 
                     response.raise_for_status()
 
+                    sql_statements_header = response.headers.get(
+                        "x-sql-statements"
+                    )
+
+                    if sql_statements_header is None:
+                        raise RuntimeError(
+                            "The response did not include "
+                            "the X-SQL-Statements header."
+                        )
+
+                    sql_statements = int(
+                        sql_statements_header
+                    )
+
                     payload = response.json()
 
                     # Confirm each request returned the expected page size.
@@ -141,7 +165,11 @@ def main() -> None:
                             "page_size": page_size,
                             "request_number": request_number,
                             "status_code": response.status_code,
-                            "duration_ms": round(duration_ms, 3),
+                            "sql_statements": sql_statements,
+                            "duration_ms": round(
+                                duration_ms,
+                                3,
+                            ),
                         }
                     )
 
@@ -156,6 +184,7 @@ def main() -> None:
                 "page_size",
                 "request_number",
                 "status_code",
+                "sql_statements",
                 "duration_ms",
             ],
         )
@@ -188,6 +217,7 @@ def main() -> None:
         print(
             f'{item["mode"]:>5} '
             f'page_size={item["page_size"]:>3} '
+            f'sql={item["sql_statements_per_request"]:>6.1f} '
             f'p50={item["p50_ms"]:>8.3f} ms '
             f'p95={item["p95_ms"]:>8.3f} ms '
             f'p99={item["p99_ms"]:>8.3f} ms'

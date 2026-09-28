@@ -1,0 +1,215 @@
+A_no_rag k=1 q1
+
+A_no_rag k=1 q2
+
+A_no_rag k=1 q3
+
+A_no_rag k=1 q4
+
+A_no_rag k=1 q5
+
+A_no_rag k=1 q6
+
+A_no_rag k=3 q1
+
+A_no_rag k=3 q2
+
+A_no_rag k=3 q3
+
+A_no_rag k=3 q4
+
+A_no_rag k=3 q5
+
+A_no_rag k=3 q6
+
+A_no_rag k=5 q1
+
+A_no_rag k=5 q2
+
+A_no_rag k=5 q3
+
+A_no_rag k=5 q4
+
+A_no_rag k=5 q5
+
+A_no_rag k=5 q6
+
+B_basic_rag k=1 q1
+rank=1 score=0.7119923296204456 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+
+B_basic_rag k=1 q2
+rank=1 score=0.7263417041917154 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+
+B_basic_rag k=1 q3
+rank=1 score=0.8003336188748452 source=corpus/hw04/hud_assistance_animal_notice.pdf page=2 chunk=chunk-0335
+
+B_basic_rag k=1 q4
+rank=1 score=0.7682965232784524 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=34 chunk=chunk-0066
+
+B_basic_rag k=1 q5
+rank=1 score=0.4705393746255691 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=15 chunk=chunk-0031
+
+B_basic_rag k=1 q6
+rank=1 score=0.10178374124288007 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0342
+
+B_basic_rag k=3 q1
+rank=1 score=0.7119923296204456 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=2 score=0.6709740379063023 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=42 chunk=chunk-0083
+rank=3 score=0.670687427782453 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+
+B_basic_rag k=3 q2
+rank=1 score=0.7263417041917154 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+rank=2 score=0.7047166013742701 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0162
+rank=3 score=0.688539365420817 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0161
+
+B_basic_rag k=3 q3
+rank=1 score=0.8003336188748452 source=corpus/hw04/hud_assistance_animal_notice.pdf page=2 chunk=chunk-0335
+rank=2 score=0.7873015220426326 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=20 chunk=chunk-0386
+rank=3 score=0.7765156117415752 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=18 chunk=chunk-0382
+
+B_basic_rag k=3 q4
+rank=1 score=0.7682965232784524 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=34 chunk=chunk-0066
+rank=2 score=0.6727970256558296 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=3 score=0.6316504685661335 source=corpus/hw04/hud_assistance_animal_notice.pdf page=4 chunk=chunk-0339
+
+B_basic_rag k=3 q5
+rank=1 score=0.4705393746255691 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=15 chunk=chunk-0031
+rank=2 score=0.45675996807819436 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=52 chunk=chunk-0103
+rank=3 score=0.44154917092685897 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=45 chunk=chunk-0089
+
+B_basic_rag k=3 q6
+rank=1 score=0.10178374124288007 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0342
+rank=2 score=0.07634686406003013 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=7 chunk=chunk-0360
+rank=3 score=0.07436151711682887 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=27 chunk=chunk-0399
+
+B_basic_rag k=5 q1
+rank=1 score=0.7119923296204456 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=2 score=0.6709740379063023 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=42 chunk=chunk-0083
+rank=3 score=0.670687427782453 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+rank=4 score=0.6422488336912445 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0161
+rank=5 score=0.6403574992658857 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0081
+
+B_basic_rag k=5 q2
+rank=1 score=0.7263417041917154 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+rank=2 score=0.7047166013742701 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0162
+rank=3 score=0.688539365420817 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0161
+rank=4 score=0.67660911936657 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=86 chunk=chunk-0169
+rank=5 score=0.6405284069568757 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=50 chunk=chunk-0098
+
+B_basic_rag k=5 q3
+rank=1 score=0.8003336188748452 source=corpus/hw04/hud_assistance_animal_notice.pdf page=2 chunk=chunk-0335
+rank=2 score=0.7873015220426326 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=20 chunk=chunk-0386
+rank=3 score=0.7765156117415752 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=18 chunk=chunk-0382
+rank=4 score=0.7697163134177734 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0341
+rank=5 score=0.7552124654446996 source=corpus/hw03/ca_fair_housing_rights_booklet.pdf page=7 chunk=chunk-0007
+
+B_basic_rag k=5 q4
+rank=1 score=0.7682965232784524 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=34 chunk=chunk-0066
+rank=2 score=0.6727970256558296 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=3 score=0.6316504685661335 source=corpus/hw04/hud_assistance_animal_notice.pdf page=4 chunk=chunk-0339
+rank=4 score=0.5994852142276617 source=corpus/hw03/ca_fair_housing_rights_booklet.pdf page=7 chunk=chunk-0007
+rank=5 score=0.5845135001244018 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=36 chunk=chunk-0070
+
+B_basic_rag k=5 q5
+rank=1 score=0.4705393746255691 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=15 chunk=chunk-0031
+rank=2 score=0.45675996807819436 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=52 chunk=chunk-0103
+rank=3 score=0.44154917092685897 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=45 chunk=chunk-0089
+rank=4 score=0.4371967778289684 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=142 chunk=chunk-0272
+rank=5 score=0.43397715370388457 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=53 chunk=chunk-0104
+
+B_basic_rag k=5 q6
+rank=1 score=0.10178374124288007 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0342
+rank=2 score=0.07634686406003013 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=7 chunk=chunk-0360
+rank=3 score=0.07436151711682887 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=27 chunk=chunk-0399
+rank=4 score=0.053102340120067565 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=41 chunk=chunk-0427
+rank=5 score=0.05038288503051409 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=152 chunk=chunk-0301
+
+C_context_engineered_rag k=1 q1
+rank=1 score=0.7119923296204456 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+
+C_context_engineered_rag k=1 q2
+rank=1 score=0.7263417041917154 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+
+C_context_engineered_rag k=1 q3
+rank=1 score=0.8003336188748452 source=corpus/hw04/hud_assistance_animal_notice.pdf page=2 chunk=chunk-0335
+
+C_context_engineered_rag k=1 q4
+rank=1 score=0.7682965232784524 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=34 chunk=chunk-0066
+
+C_context_engineered_rag k=1 q5
+rank=1 score=0.4705393746255691 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=15 chunk=chunk-0031
+
+C_context_engineered_rag k=1 q6
+rank=1 score=0.10178374124288007 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0342
+
+C_context_engineered_rag k=3 q1
+rank=1 score=0.7119923296204456 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=2 score=0.6709740379063023 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=42 chunk=chunk-0083
+rank=3 score=0.670687427782453 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+
+C_context_engineered_rag k=3 q2
+rank=1 score=0.7263417041917154 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+rank=2 score=0.7047166013742701 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0162
+rank=3 score=0.688539365420817 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0161
+
+C_context_engineered_rag k=3 q3
+rank=1 score=0.8003336188748452 source=corpus/hw04/hud_assistance_animal_notice.pdf page=2 chunk=chunk-0335
+rank=2 score=0.7873015220426326 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=20 chunk=chunk-0386
+rank=3 score=0.7765156117415752 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=18 chunk=chunk-0382
+
+C_context_engineered_rag k=3 q4
+rank=1 score=0.7682965232784524 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=34 chunk=chunk-0066
+rank=2 score=0.6727970256558296 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=3 score=0.6316504685661335 source=corpus/hw04/hud_assistance_animal_notice.pdf page=4 chunk=chunk-0339
+
+C_context_engineered_rag k=3 q5
+rank=1 score=0.4705393746255691 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=15 chunk=chunk-0031
+rank=2 score=0.45675996807819436 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=52 chunk=chunk-0103
+rank=3 score=0.44154917092685897 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=45 chunk=chunk-0089
+
+C_context_engineered_rag k=3 q6
+rank=1 score=0.10178374124288007 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0342
+rank=2 score=0.07634686406003013 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=7 chunk=chunk-0360
+rank=3 score=0.07436151711682887 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=27 chunk=chunk-0399
+
+C_context_engineered_rag k=5 q1
+rank=1 score=0.7119923296204456 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=2 score=0.6709740379063023 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=42 chunk=chunk-0083
+rank=3 score=0.670687427782453 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+rank=4 score=0.6422488336912445 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0161
+rank=5 score=0.6403574992658857 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0081
+
+C_context_engineered_rag k=5 q2
+rank=1 score=0.7263417041917154 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=40 chunk=chunk-0079
+rank=2 score=0.7047166013742701 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0162
+rank=3 score=0.688539365420817 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=82 chunk=chunk-0161
+rank=4 score=0.67660911936657 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=86 chunk=chunk-0169
+rank=5 score=0.6405284069568757 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=50 chunk=chunk-0098
+
+C_context_engineered_rag k=5 q3
+rank=1 score=0.8003336188748452 source=corpus/hw04/hud_assistance_animal_notice.pdf page=2 chunk=chunk-0335
+rank=2 score=0.7873015220426326 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=20 chunk=chunk-0386
+rank=3 score=0.7765156117415752 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=18 chunk=chunk-0382
+rank=4 score=0.7697163134177734 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0341
+rank=5 score=0.7552124654446996 source=corpus/hw03/ca_fair_housing_rights_booklet.pdf page=7 chunk=chunk-0007
+
+C_context_engineered_rag k=5 q4
+rank=1 score=0.7682965232784524 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=34 chunk=chunk-0066
+rank=2 score=0.6727970256558296 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=41 chunk=chunk-0080
+rank=3 score=0.6316504685661335 source=corpus/hw04/hud_assistance_animal_notice.pdf page=4 chunk=chunk-0339
+rank=4 score=0.5994852142276617 source=corpus/hw03/ca_fair_housing_rights_booklet.pdf page=7 chunk=chunk-0007
+rank=5 score=0.5845135001244018 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=36 chunk=chunk-0070
+
+C_context_engineered_rag k=5 q5
+rank=1 score=0.4705393746255691 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=15 chunk=chunk-0031
+rank=2 score=0.45675996807819436 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=52 chunk=chunk-0103
+rank=3 score=0.44154917092685897 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=45 chunk=chunk-0089
+rank=4 score=0.4371967778289684 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=142 chunk=chunk-0272
+rank=5 score=0.43397715370388457 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=53 chunk=chunk-0104
+
+C_context_engineered_rag k=5 q6
+rank=1 score=0.10178374124288007 source=corpus/hw04/hud_assistance_animal_notice.pdf page=6 chunk=chunk-0342
+rank=2 score=0.07634686406003013 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=7 chunk=chunk-0360
+rank=3 score=0.07436151711682887 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=27 chunk=chunk-0399
+rank=4 score=0.053102340120067565 source=corpus/hw04/hud_fair_housing_guide_2025.pdf page=41 chunk=chunk-0427
+rank=5 score=0.05038288503051409 source=corpus/hw03/ca_landlord_tenant_guide_2026.pdf page=152 chunk=chunk-0301

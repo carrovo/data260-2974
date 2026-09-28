@@ -4,47 +4,22 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
-INPUT_FILE = (
-    ROOT
-    / "reports"
-    / "hw04"
-    / "raw"
-    / "rag_outputs.jsonl"
-)
-
-OUTPUT_DIR = (
+RAW_DIR = (
     ROOT
     / "reports"
     / "hw04"
     / "raw"
 )
 
-PER_RUN_FILE = OUTPUT_DIR / "rag_per_run_metrics.jsonl"
-SUMMARY_FILE = OUTPUT_DIR / "rag_metrics_summary.json"
-
-
-# Each question uses simple answer checks for reproducible evaluation.
-QUESTION_CHECKS = {
-    "q1": [
-        ["one month", "1 month"],
-        ["two month", "2 month"],
-    ],
-    "q2": [
-        ["21 days"],
-    ],
-    "q3": [
-        ["assistance animal"],
-        ["pet deposit", "extra rent"],
-        ["no", "not", "without"],
-    ],
-    "q4": [
-        ["translated", "translation"],
-        ["language"],
-    ],
-}
+INPUT_FILE = RAW_DIR / "rag_outputs.jsonl"
+PER_RUN_FILE = RAW_DIR / "rag_per_run_metrics.jsonl"
+SUMMARY_FILE = RAW_DIR / "rag_metrics_summary.json"
+QUESTIONS_FILE = ROOT / "questions_hw4.yaml"
 
 
 def normalize(text: str) -> str:
@@ -57,47 +32,28 @@ def normalize(text: str) -> str:
     )
 
 
-def answer_contains_required_terms(
-    query_id: str,
-    answer: str,
-) -> bool:
-    """Check whether the answer contains required concepts."""
-    checks = QUESTION_CHECKS.get(query_id)
-
-    if not checks:
-        return False
-
-    normalized_answer = normalize(answer)
-
-    return all(
-        any(
-            phrase in normalized_answer
-            for phrase in phrase_group
+def load_questions() -> dict[str, dict[str, Any]]:
+    """Load question evaluation rules."""
+    data = yaml.safe_load(
+        QUESTIONS_FILE.read_text(
+            encoding="utf-8"
         )
-        for phrase_group in checks
     )
 
-
-def source_was_retrieved(row: dict[str, Any]) -> bool:
-    """Check whether the expected source appears in retrieved context."""
-    expected_source = row["expected_source_file"]
-
-    if not expected_source:
-        return False
-
-    contexts = row["contexts"]
-
-    return any(
-        context["source_file"] == expected_source
-        for context in contexts
-    )
+    return {
+        question["id"]: question
+        for question in data["questions"]
+    }
 
 
 def load_rows() -> list[dict[str, Any]]:
-    """Load raw RAG output rows."""
-    rows = []
+    """Load raw RAG experiment rows."""
+    rows: list[dict[str, Any]] = []
 
-    with INPUT_FILE.open("r", encoding="utf-8") as file:
+    with INPUT_FILE.open(
+        "r",
+        encoding="utf-8",
+    ) as file:
         for line in file:
             if line.strip():
                 rows.append(json.loads(line))
@@ -105,108 +61,256 @@ def load_rows() -> list[dict[str, Any]]:
     return rows
 
 
+def answer_contains_required_terms(
+    question_data: dict[str, Any],
+    answer: str,
+) -> bool:
+    """Check required answer concepts."""
+    normalized_answer = normalize(answer)
+
+    required_terms = question_data.get(
+        "required_terms",
+        [],
+    )
+
+    return all(
+        any(
+            normalize(term) in normalized_answer
+            for term in term_group
+        )
+        for term_group in required_terms
+    )
+
+
+def source_retrieval_pass(
+    row: dict[str, Any],
+) -> bool | None:
+    """Check whether all expected sources were retrieved."""
+    if row["answerability"] != "answerable":
+        return None
+
+    expected_sources = set(
+        row["expected_source_files"]
+    )
+
+    retrieved_sources = {
+        context["source_file"]
+        for context in row["contexts"]
+    }
+
+    return expected_sources.issubset(
+        retrieved_sources
+    )
+
+
+def refusal_pass(
+    row: dict[str, Any],
+) -> bool | None:
+    """Check refusal behavior for unsupported questions."""
+    if row["answerability"] == "answerable":
+        return None
+
+    return bool(row["refusal_detected"])
+
+
+def format_pass(
+    row: dict[str, Any],
+) -> bool:
+    """Check source citation format for context RAG."""
+    if row["configuration"] != (
+        "C_context_engineered_rag"
+    ):
+        return True
+
+    answer = normalize(row["answer"])
+
+    if row["answerability"] != "answerable":
+        return bool(row["refusal_detected"])
+
+    source_markers = [
+        "source 1",
+        "source 2",
+        "source 3",
+        "[source",
+    ]
+
+    return any(
+        marker in answer
+        for marker in source_markers
+    )
+
+
+def evaluate_row(
+    row: dict[str, Any],
+    question_data: dict[str, Any],
+) -> dict[str, Any]:
+    """Evaluate one question/configuration run."""
+    answerable = (
+        row["answerability"] == "answerable"
+    )
+
+    if answerable:
+        correct_answer = (
+            answer_contains_required_terms(
+                question_data=question_data,
+                answer=row["answer"],
+            )
+        )
+
+        correct_retrieval = (
+            source_retrieval_pass(row)
+        )
+
+        format_compliance = format_pass(row)
+
+        # Grounding requires evidence and answer support.
+        grounded = bool(
+            correct_retrieval
+            and correct_answer
+            and format_compliance
+        )
+
+        refused_when_needed = None
+
+        overall_pass = bool(
+            correct_retrieval
+            and correct_answer
+            and grounded
+            and format_compliance
+        )
+    else:
+        correct_answer = None
+        correct_retrieval = None
+        grounded = None
+        format_compliance = format_pass(row)
+        refused_when_needed = refusal_pass(row)
+        overall_pass = bool(
+            refused_when_needed
+        )
+
+    return {
+        "configuration": row["configuration"],
+        "retrieval_mode": row["retrieval_mode"],
+        "k": row["k"],
+        "query_id": row["query_id"],
+        "question_type": row["question_type"],
+        "answerability": row["answerability"],
+        "correct_retrieval": correct_retrieval,
+        "correct_answer": correct_answer,
+        "grounded": grounded,
+        "refused_when_needed": refused_when_needed,
+        "format_compliance": format_compliance,
+        "overall_pass": overall_pass,
+        "retrieval_latency_ms": row[
+            "retrieval_latency_ms"
+        ],
+        "llm_latency_ms": row[
+            "llm_latency_ms"
+        ],
+    }
+
+
+def mean_boolean(
+    rows: list[dict[str, Any]],
+    field: str,
+) -> float | None:
+    """Average a boolean field while ignoring None."""
+    values = [
+        row[field]
+        for row in rows
+        if row[field] is not None
+    ]
+
+    if not values:
+        return None
+
+    return round(
+        mean(values),
+        4,
+    )
+
+
 def main() -> None:
+    """Compute the HW4 RAG evaluation tables."""
+    question_rules = load_questions()
     rows = load_rows()
 
     if len(rows) != 54:
         raise ValueError(
-            f"Expected 54 RAG rows, found {len(rows)}."
+            f"Expected 54 rows, found {len(rows)}."
         )
 
     evaluated_rows = []
 
     for row in rows:
-        in_domain = bool(row["in_domain"])
-
-        if in_domain:
-            answer_pass = answer_contains_required_terms(
-                row["query_id"],
-                row["answer"],
-            )
-            source_pass = source_was_retrieved(row)
-            refusal_pass = None
-            overall_pass = answer_pass and source_pass
-        else:
-            answer_pass = None
-            source_pass = None
-            refusal_pass = bool(row["refusal_detected"])
-            overall_pass = refusal_pass
+        question_data = question_rules[
+            row["query_id"]
+        ]
 
         evaluated_rows.append(
-            {
-                "configuration": row["configuration"],
-                "technique": row["technique"],
-                "k": row["k"],
-                "query_id": row["query_id"],
-                "in_domain": in_domain,
-                "answer_term_pass": answer_pass,
-                "source_recall_pass": source_pass,
-                "refusal_pass": refusal_pass,
-                "overall_pass": overall_pass,
-                "retrieval_latency_ms": row[
-                    "retrieval_latency_ms"
-                ],
-                "llm_latency_ms": row[
-                    "llm_latency_ms"
-                ],
-            }
+            evaluate_row(
+                row=row,
+                question_data=question_data,
+            )
         )
 
-    grouped_rows = defaultdict(list)
+    grouped_rows: dict[
+        tuple[str, int],
+        list[dict[str, Any]],
+    ] = defaultdict(list)
 
     for row in evaluated_rows:
-        key = (
-            row["configuration"],
-            row["technique"],
-            row["k"],
-        )
-        grouped_rows[key].append(row)
+        grouped_rows[
+            (
+                row["configuration"],
+                row["k"],
+            )
+        ].append(row)
 
     summary_rows = []
 
     for (
         configuration,
-        technique,
         k,
     ), group in grouped_rows.items():
-        in_domain_rows = [
+        answerable_rows = [
             row
             for row in group
-            if row["in_domain"]
+            if row["answerability"]
+            == "answerable"
         ]
 
         refusal_rows = [
             row
             for row in group
-            if not row["in_domain"]
+            if row["answerability"]
+            != "answerable"
         ]
 
         summary_rows.append(
             {
                 "configuration": configuration,
-                "technique": technique,
                 "k": k,
                 "runs": len(group),
-                "answer_term_accuracy": round(
-                    mean(
-                        row["answer_term_pass"]
-                        for row in in_domain_rows
-                    ),
-                    4,
+                "answer_accuracy": mean_boolean(
+                    answerable_rows,
+                    "correct_answer",
                 ),
-                "source_recall_at_k": round(
-                    mean(
-                        row["source_recall_pass"]
-                        for row in in_domain_rows
-                    ),
-                    4,
+                "retrieval_accuracy": mean_boolean(
+                    answerable_rows,
+                    "correct_retrieval",
                 ),
-                "refusal_rate": round(
-                    mean(
-                        row["refusal_pass"]
-                        for row in refusal_rows
-                    ),
-                    4,
+                "grounded_rate": mean_boolean(
+                    answerable_rows,
+                    "grounded",
+                ),
+                "format_compliance_rate": mean_boolean(
+                    group,
+                    "format_compliance",
+                ),
+                "refusal_rate": mean_boolean(
+                    refusal_rows,
+                    "refused_when_needed",
                 ),
                 "overall_pass_rate": round(
                     mean(
@@ -217,7 +321,9 @@ def main() -> None:
                 ),
                 "mean_retrieval_latency_ms": round(
                     mean(
-                        row["retrieval_latency_ms"]
+                        row[
+                            "retrieval_latency_ms"
+                        ]
                         for row in group
                     ),
                     3,
@@ -232,9 +338,15 @@ def main() -> None:
             }
         )
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    RAW_DIR.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
-    with PER_RUN_FILE.open("w", encoding="utf-8") as file:
+    with PER_RUN_FILE.open(
+        "w",
+        encoding="utf-8",
+    ) as file:
         for row in evaluated_rows:
             file.write(
                 json.dumps(row)
@@ -243,19 +355,29 @@ def main() -> None:
 
     summary = {
         "total_rows": len(evaluated_rows),
-        "in_domain_rows": sum(
-            row["in_domain"]
+        "answerable_rows": sum(
+            row["answerability"]
+            == "answerable"
+            for row in evaluated_rows
+        ),
+        "unsupported_rows": sum(
+            row["answerability"]
+            == "unsupported"
             for row in evaluated_rows
         ),
         "out_of_domain_rows": sum(
-            not row["in_domain"]
+            row["answerability"]
+            == "out_of_domain"
             for row in evaluated_rows
         ),
         "summary": summary_rows,
     }
 
     SUMMARY_FILE.write_text(
-        json.dumps(summary, indent=2)
+        json.dumps(
+            summary,
+            indent=2,
+        )
         + "\n",
         encoding="utf-8",
     )
@@ -264,17 +386,24 @@ def main() -> None:
 
     for row in summary_rows:
         print(
-            f"{row['configuration']:>18} "
+            f"{row['configuration']:>28} "
             f"k={row['k']} "
-            f"answer={row['answer_term_accuracy']:.2f} "
-            f"source={row['source_recall_at_k']:.2f} "
-            f"refusal={row['refusal_rate']:.2f} "
-            f"overall={row['overall_pass_rate']:.2f}"
+            f"answer={row['answer_accuracy']} "
+            f"retrieval={row['retrieval_accuracy']} "
+            f"grounded={row['grounded_rate']} "
+            f"refusal={row['refusal_rate']} "
+            f"overall={row['overall_pass_rate']}"
         )
 
     print()
-    print(f"Saved per-run metrics: {PER_RUN_FILE}")
-    print(f"Saved summary metrics: {SUMMARY_FILE}")
+    print(
+        f"Saved per-run metrics: "
+        f"{PER_RUN_FILE}"
+    )
+    print(
+        f"Saved summary metrics: "
+        f"{SUMMARY_FILE}"
+    )
 
 
 if __name__ == "__main__":

@@ -1,4 +1,10 @@
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import (
+    Depends,
+    FastAPI,
+    HTTPException,
+    Query,
+    Response,
+)
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -10,7 +16,13 @@ from crud import (
     get_listings_naive,
     update_listing,
 )
-from database import Base, db_session_basede26, get_db
+from database import (
+    Base,
+    db_session_basede26,
+    get_db,
+    get_sql_count,
+    reset_sql_count,
+)
 from models import RentalListing
 from routers.auth import require_session, router as auth_router
 from schemas import ListingCreate, ListingOut, ListingUpdate
@@ -59,6 +71,7 @@ def health() -> dict[str, str]:
     response_model=list[ListingOut],
 )
 def list_listings(
+    response: Response,
     page_size: int = Query(
         default=50,
         ge=1,
@@ -67,16 +80,19 @@ def list_listings(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> list[RentalListing]:
-    """
-    Return listings for authenticated users.
+    """Return listings using eager loading."""
+    reset_sql_count(db)
 
-    The normal list endpoint uses the fixed eager-loading version.
-    """
-
-    return get_listings_fixed(
+    listings = get_listings_fixed(
         db=db,
         limit=page_size,
     )
+
+    response.headers["X-SQL-Statements"] = str(
+        get_sql_count(db)
+    )
+
+    return listings
 
 
 @app.get(
@@ -84,6 +100,7 @@ def list_listings(
     response_model=list[ListingOut],
 )
 def list_listings_naive(
+    response: Response,
     page_size: int = Query(
         default=10,
         ge=1,
@@ -92,16 +109,19 @@ def list_listings_naive(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> list[RentalListing]:
-    """
-    Intentionally demonstrate the N+1 query pattern.
+    """Return listings using the intentional N+1 pattern."""
+    reset_sql_count(db)
 
-    This endpoint is required for the Part 3 comparison.
-    """
-
-    return get_listings_naive(
+    listings = get_listings_naive(
         db=db,
         limit=page_size,
     )
+
+    response.headers["X-SQL-Statements"] = str(
+        get_sql_count(db)
+    )
+
+    return listings
 
 
 @app.get(
@@ -109,6 +129,7 @@ def list_listings_naive(
     response_model=list[ListingOut],
 )
 def list_listings_fixed(
+    response: Response,
     page_size: int = Query(
         default=10,
         ge=1,
@@ -117,16 +138,19 @@ def list_listings_fixed(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> list[RentalListing]:
-    """
-    Return listings with eager-loaded related events.
+    """Return listings using eager loading."""
+    reset_sql_count(db)
 
-    This endpoint is the optimized comparison version.
-    """
-
-    return get_listings_fixed(
+    listings = get_listings_fixed(
         db=db,
         limit=page_size,
     )
+
+    response.headers["X-SQL-Statements"] = str(
+        get_sql_count(db)
+    )
+
+    return listings
 
 
 @app.get(

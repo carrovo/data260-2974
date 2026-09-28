@@ -1,0 +1,160 @@
+{
+  "assignment": "HW4",
+  "sid4": 2974,
+  "domain_id": 6,
+  "assigned_domain": "Rental housing listings",
+  "port_base": 8274,
+  "prefix": "s2974",
+  "commit_hash": "f3689c3862bf5073354668d50c5ccb15f45672b8",
+  "tags_at_commit": [],
+  "model": "qwen3:8b",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "configurations": [
+    "A_no_rag",
+    "B_basic_rag",
+    "C_context_engineered_rag"
+  ],
+  "seed": 2974,
+  "verify_seed": 262974,
+  "generated_at_utc": "2026-09-28T07:33:48.112360+00:00",
+  "overall_passed": true,
+  "checks_passed": 8,
+  "checks_total": 8,
+  "checks": [
+    {
+      "name": "project_files",
+      "passed": true,
+      "details": {
+        "required_file_count": 23,
+        "missing_files": []
+      }
+    },
+    {
+      "name": "application_smoke_test",
+      "passed": true,
+      "details": {
+        "health_status": 200,
+        "health_body": {
+          "status": "ok"
+        },
+        "register_status": 201,
+        "login_status": 200,
+        "cookie_httponly": true,
+        "cookie_samesite_lax": true,
+        "cookie_max_age_1800": true,
+        "me_status": 200,
+        "me_email": "verify-hw4-262974@example.com",
+        "naive_status": 200,
+        "fixed_status": 200,
+        "naive_records": 10,
+        "fixed_records": 10,
+        "naive_sql_statements": "11",
+        "fixed_sql_statements": "2"
+      }
+    },
+    {
+      "name": "evaluation_questions",
+      "passed": true,
+      "details": {
+        "declared_question_count": 6,
+        "actual_question_count": 6,
+        "question_ids": [
+          "q1",
+          "q2",
+          "q3",
+          "q4",
+          "q5",
+          "q6"
+        ],
+        "question_types": [
+          "one_chunk",
+          "two_chunks",
+          "similar_across_documents",
+          "ambiguous",
+          "not_in_documents",
+          "unrelated"
+        ],
+        "answerability": [
+          "answerable",
+          "answerable",
+          "answerable",
+          "answerable",
+          "unsupported",
+          "out_of_domain"
+        ]
+      }
+    },
+    {
+      "name": "database_seed_and_index",
+      "passed": true,
+      "details": {
+        "seed": 2974,
+        "listing_count": 5000,
+        "event_count": 200,
+        "listings_with_events": 199,
+        "event_type_index_count": 1
+      }
+    },
+    {
+      "name": "n_plus_one_outputs",
+      "passed": true,
+      "details": {
+        "csv_request_rows": 180,
+        "summary_rows": 6,
+        "combination_counts": {
+          "naive_10": 30,
+          "naive_50": 30,
+          "naive_200": 30,
+          "fixed_10": 30,
+          "fixed_50": 30,
+          "fixed_200": 30
+        },
+        "invalid_row_count": 0
+      }
+    },
+    {
+      "name": "rag_outputs",
+      "passed": true,
+      "details": {
+        "reported_total_runs": 54,
+        "reported_configurations": [
+          "A_no_rag",
+          "B_basic_rag",
+          "C_context_engineered_rag"
+        ],
+        "jsonl_records": 54,
+        "csv_records": 54,
+        "per_run_metric_records": 54,
+        "metric_summary_rows": 9,
+        "configurations_found": [
+          "A_no_rag",
+          "B_basic_rag",
+          "C_context_engineered_rag"
+        ],
+        "required_refusal_rows": 6,
+        "valid_refusal_rows": 6,
+        "retrieval_printout_exists": true
+      }
+    },
+    {
+      "name": "documentation",
+      "passed": true,
+      "details": {
+        "missing_metrics_terms": [],
+        "missing_run_log_terms": [],
+        "missing_ai_sections": [],
+        "missing_sources": []
+      }
+    },
+    {
+      "name": "screenshots",
+      "passed": true,
+      "details": {
+        "required_count": 33,
+        "found_count": 33,
+        "missing_screenshots": [],
+        "empty_screenshots": []
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy import Index, Boolean, DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
@@ -117,6 +117,14 @@ class ListingEvent(Base):
     """Related test entity used to demonstrate the N+1 query problem."""
 
     __tablename__ = "listing_events"
+
+        # Index event types for faster filtered event queries.
+    __table_args__ = (
+        Index(
+            "idx_listing_events_event_type",
+            "event_type",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(
         Integer,

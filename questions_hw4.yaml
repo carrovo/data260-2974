@@ -4,37 +4,66 @@ question_count: 6
 
 questions:
   - id: "q1"
+    type: "one_chunk"
+    answerability: "answerable"
     question: "What is the maximum security deposit a California landlord may generally charge, and what exception applies to qualifying small landlords?"
     expected_answer: "A California landlord may generally charge no more than one month's rent as a security deposit. A qualifying small landlord may charge up to two months' rent."
-    expected_source_file: "corpus/hw03/ca_landlord_tenant_guide_2026.pdf"
-    in_domain: true
+    expected_source_files:
+      - "corpus/hw03/ca_landlord_tenant_guide_2026.pdf"
+    required_terms:
+      - ["one month", "1 month"]
+      - ["two month", "2 month"]
 
   - id: "q2"
-    question: "How long does a California landlord have after a tenant moves out to return the security deposit or provide an itemized statement of deductions?"
-    expected_answer: "The landlord has 21 days after the tenant moves out to return the deposit or provide the required itemized statement and any remaining refund."
-    expected_source_file: "corpus/hw03/ca_landlord_tenant_guide_2026.pdf"
-    in_domain: true
+    type: "two_chunks"
+    answerability: "answerable"
+    question: "What is the general security deposit limit in California, and how long does a landlord have after move-out to return the deposit or provide an itemized statement?"
+    expected_answer: "A landlord may generally charge no more than one month's rent as a security deposit, with a qualifying small-landlord exception allowing up to two months' rent. After the tenant moves out, the landlord generally has 21 days to return the deposit or provide an itemized statement of deductions and any remaining refund."
+    expected_source_files:
+      - "corpus/hw03/ca_landlord_tenant_guide_2026.pdf"
+    required_terms:
+      - ["one month", "1 month"]
+      - ["21 days"]
 
   - id: "q3"
-    question: "May a California housing provider charge a pet deposit or extra rent for an assistance animal needed because of a disability?"
-    expected_answer: "No. A necessary assistance animal must be allowed as a reasonable accommodation without a pet deposit or extra rent, although a request may be denied if the animal creates a direct health or safety threat or substantial property damage."
-    expected_source_file: "corpus/hw03/ca_fair_housing_rights_booklet.pdf"
-    in_domain: true
+    type: "similar_across_documents"
+    answerability: "answerable"
+    question: "How do the two HUD documents describe assistance animals as a reasonable accommodation for a person with a disability?"
+    expected_answer: "Assistance animals may be required as a reasonable accommodation for a person with a disability. A housing provider generally may not charge a pet deposit or additional rent for a necessary assistance animal, subject to health, safety, and property-damage limits."
+    expected_source_files:
+      - "corpus/hw04/hud_assistance_animal_notice.pdf"
+      - "corpus/hw04/hud_fair_housing_guide_2025.pdf"
+    required_terms:
+      - ["assistance animal"]
+      - ["reasonable accommodation"]
+      - ["pet deposit", "extra rent", "additional rent"]
 
   - id: "q4"
-    question: "What must happen when a California residential lease is negotiated in a language other than English?"
-    expected_answer: "The lease must be translated into the language used to negotiate it."
-    expected_source_file: "corpus/hw03/ca_fair_housing_rights_booklet.pdf"
-    in_domain: true
+    type: "ambiguous"
+    answerability: "answerable"
+    question: "Can a landlord charge extra money for a pet or an assistance animal in a rental unit?"
+    expected_answer: "It depends on whether the animal is an ordinary pet or an assistance animal. A housing provider may have ordinary pet rules, but a necessary assistance animal must generally be allowed as a reasonable accommodation without a pet deposit or extra rent, subject to health, safety, and property-damage limits."
+    expected_source_files:
+      - "corpus/hw04/hud_assistance_animal_notice.pdf"
+      - "corpus/hw04/hud_fair_housing_guide_2025.pdf"
+    required_terms:
+      - ["depends", "ordinary pet", "assistance animal"]
+      - ["pet deposit", "extra rent", "additional rent"]
 
   - id: "q5"
-    question: "What is the capital of France?"
-    expected_answer: "The assistant should refuse because this question is outside the rental housing domain."
-    expected_source_file: null
-    in_domain: false
+    type: "not_in_documents"
+    answerability: "unsupported"
+    question: "What is the average monthly rent for a two-bedroom apartment in San Jose in 2026?"
+    expected_answer: "The assistant should refuse because the provided documents do not contain current average-rent data for San Jose."
+    expected_source_files: []
+    required_terms:
+      - ["cannot answer", "not provided", "not contain", "insufficient"]
 
   - id: "q6"
+    type: "unrelated"
+    answerability: "out_of_domain"
     question: "How do I train for a marathon?"
-    expected_answer: "The assistant should refuse because this question is outside the rental housing domain."
-    expected_source_file: null
-    in_domain: false
+    expected_answer: "The assistant should refuse because this question is outside the rental-housing domain."
+    expected_source_files: []
+    required_terms:
+      - ["outside", "cannot answer", "not related", "rental housing"]

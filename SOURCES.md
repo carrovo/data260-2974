@@ -34,3 +34,26 @@
 ## Corpus Use
 
 These public documents were downloaded and stored as local snapshots before running the graded retrieval experiments. The local files are used by all three chunking techniques so that the comparison is reproducible and each technique receives the same source content.
+
+
+## HW4 Additional Sources
+
+### Source 4: HUD Assistance Animals Notice
+
+- Organization: U.S. Department of Housing and Urban Development
+- Title: Notice on Service Animals and Assistance Animals under the Fair Housing Act
+- Source URL: https://www.hud.gov/sites/dfiles/FHEO/documents/19ServiceAnimalNoticeFHEO_508.pdf
+- Local filename: `corpus/hw04/hud_assistance_animal_notice.pdf`
+- Description: HUD guidance explaining reasonable accommodations for assistance animals in housing and the distinction between assistance animals and ordinary pets.
+
+### Source 5: HUD Fair Housing and Nondiscrimination Guide
+
+- Organization: U.S. Department of Housing and Urban Development
+- Title: Fair Housing and Nondiscrimination Requirements
+- Source URL: https://www.hud.gov/sites/dfiles/PIH/documents/HCV_Guidebook-Chapter_Fair-Housing_April-2025.pdf
+- Local filename: `corpus/hw04/hud_fair_housing_guide_2025.pdf`
+- Description: HUD guidance covering fair-housing obligations, nondiscrimination requirements, and reasonable accommodations in housing programs.
+
+## HW4 Corpus Use
+
+The HW4 RAG experiment used all five local PDF snapshots. The same corpus was used for Configurations A, B, and C so that the chunking and retrieval comparison remained consistent.

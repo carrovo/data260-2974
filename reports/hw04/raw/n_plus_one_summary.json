@@ -17,54 +17,60 @@
       "page_size": 10,
       "requests": 30,
       "successful_requests": 30,
-      "p50_ms": 4.297,
-      "p95_ms": 6.749,
-      "p99_ms": 12.849
+      "sql_statements_per_request": 11.0,
+      "p50_ms": 4.392,
+      "p95_ms": 6.771,
+      "p99_ms": 8.031
     },
     {
       "mode": "naive",
       "page_size": 50,
       "requests": 30,
       "successful_requests": 30,
-      "p50_ms": 10.195,
-      "p95_ms": 14.038,
-      "p99_ms": 16.079
+      "sql_statements_per_request": 51.0,
+      "p50_ms": 9.513,
+      "p95_ms": 14.007,
+      "p99_ms": 14.964
     },
     {
       "mode": "naive",
       "page_size": 200,
       "requests": 30,
       "successful_requests": 30,
-      "p50_ms": 32.827,
-      "p95_ms": 39.263,
-      "p99_ms": 61.212
+      "sql_statements_per_request": 201.0,
+      "p50_ms": 32.746,
+      "p95_ms": 38.634,
+      "p99_ms": 42.667
     },
     {
       "mode": "fixed",
       "page_size": 10,
       "requests": 30,
       "successful_requests": 30,
-      "p50_ms": 1.863,
-      "p95_ms": 2.286,
-      "p99_ms": 2.968
+      "sql_statements_per_request": 2.0,
+      "p50_ms": 1.837,
+      "p95_ms": 2.558,
+      "p99_ms": 2.688
     },
     {
       "mode": "fixed",
       "page_size": 50,
       "requests": 30,
       "successful_requests": 30,
-      "p50_ms": 3.335,
-      "p95_ms": 3.751,
-      "p99_ms": 3.947
+      "sql_statements_per_request": 2.0,
+      "p50_ms": 3.439,
+      "p95_ms": 3.819,
+      "p99_ms": 3.899
     },
     {
       "mode": "fixed",
       "page_size": 200,
       "requests": 30,
       "successful_requests": 30,
-      "p50_ms": 9.815,
-      "p95_ms": 10.889,
-      "p99_ms": 17.264
+      "sql_statements_per_request": 2.0,
+      "p50_ms": 9.832,
+      "p95_ms": 11.372,
+      "p99_ms": 17.637
     }
   ]
 }

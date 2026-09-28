@@ -1,271 +1,279 @@
 # HW4 Metrics
 
-## 1. Part 3 — Database Scale and N+1 Performance
+## 1. Experiment Configuration
 
-### 1.1 Seeded database size
+| Item | Value |
+| --- | --- |
+| SID4 | 2974 |
+| Domain ID | 6 |
+| Domain | Rental housing listings |
+| Seed | 2974 |
+| API port | 8274 |
+| Database | `s2974_rel` |
+| Local LLM | `qwen3:8b` |
+| Embedding model | `sentence-transformers/all-MiniLM-L6-v2` |
 
-The database was reset and seeded with deterministic data using:
+---
 
-```text
-SEED=2974
-```
+## 2. Database Scale
+
+The MySQL database was reset and populated with deterministic data using seed 2974.
 
 | Database item | Count |
-|---|---:|
+| --- | ---: |
 | Rental listings | 5,000 |
 | Listing events | 200 |
 | Distinct listings with events | 199 |
 
-The seed output was:
+The seed script reported:
 
-```text
-Listings created: 5000
-Events created: 200
-```
+- `Listings created: 5000`
+- `Events created: 200`
 
-The raw database seed and verification were performed against:
+The database includes four primary tables:
 
-```text
-Database: s2974_rel
-Domain: Rental housing listings
-```
+- `users`
+- `sessions`
+- `listings`
+- `listing_events`
 
-### 1.2 N+1 experiment design
-
-The experiment compared two endpoint implementations:
-
-- `naive`: loads related events separately for each listing
-- `fixed`: uses eager loading with `selectinload`
-
-The experiment used three page sizes:
-
-```text
-10, 50, 200
-```
-
-Each configuration was repeated 30 times:
-
-```text
-2 endpoint modes × 3 page sizes × 30 repetitions = 180 requests
-```
-
-The raw request count was verified as:
-
-```text
-181 CSV lines
-```
-
-This includes one CSV header and 180 request records.
-
-### 1.3 N+1 latency results
-
-All latency values are in milliseconds.
-
-| Mode | Page size | p50 | p95 | p99 |
-|---|---:|---:|---:|---:|
-| naive | 10 | 4.297 | 6.749 | 12.849 |
-| naive | 50 | 10.195 | 14.038 | 16.079 |
-| naive | 200 | 32.827 | 39.263 | 61.212 |
-| fixed | 10 | 1.863 | 2.286 | 2.968 |
-| fixed | 50 | 3.335 | 3.751 | 3.947 |
-| fixed | 200 | 9.815 | 10.889 | 17.264 |
-
-Based on p50 latency, the fixed implementation was approximately:
-
-| Page size | Approximate improvement |
-|---:|---:|
-| 10 | 2.3× faster |
-| 50 | 3.1× faster |
-| 200 | 3.3× faster |
-
-The fixed implementation was faster for every tested page size. The difference became more visible as the page size increased because the naive implementation performs additional related-record work for each returned listing. The eager-loading implementation retrieves the related events more efficiently.
-
-### 1.4 Index verification
-
-The relationship column `listing_events.listing_id` uses a BTREE index.
-
-The MySQL `EXPLAIN` output reported:
-
-```text
-Index lookup on e using listing_id
-```
-
-The index metadata showed:
-
-```text
-Key_name: listing_id
-Column_name: listing_id
-Index_type: BTREE
-```
-
-This confirms that MySQL uses the `listing_id` index for the join between `listings` and `listing_events`.
-
-### 1.5 Part 3 raw files
-
-```text
-reports/hw04/raw/n_plus_one_requests.csv
-reports/hw04/raw/n_plus_one_summary.json
-```
+The `sessions.user_id` column references `users.id`, and
+`listing_events.listing_id` references `listings.id`. Both foreign keys use
+`ON DELETE CASCADE`.
 
 ---
 
-## 2. Part 4 — RAG Experiment
+## 3. N+1 Query Experiment
 
-### 2.1 Corpus
+### 3.1 Design
 
-The RAG corpus contained five rental-housing PDF documents:
+The experiment compared two authenticated listing endpoints:
 
-```text
-corpus/hw03/ca_fair_housing_rights_booklet.pdf
-corpus/hw03/ca_landlord_tenant_guide_2026.pdf
-corpus/hw03/hud_fair_housing_booklet.pdf
-corpus/hw04/hud_assistance_animal_notice.pdf
-corpus/hw04/hud_fair_housing_guide_2025.pdf
-```
+| Mode | Implementation |
+| --- | --- |
+| Naive | Loads listings first and then lazily loads events for every listing |
+| Fixed | Uses `selectinload` to retrieve related events in one additional query |
 
-The five documents were loaded successfully.
+The tested page sizes were 10, 50, and 200. Each endpoint and page-size
+combination was requested 30 times.
 
-The experiment loaded:
+`2 modes × 3 page sizes × 30 repetitions = 180 requests`
 
-```text
-PDF pages: 239
-```
+The raw CSV contains 181 lines: one header and 180 request records.
 
-### 2.2 Models and configurations
+### 3.2 Results
 
-Embedding model:
+All latency values are milliseconds.
 
-```text
-sentence-transformers/all-MiniLM-L6-v2
-```
+| Mode | Page size | SQL statements/request | p50 | p95 | p99 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Naive | 10 | 11 | 4.392 | 6.771 | 8.031 |
+| Naive | 50 | 51 | 9.513 | 14.007 | 14.964 |
+| Naive | 200 | 201 | 32.746 | 38.634 | 42.667 |
+| Fixed | 10 | 2 | 1.837 | 2.558 | 2.688 |
+| Fixed | 50 | 2 | 3.439 | 3.819 | 3.899 |
+| Fixed | 200 | 2 | 9.832 | 11.372 | 17.637 |
 
-Local language model:
+### 3.3 Improvement
 
-```text
-qwen3:8b
-```
+| Page size | Naive SQL | Fixed SQL | p50 speed-up |
+| ---: | ---: | ---: | ---: |
+| 10 | 11 | 2 | 2.39× |
+| 50 | 51 | 2 | 2.77× |
+| 200 | 201 | 2 | 3.33× |
 
-The experiment compared three retrieval configurations:
+The naive endpoint demonstrates the N+1 pattern directly. One query loads the
+listings, followed by one event query for every listing. Its SQL count therefore
+increases from 11 to 201 as the page size increases.
 
-| Configuration | Chunking technique |
-|---|---|
-| A | Token chunks |
-| B | Semantic chunks |
-| C | Sentence-window chunks |
+The fixed endpoint consistently executes two SQL statements: one for the
+listings and one batched query for all related events. Its latency remained lower
+at every tested page size, and the performance difference became larger at
+page size 200.
 
-Each configuration was tested with:
+### 3.4 Index Experiment
 
-```text
-k = 1, 3, 5
-```
+The additional index was created on:
 
-The evaluation set contained six questions:
+`listing_events.event_type`
 
-- Q1–Q4: in-domain rental-housing questions
-- Q5–Q6: out-of-domain refusal questions
+Index name:
 
-The total number of RAG runs was:
+`idx_listing_events_event_type`
 
-```text
-3 configurations × 3 k values × 6 questions = 54 runs
-```
+Before adding the index, MySQL reported:
 
-The run summary verified:
+- Table scan on `listing_events`
+- Estimated rows examined: 200
+- Estimated cost: 20.2
 
-```text
-Total runs: 54
-In-domain runs: 36
-Out-of-domain runs: 18
-Refusal detections: 18
-```
+After adding the BTREE index, MySQL reported:
 
-### 2.3 Chunking results
+- Index lookup using `idx_listing_events_event_type`
+- Estimated rows examined: 50
+- Estimated cost: 5.75
 
-| Configuration | Technique | Chunks | Chunking latency (ms) | Indexing latency (ms) |
-|---|---|---:|---:|---:|
-| A | Token | 776 | 492.931 | 7,826.035 |
-| B | Semantic | 548 | 26,472.662 | 5,749.356 |
-| C | Sentence window | 4,655 | 248.802 | 17,445.369 |
+The index therefore changed the execution strategy from a full table scan to an
+indexed lookup for filtering events by `event_type`.
 
-The sentence-window configuration created the largest number of chunks because it creates overlapping context windows. The semantic configuration required more time during chunk creation because it uses embeddings to determine semantic boundaries.
+### 3.5 Raw N+1 Files
 
-### 2.4 RAG evaluation definitions
+- `reports/hw04/raw/n_plus_one_requests.csv`
+- `reports/hw04/raw/n_plus_one_summary.json`
 
-The following metrics were used:
+---
 
-- `answer_term_accuracy`: whether the generated answer contained the required concepts for Q1–Q4
-- `source_recall_at_k`: whether the expected source document appeared in the retrieved context
-- `refusal_rate`: whether Q5 and Q6 were correctly refused
-- `overall_pass_rate`: whether the applicable answer, source, or refusal checks passed
+## 4. RAG Experiment
 
-The answer-term metric is a lightweight reproducible keyword-based evaluation. It is not intended to replace detailed human review of legal accuracy.
+### 4.1 Corpus
 
-### 2.5 RAG evaluation results
+The corpus contains five rental-housing PDF documents:
 
-| Configuration | k | Answer term accuracy | Source recall@k | Refusal rate | Overall pass rate |
-|---|---:|---:|---:|---:|---:|
-| A token | 1 | 1.00 | 0.50 | 1.00 | 0.6667 |
-| A token | 3 | 1.00 | 0.75 | 1.00 | 0.8333 |
-| A token | 5 | 1.00 | 1.00 | 1.00 | 1.0000 |
-| B semantic | 1 | 1.00 | 0.50 | 1.00 | 0.6667 |
-| B semantic | 3 | 1.00 | 0.75 | 1.00 | 0.8333 |
-| B semantic | 5 | 0.75 | 1.00 | 1.00 | 0.8333 |
-| C sentence window | 1 | 0.75 | 0.50 | 1.00 | 0.5000 |
-| C sentence window | 3 | 1.00 | 0.75 | 1.00 | 0.8333 |
-| C sentence window | 5 | 1.00 | 1.00 | 1.00 | 1.0000 |
+- `corpus/hw03/ca_fair_housing_rights_booklet.pdf`
+- `corpus/hw03/ca_landlord_tenant_guide_2026.pdf`
+- `corpus/hw03/hud_fair_housing_booklet.pdf`
+- `corpus/hw04/hud_assistance_animal_notice.pdf`
+- `corpus/hw04/hud_fair_housing_guide_2025.pdf`
 
-### 2.6 RAG latency results
+A total of 239 readable PDF pages were loaded.
 
-All values are mean milliseconds.
+### 4.2 Chunking and Models
 
-| Configuration | k | Mean retrieval latency | Mean LLM latency |
-|---|---:|---:|---:|
-| A token | 1 | 67.182 | 5,583.834 |
-| A token | 3 | 43.480 | 5,753.765 |
-| A token | 5 | 57.576 | 6,922.214 |
-| B semantic | 1 | 51.611 | 5,072.011 |
-| B semantic | 3 | 94.458 | 8,737.272 |
-| B semantic | 5 | 78.523 | 28,569.861 |
-| C sentence window | 1 | 117.747 | 6,611.094 |
-| C sentence window | 3 | 215.335 | 9,233.385 |
-| C sentence window | 5 | 140.583 | 9,850.385 |
+| Setting | Value |
+| --- | --- |
+| Chunk size | 500 |
+| Chunk overlap | 50 |
+| Chunks created | 430 |
+| Embedding model | `sentence-transformers/all-MiniLM-L6-v2` |
+| Local language model | `qwen3:8b` |
+| Seed | 2974 |
+| Tested k values | 1, 3, 5 |
 
-### 2.7 RAG interpretation
+Every chunk stored its text, source filename, page number, and chunk ID.
 
-Increasing `k` improved source recall for all three configurations. Source recall increased from 0.50 at `k=1` to 1.00 at `k=5`. This indicates that retrieving more context made it more likely that the expected source document was included.
+### 4.3 Required Configurations
 
-Configuration A with `k=5` and Configuration C with `k=5` achieved the highest overall pass rate of 1.00.
+| Configuration | Description |
+| --- | --- |
+| `A_no_rag` | Sends the question directly to the local LLM |
+| `B_basic_rag` | Sends raw retrieved chunks to the LLM |
+| `C_context_engineered_rag` | Removes duplicate context, labels sources, requires citations, and refuses unsupported questions |
 
-Configuration B with `k=5` achieved perfect source recall, but its answer-term accuracy was 0.75. This means that one generated answer did not match the simple keyword rubric even though the expected source was retrieved. The difference may be caused by paraphrasing rather than a completely incorrect answer.
+The exact refusal response was:
 
-Configuration C with `k=1` had the lowest overall pass rate of 0.50. Its sentence-window representation created many chunks, and retrieving only one chunk sometimes failed to include the expected source or all of the necessary answer context.
+`I cannot answer this question from the provided documents.`
 
-The sentence-window configuration had the highest retrieval latency because it created 4,655 overlapping chunks. The semantic configuration also had a high LLM latency at `k=5`, indicating that the retrieved context and prompt were more expensive for the local model to process.
+### 4.4 Evaluation Questions
 
-Q5 and Q6 were intentionally outside the rental-housing domain. All 18 out-of-domain runs were refused successfully, resulting in a refusal rate of 1.00. The domain guard prevented the application from answering unrelated questions.
+The evaluation included six questions:
 
-### 2.8 Best configuration
+| Question | Type |
+| --- | --- |
+| Q1 | Answer contained in one chunk |
+| Q2 | Answer requires two pieces of information |
+| Q3 | Similar information across multiple documents |
+| Q4 | Ambiguous but answerable question |
+| Q5 | Answer not contained in the documents |
+| Q6 | Unrelated to the rental-housing domain |
 
-The best overall result was achieved by:
+Q1–Q4 were answerable. Q5 and Q6 required refusal.
 
-```text
-Configuration A: token chunking
-k=5
-Overall pass rate: 1.00
-Source recall@k: 1.00
-Answer term accuracy: 1.00
-Refusal rate: 1.00
-```
+The full experiment contained:
 
-Configuration C with `k=5` also achieved an overall pass rate of 1.00, but it required more chunks and higher retrieval latency.
+`3 configurations × 3 k values × 6 questions = 54 runs`
 
-### 2.9 Part 4 raw files
+### 4.5 Metric Definitions
 
-```text
-reports/hw04/raw/rag_outputs.jsonl
-reports/hw04/raw/rag_outputs.csv
-reports/hw04/raw/rag_run_summary.json
-reports/hw04/raw/rag_per_run_metrics.jsonl
-reports/hw04/raw/rag_metrics_summary.json
-```
-```
+- **Answer accuracy:** required answer concepts were present for Q1–Q4.
+- **Retrieval accuracy:** the required source document or documents were retrieved.
+- **Grounded rate:** the answer was correct, supported by retrieved material, and used the required source format.
+- **Format compliance:** the response followed the applicable output format. Source citations were specifically required for Configuration C.
+- **Refusal rate:** Q5 and Q6 used the required refusal response.
+- **Overall pass rate:** all checks applicable to that question and configuration passed.
+
+For Configurations A and B, format compliance was treated as satisfied because
+those baselines did not require Configuration C’s structured citation format.
+
+### 4.6 RAG Quality Results
+
+| Configuration | k | Answer accuracy | Retrieval accuracy | Grounded rate | Format compliance | Refusal rate | Overall pass |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| A No RAG | 1 | 0.00 | 0.00 | 0.00 | 1.00 | 0.00 | 0.0000 |
+| A No RAG | 3 | 0.00 | 0.00 | 0.00 | 1.00 | 0.00 | 0.0000 |
+| A No RAG | 5 | 0.00 | 0.00 | 0.00 | 1.00 | 0.00 | 0.0000 |
+| B Basic RAG | 1 | 0.50 | 0.50 | 0.50 | 1.00 | 0.00 | 0.3333 |
+| B Basic RAG | 3 | 0.75 | 0.75 | 0.50 | 1.00 | 0.00 | 0.3333 |
+| B Basic RAG | 5 | 1.00 | 0.75 | 0.75 | 1.00 | 0.00 | 0.5000 |
+| C Context-engineered RAG | 1 | 0.50 | 0.50 | 0.50 | 1.00 | 1.00 | 0.6667 |
+| C Context-engineered RAG | 3 | 0.75 | 0.75 | 0.50 | 1.00 | 1.00 | 0.6667 |
+| C Context-engineered RAG | 5 | 0.75 | 0.75 | 0.00 | 0.3333 | 1.00 | 0.3333 |
+
+### 4.7 Latency Results
+
+All values are mean milliseconds across the six questions.
+
+| Configuration | k | Retrieval latency | LLM latency |
+| --- | ---: | ---: | ---: |
+| A No RAG | 1 | 0.000 | 10,721.509 |
+| A No RAG | 3 | 0.000 | 9,694.885 |
+| A No RAG | 5 | 0.000 | 9,819.483 |
+| B Basic RAG | 1 | 102.294 | 7,527.127 |
+| B Basic RAG | 3 | 63.152 | 13,225.052 |
+| B Basic RAG | 5 | 82.587 | 50,504.844 |
+| C Context-engineered RAG | 1 | 68.285 | 6,020.227 |
+| C Context-engineered RAG | 3 | 64.072 | 8,222.513 |
+| C Context-engineered RAG | 5 | 118.363 | 45,928.693 |
+
+For Configuration C, unsupported questions were rejected by the deterministic
+domain guard before calling the LLM. Their LLM latency was therefore zero, which
+reduced Configuration C’s mean LLM latency.
+
+### 4.8 Analysis
+
+The experiment shows a clear difference between answering without retrieval,
+basic retrieval, and context-engineered retrieval. Configuration A had no
+retrieved evidence and achieved zero answer, retrieval, grounding, refusal, and
+overall accuracy under the reproducible evaluation rubric. This baseline shows
+that the local model alone was not dependable for these document-specific
+questions.
+
+Basic RAG improved as more chunks were retrieved. Its answer accuracy increased
+from 0.50 at k=1 to 1.00 at k=5, while retrieval accuracy increased from 0.50 to
+0.75. Its grounded rate reached 0.75 at k=5. However, Basic RAG did not reliably
+refuse Q5 or Q6, so its refusal rate remained zero. It also produced the highest
+mean LLM latency, 50.5 seconds at k=5. The additional context improved answer
+coverage but increased prompt-processing cost.
+
+Context-engineered RAG produced the strongest balanced behavior at k=1 and k=3.
+Both settings achieved an overall pass rate of 0.6667 and a refusal rate of
+1.00. The k=3 setting had higher answer and retrieval accuracy than k=1, reaching
+0.75 for both, while maintaining full format compliance. It is therefore the
+best overall configuration when answer quality, source retrieval, refusal
+behavior, and latency are considered together.
+
+Increasing k to 5 did not improve Configuration C. Although answer and retrieval
+accuracy remained 0.75, the grounded rate fell to zero and format compliance
+fell to 0.3333. Inspection of the generated answers showed that the larger
+context sometimes caused the model to focus on related but incorrect sections.
+For example, it answered a maximum-deposit question with information about uses
+of security deposits and answered a return-deadline question with inspection
+information. Some answerable k=5 responses also omitted the required final
+source line. This is evidence that retrieving more chunks does not always
+produce a better answer. Extra context can introduce distracting information
+and increase generation latency.
+
+The context-engineered refusal rule was the most robust safety improvement. All
+Q5 and Q6 runs were refused with the required sentence at every tested k. The
+experiment therefore supports using Configuration C with k=3 as the final
+choice: it improved retrieval and answer accuracy over k=1, avoided the
+context-overload behavior seen at k=5, preserved citation formatting, and
+correctly refused unsupported and unrelated questions.
+
+### 4.9 Raw RAG Files
+
+- `reports/hw04/raw/rag_outputs.jsonl`
+- `reports/hw04/raw/rag_outputs.csv`
+- `reports/hw04/raw/rag_run_summary.json`
+- `reports/hw04/raw/rag_retrieval_printouts.txt`
+- `reports/hw04/raw/rag_per_run_metrics.jsonl`
+- `reports/hw04/raw/rag_metrics_summary.json`

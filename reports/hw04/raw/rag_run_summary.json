@@ -1,10 +1,13 @@
 {
   "model": "qwen3:8b",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
   "seed": 2974,
+  "chunk_size": 500,
+  "chunk_overlap": 50,
   "configurations": [
-    "A_token",
-    "B_semantic",
-    "C_sentence_window"
+    "A_no_rag",
+    "B_basic_rag",
+    "C_context_engineered_rag"
   ],
   "k_values": [
     1,
@@ -13,7 +16,8 @@
   ],
   "question_count": 6,
   "total_runs": 54,
-  "in_domain_runs": 36,
-  "out_of_domain_runs": 18,
-  "refusal_detections": 18
+  "answerable_runs": 36,
+  "unsupported_runs": 9,
+  "out_of_domain_runs": 9,
+  "refusal_detections": 6
 }

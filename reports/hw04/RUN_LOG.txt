@@ -1,0 +1,379 @@
+DATA-260 HW4 RUN LOG
+SID4: 2974
+DOMAIN_ID: 6
+Domain: Rental housing listings
+Branch: hw4
+PORT_BASE: 8274
+PREFIX: s2974
+Database: s2974_rel
+SEED: 2974
+VERIFY_SEED: 262974
+Timezone: America/Los_Angeles (PDT)
+
+==================================================
+1. Environment
+==================================================
+
+Python virtual environment:
+.venv
+
+Frontend environment:
+Node.js v25.8.0
+npm 11.11.0
+
+Database:
+MySQL 9.6.0 Homebrew on macOS ARM64
+
+Local language model:
+qwen3:8b
+
+Embedding model:
+sentence-transformers/all-MiniLM-L6-v2
+
+Checkpoint commits:
+68c3f67 Implement HW4 app and performance experiments
+f3689c3 Add HW4 RAG corpus and evaluation
+
+==================================================
+2. Database and schema setup
+==================================================
+
+Database connection variable:
+db_session_basede26
+
+Database URL format:
+mysql+pymysql://s2974_app@127.0.0.1:3306/s2974_rel
+
+Connection verification:
+SELECT DATABASE(), CURRENT_USER();
+
+Result:
+DATABASE(): s2974_rel
+CURRENT_USER(): s2974_app@127.0.0.1
+
+Schema initialization command:
+python code/init_db.py
+
+Result:
+Database tables: ['listing_events', 'listings', 'sessions', 'users']
+
+Foreign-key verification:
+sessions.user_id references users.id with ON DELETE CASCADE.
+listing_events.listing_id references listings.id with ON DELETE CASCADE.
+
+==================================================
+3. Backend and authentication verification
+==================================================
+
+Health-check command:
+curl http://127.0.0.1:8274/health
+
+Result:
+{"status":"ok"}
+
+Verified authentication operations:
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/me
+POST /api/auth/logout
+
+The login response created an opaque session_id cookie with:
+HttpOnly
+SameSite=Lax
+Max-Age=1800
+
+Verified authenticated CRUD operations:
+GET /api/listings
+POST /api/listings
+GET /api/listings/{listing_id}
+PUT /api/listings/{listing_id}
+DELETE /api/listings/{listing_id}
+
+All authentication and CRUD operations returned the expected HTTP status and
+JSON response during curl, browser, and Postman testing.
+
+==================================================
+4. React frontend verification
+==================================================
+
+Commands:
+cd frontend
+npm install axios react-router-dom
+npm run build
+
+Build result:
+85 modules transformed.
+Vite production build completed successfully.
+
+Verified frontend functions:
+Login
+Session-based authentication
+Listing display
+Create listing
+Update listing
+Delete confirmation
+Delete listing
+Logout
+
+Frontend development URL:
+http://localhost:5173
+
+Backend API URL:
+http://localhost:8274
+
+==================================================
+5. Part 3 database seed
+==================================================
+
+Command:
+python code/seed_hw4.py --reset
+
+Result:
+Seed: 2974
+Listings created: 5000
+Events created: 200
+
+Database verification:
+listing_count: 5000
+event_count: 200
+listings_with_events: 199
+
+==================================================
+6. Part 3 N+1 performance experiment
+==================================================
+
+Final run timestamp:
+2026-09-27 19:49:18 PDT
+
+Command:
+python code/hw4_n_plus_one_experiment.py
+
+Experiment design:
+2 endpoint modes x 3 page sizes x 30 repetitions = 180 requests
+
+Endpoint modes:
+naive
+fixed
+
+Page sizes:
+10
+50
+200
+
+Final console summary:
+
+naive page_size= 10 sql=  11.0 p50=   4.392 ms p95=   6.771 ms p99=   8.031 ms
+naive page_size= 50 sql=  51.0 p50=   9.513 ms p95=  14.007 ms p99=  14.964 ms
+naive page_size=200 sql= 201.0 p50=  32.746 ms p95=  38.634 ms p99=  42.667 ms
+fixed page_size= 10 sql=   2.0 p50=   1.837 ms p95=   2.558 ms p99=   2.688 ms
+fixed page_size= 50 sql=   2.0 p50=   3.439 ms p95=   3.819 ms p99=   3.899 ms
+fixed page_size=200 sql=   2.0 p50=   9.832 ms p95=  11.372 ms p99=  17.637 ms
+
+Result:
+Total requests: 180
+CSV lines including header: 181
+
+The naive implementation executed one listing query followed by one event query
+per listing. The fixed implementation used selectinload and consistently
+executed two SQL statements.
+
+Raw files:
+reports/hw04/raw/n_plus_one_requests.csv
+reports/hw04/raw/n_plus_one_summary.json
+
+CSV line endings were normalized on:
+2026-09-28 00:11:26 PDT
+
+==================================================
+7. Index and EXPLAIN verification
+==================================================
+
+Before-index verification:
+2026-09-27 23:42 PDT
+
+Command:
+EXPLAIN SELECT *
+FROM listing_events
+WHERE event_type = 'saved';
+
+Before-index result:
+Table scan on listing_events
+Estimated rows: 200
+Estimated cost: 20.2
+
+Index creation:
+2026-09-27 23:44 PDT
+
+Command:
+CREATE INDEX idx_listing_events_event_type
+ON listing_events (event_type);
+
+Index metadata:
+Key_name: idx_listing_events_event_type
+Column_name: event_type
+Index_type: BTREE
+Visible: YES
+
+After-index command:
+EXPLAIN SELECT *
+FROM listing_events
+WHERE event_type = 'saved';
+
+After-index result:
+Index lookup on listing_events using idx_listing_events_event_type
+Estimated rows: 50
+Estimated cost: 5.75
+
+The index definition was also added to code/models.py so that the schema remains
+reproducible.
+
+==================================================
+8. Part 4 RAG experiment
+==================================================
+
+Final RAG run timestamp:
+2026-09-27 21:16:05 PDT
+
+Command:
+python code/hw4_rag_experiment.py
+
+Corpus:
+5 rental-housing PDF documents
+239 readable PDF pages
+
+Chunking:
+chunk_size: 500
+chunk_overlap: 50
+chunks created: 430
+
+Embedding model:
+sentence-transformers/all-MiniLM-L6-v2
+
+Local language model:
+qwen3:8b
+
+Required configurations:
+A_no_rag
+B_basic_rag
+C_context_engineered_rag
+
+k values:
+1
+3
+5
+
+Question set:
+Q1: one_chunk
+Q2: two_chunks
+Q3: similar_across_documents
+Q4: ambiguous
+Q5: not_in_documents
+Q6: unrelated
+
+Answerability:
+4 answerable questions
+1 unsupported question
+1 out-of-domain question
+
+Total experiment runs:
+3 configurations x 3 k values x 6 questions = 54 runs
+
+Result:
+Total RAG runs: 54
+Expected RAG runs: 54
+
+Context-engineered refusal result:
+6 required refusal runs
+6 correct refusals
+
+Required refusal text:
+I cannot answer this question from the provided documents.
+
+Raw files:
+reports/hw04/raw/rag_outputs.jsonl
+reports/hw04/raw/rag_outputs.csv
+reports/hw04/raw/rag_run_summary.json
+reports/hw04/raw/rag_retrieval_printouts.txt
+
+==================================================
+9. RAG evaluation
+==================================================
+
+Final metrics timestamp:
+2026-09-27 21:53:04 PDT
+
+Command:
+python code/hw4_compute_rag_metrics.py
+
+Final summary:
+
+A_no_rag k=1:
+answer=0.00 retrieval=0.00 grounded=0.00 format=1.00 refusal=0.00 overall=0.0000
+
+A_no_rag k=3:
+answer=0.00 retrieval=0.00 grounded=0.00 format=1.00 refusal=0.00 overall=0.0000
+
+A_no_rag k=5:
+answer=0.00 retrieval=0.00 grounded=0.00 format=1.00 refusal=0.00 overall=0.0000
+
+B_basic_rag k=1:
+answer=0.50 retrieval=0.50 grounded=0.50 format=1.00 refusal=0.00 overall=0.3333
+
+B_basic_rag k=3:
+answer=0.75 retrieval=0.75 grounded=0.50 format=1.00 refusal=0.00 overall=0.3333
+
+B_basic_rag k=5:
+answer=1.00 retrieval=0.75 grounded=0.75 format=1.00 refusal=0.00 overall=0.5000
+
+C_context_engineered_rag k=1:
+answer=0.50 retrieval=0.50 grounded=0.50 format=1.00 refusal=1.00 overall=0.6667
+
+C_context_engineered_rag k=3:
+answer=0.75 retrieval=0.75 grounded=0.50 format=1.00 refusal=1.00 overall=0.6667
+
+C_context_engineered_rag k=5:
+answer=0.75 retrieval=0.75 grounded=0.00 format=0.3333 refusal=1.00 overall=0.3333
+
+Selected configuration:
+C_context_engineered_rag with k=3
+
+Reason:
+It achieved higher answer and retrieval accuracy than k=1, maintained complete
+format compliance and refusal accuracy, and avoided the context overload and
+high latency observed at k=5.
+
+Evaluation files:
+reports/hw04/raw/rag_per_run_metrics.jsonl
+reports/hw04/raw/rag_metrics_summary.json
+
+==================================================
+10. Documentation and evidence
+==================================================
+
+Metrics:
+reports/hw04/METRICS.md
+
+AI disclosure:
+reports/hw04/AI_USE.md
+
+Source provenance:
+SOURCES.md
+
+Raw experiment output:
+reports/hw04/raw/
+
+Screenshots:
+reports/hw04/screenshots/
+
+The screenshots include:
+React login and CRUD behavior
+Postman authentication and CRUD responses
+HTTP-only session cookie
+MySQL tables and foreign keys
+Database seed counts
+Naive and fixed SQL statement counts at page sizes 10, 50, and 200
+N+1 latency summary
+EXPLAIN before and after the event_type index
+RAG corpus and configuration
+Retrieved source, score, page, and chunk information
+RAG metrics, citations, and refusal results
