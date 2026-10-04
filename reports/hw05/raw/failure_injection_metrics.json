@@ -1,0 +1,29 @@
+{
+  "verify_seed": 262974,
+  "metrics": [
+    {
+      "failure_rate": 0.0,
+      "calls": 50,
+      "successful_calls": 50,
+      "success_rate_percent": 100.0,
+      "mean_latency_ms": 0.889,
+      "p99_latency_ms": 20.232
+    },
+    {
+      "failure_rate": 0.2,
+      "calls": 50,
+      "successful_calls": 48,
+      "success_rate_percent": 96.0,
+      "mean_latency_ms": 4.462,
+      "p99_latency_ms": 38.206
+    },
+    {
+      "failure_rate": 0.5,
+      "calls": 50,
+      "successful_calls": 47,
+      "success_rate_percent": 94.0,
+      "mean_latency_ms": 10.929,
+      "p99_latency_ms": 39.003
+    }
+  ]
+}
