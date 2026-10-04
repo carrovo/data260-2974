@@ -53,3 +53,5 @@ email-validator==2.3.0
 PyMySQL==1.2.3
 python-dotenv==1.2.3
 SQLAlchemy==2.0.54
+mcp[cli]==1.9.4
+uv==0.12.23

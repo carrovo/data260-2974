@@ -1,0 +1,440 @@
+[
+  {
+    "id": "528ceaf5-aa29-4c6e-a564-9f43a45a0a57",
+    "timestamp": "2026-10-04T21:56:25.479Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-11-25",
+        "capabilities": {
+          "sampling": {},
+          "elicitation": {
+            "form": {},
+            "url": {}
+          },
+          "roots": {
+            "listChanged": true
+          },
+          "tasks": {
+            "list": {},
+            "cancel": {},
+            "requests": {
+              "sampling": {
+                "createMessage": {}
+              },
+              "elicitation": {
+                "create": {}
+              }
+            }
+          },
+          "extensions": {
+            "io.modelcontextprotocol/tasks": {},
+            "io.modelcontextprotocol/ui": {
+              "mimeTypes": [
+                "text/html;profile=mcp-app"
+              ],
+              "elicitation": {}
+            },
+            "io.modelcontextprotocol/skills": {}
+          }
+        },
+        "clientInfo": {
+          "name": "mcp-inspector",
+          "version": "2.9.0"
+        }
+      },
+      "jsonrpc": "2.0",
+      "id": 0
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 0,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {
+          "experimental": {},
+          "prompts": {
+            "listChanged": false
+          },
+          "resources": {
+            "subscribe": false,
+            "listChanged": false
+          },
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "serverInfo": {
+          "name": "meals",
+          "version": "1.9.4"
+        }
+      }
+    },
+    "duration": 289
+  },
+  {
+    "id": "f0e8d4d2-2f7c-4f32-8cad-fceff15a7408",
+    "timestamp": "2026-10-04T21:56:25.779Z",
+    "direction": "notification",
+    "origin": "client",
+    "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/initialized"
+    }
+  },
+  {
+    "id": "a1d9626e-0d2a-4e9a-b363-0c996ade2fe1",
+    "timestamp": "2026-10-04T21:56:25.795Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "resources/list",
+      "jsonrpc": "2.0",
+      "id": 1,
+      "params": {
+        "_meta": {
+          "progressToken": 1
+        }
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "resources": []
+      }
+    },
+    "duration": 72
+  },
+  {
+    "id": "b6675bf9-abce-4a7b-a90c-d21d38a60a78",
+    "timestamp": "2026-10-04T21:56:25.795Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "tools/list",
+      "jsonrpc": "2.0",
+      "id": 2,
+      "params": {
+        "_meta": {
+          "progressToken": 2
+        }
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "name": "search_meals_by_name",
+            "description": "Search TheMealDB for meals whose names match a query.",
+            "inputSchema": {
+              "properties": {
+                "query": {
+                  "title": "Query",
+                  "type": "string"
+                },
+                "limit": {
+                  "default": 5,
+                  "title": "Limit",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "query"
+              ],
+              "title": "search_meals_by_nameArguments",
+              "type": "object"
+            }
+          },
+          {
+            "name": "meals_by_ingredient",
+            "description": "Return meals that use the requested main ingredient.",
+            "inputSchema": {
+              "properties": {
+                "ingredient": {
+                  "title": "Ingredient",
+                  "type": "string"
+                },
+                "limit": {
+                  "default": 12,
+                  "title": "Limit",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "ingredient"
+              ],
+              "title": "meals_by_ingredientArguments",
+              "type": "object"
+            }
+          },
+          {
+            "name": "meal_details",
+            "description": "Look up the complete recipe for one meal ID.",
+            "inputSchema": {
+              "properties": {
+                "id": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ],
+                  "title": "Id"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "title": "meal_detailsArguments",
+              "type": "object"
+            }
+          },
+          {
+            "name": "random_meal",
+            "description": "Return one random meal with its complete recipe.",
+            "inputSchema": {
+              "properties": {},
+              "title": "random_mealArguments",
+              "type": "object"
+            }
+          }
+        ]
+      }
+    },
+    "duration": 88
+  },
+  {
+    "id": "e428e2ec-e62b-414f-835f-726956cc6884",
+    "timestamp": "2026-10-04T21:56:25.795Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "prompts/list",
+      "jsonrpc": "2.0",
+      "id": 3,
+      "params": {
+        "_meta": {
+          "progressToken": 3
+        }
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "prompts": []
+      }
+    },
+    "duration": 98
+  },
+  {
+    "id": "94cfbc82-3051-457f-abb1-8806e5a7cdb6",
+    "timestamp": "2026-10-04T21:56:25.795Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "resources/templates/list",
+      "jsonrpc": "2.0",
+      "id": 4,
+      "params": {
+        "_meta": {
+          "progressToken": 4
+        }
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "result": {
+        "resourceTemplates": []
+      }
+    },
+    "duration": 108
+  },
+  {
+    "id": "7ebd818e-3455-42a0-8ac9-544929eafc79",
+    "timestamp": "2026-10-04T21:57:38.785Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "tools/call",
+      "params": {
+        "name": "search_meals_by_name",
+        "arguments": {
+          "limit": 5,
+          "query": "query: Arrabiata, limit: 5"
+        },
+        "_meta": {
+          "progressToken": 5
+        }
+      },
+      "jsonrpc": "2.0",
+      "id": 5
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"message\": \"no matches\",\n  \"results\": []\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    "duration": 346
+  },
+  {
+    "id": "80613b9e-f603-4f36-8b3a-4a6245d48ba4",
+    "timestamp": "2026-10-04T21:59:46.726Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "tools/call",
+      "params": {
+        "name": "search_meals_by_name",
+        "arguments": {
+          "limit": 5,
+          "query": "Arrabiata"
+        },
+        "_meta": {
+          "progressToken": 6
+        }
+      },
+      "jsonrpc": "2.0",
+      "id": 6
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"52771\",\n  \"name\": \"Spicy Arrabiata Penne\",\n  \"area\": \"Italian\",\n  \"category\": \"Vegetarian\",\n  \"thumb\": \"https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    "duration": 451
+  },
+  {
+    "id": "de498cb8-2718-4efa-b4c5-2bd7a66b3096",
+    "timestamp": "2026-10-04T22:01:14.873Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "tools/call",
+      "params": {
+        "name": "meals_by_ingredient",
+        "arguments": {
+          "limit": 3,
+          "ingredient": "chicken"
+        },
+        "_meta": {
+          "progressToken": 7
+        }
+      },
+      "jsonrpc": "2.0",
+      "id": 7
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"52940\",\n  \"name\": \"Brown Stew Chicken\",\n  \"thumb\": \"https://www.themealdb.com/images/media/meals/sypxpx1515365095.jpg\"\n}"
+          },
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"53161\",\n  \"name\": \"Chicken & chorizo rice pot\",\n  \"thumb\": \"https://www.themealdb.com/images/media/meals/fk80jp1763280767.jpg\"\n}"
+          },
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"52846\",\n  \"name\": \"Chicken & mushroom Hotpot\",\n  \"thumb\": \"https://www.themealdb.com/images/media/meals/uuuspp1511297945.jpg\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    "duration": 259
+  },
+  {
+    "id": "27cbba14-e367-460f-9bf6-3587119ee395",
+    "timestamp": "2026-10-04T22:01:57.734Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "tools/call",
+      "params": {
+        "name": "random_meal",
+        "arguments": {},
+        "_meta": {
+          "progressToken": 8
+        }
+      },
+      "jsonrpc": "2.0",
+      "id": 8
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"53217\",\n  \"name\": \"Shawarma chuck roast wrap\",\n  \"category\": \"Beef\",\n  \"area\": \"Saudi Arabian\",\n  \"instructions\": \"1\\r\\nIn a dutch oven or slow cooker, add all the spices, beef broth and lemon juice. Stir to combine..\\r\\n2\\r\\nAdd the beef and turn to coat, spoon some sauce over the top.\\r\\n3\\r\\nCover and cook on low for 8-10 hours.\\r\\n4\\r\\nAfter cooking, remove beef and use two forks to shred. Discard any excess fat.\\r\\n5\\r\\nSkim fat off of the top of the liquid remaining.\\r\\n6\\r\\nMix shredded beef into sauce. Keep warm until you are ready to serve.\\r\\n7\\r\\nBuild wrap by spreading garlic sauce on the pita. Top with beef and add garnishes to your liking.\\r\\n8\\r\\nFold it burrito style.\\r\\n9\\r\\nHeat a grill pan and grill the wrap.\",\n  \"image\": \"https://www.themealdb.com/images/media/meals/swo87v1763595282.jpg\",\n  \"source\": \"https://cookpad.com/eng/recipes/24415920?ref=search&search_term=saudi+arabia\",\n  \"youtube\": \"https://www.youtube.com/shorts/YLhyRjyLkcE\",\n  \"ingredients\": [\n    {\n      \"name\": \"Chuck Roast\",\n      \"measure\": \"1kg\"\n    },\n    {\n      \"name\": \"Beef Stock\",\n      \"measure\": \"1 cup\"\n    },\n    {\n      \"name\": \"Lemon Juice\",\n      \"measure\": \"3  tablespoons\"\n    },\n    {\n      \"name\": \"Ground Cumin\",\n      \"measure\": \"1 tablespoon\"\n    },\n    {\n      \"name\": \"Paprika\",\n      \"measure\": \"2 tsp\"\n    },\n    {\n      \"name\": \"Salt\",\n      \"measure\": \"1 tsp\"\n    },\n    {\n      \"name\": \"Ground Ginger\",\n      \"measure\": \"1 tsp\"\n    },\n    {\n      \"name\": \"Turmeric\",\n      \"measure\": \"1 tsp\"\n    },\n    {\n      \"name\": \"Cayenne Pepper\",\n      \"measure\": \"1/2 teaspoon\"\n    },\n    {\n      \"name\": \"Ground Cinnamon\",\n      \"measure\": \"1/2 teaspoon\"\n    },\n    {\n      \"name\": \"Ground Coriander\",\n      \"measure\": \"1/2 teaspoon\"\n    },\n    {\n      \"name\": \"Ground Clove\",\n      \"measure\": \"1/4 tsp\"\n    }\n  ]\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    "duration": 260
+  },
+  {
+    "id": "3465e957-4184-405a-932c-06078f28ad58",
+    "timestamp": "2026-10-04T22:02:47.927Z",
+    "direction": "request",
+    "origin": "client",
+    "message": {
+      "method": "tools/call",
+      "params": {
+        "name": "meal_details",
+        "arguments": {
+          "id": 52771
+        },
+        "_meta": {
+          "progressToken": 9
+        }
+      },
+      "jsonrpc": "2.0",
+      "id": 9
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 9,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"52771\",\n  \"name\": \"Spicy Arrabiata Penne\",\n  \"category\": \"Vegetarian\",\n  \"area\": \"Italian\",\n  \"instructions\": \"Bring a large pot of water to a boil. Add kosher salt to the boiling water, then add the pasta. Cook according to the package instructions, about 9 minutes.\\r\\nIn a large skillet over medium-high heat, add the olive oil and heat until the oil starts to shimmer. Add the garlic and cook, stirring, until fragrant, 1 to 2 minutes. Add the chopped tomatoes, red chile flakes, Italian seasoning and salt and pepper to taste. Bring to a boil and cook for 5 minutes. Remove from the heat and add the chopped basil.\\r\\nDrain the pasta and add it to the sauce. Garnish with Parmigiano-Reggiano flakes and more basil and serve warm.\",\n  \"image\": \"https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg\",\n  \"source\": null,\n  \"youtube\": \"https://www.youtube.com/watch?v=1IszT_guI08\",\n  \"ingredients\": [\n    {\n      \"name\": \"penne rigate\",\n      \"measure\": \"1 pound\"\n    },\n    {\n      \"name\": \"olive oil\",\n      \"measure\": \"1/4 cup\"\n    },\n    {\n      \"name\": \"garlic\",\n      \"measure\": \"3 cloves\"\n    },\n    {\n      \"name\": \"chopped tomatoes\",\n      \"measure\": \"1 tin\"\n    },\n    {\n      \"name\": \"red chilli flakes\",\n      \"measure\": \"1/2 teaspoon\"\n    },\n    {\n      \"name\": \"italian seasoning\",\n      \"measure\": \"1/2 teaspoon\"\n    },\n    {\n      \"name\": \"basil\",\n      \"measure\": \"6 leaves\"\n    },\n    {\n      \"name\": \"Parmigiano-Reggiano\",\n      \"measure\": \"sprinkling\"\n    }\n  ]\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    "duration": 348
+  }
+]
