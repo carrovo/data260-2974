@@ -1,20 +1,26 @@
 from fastapi import (
     Depends,
     FastAPI,
-    HTTPException,
     Query,
     Response,
+    status,
 )
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from crud import (
     create_listing,
+    create_property_manager,
     delete_listing,
+    delete_property_manager,
     get_listing,
+    get_listings_by_property_manager,
     get_listings_fixed,
     get_listings_naive,
+    get_property_manager,
+    list_property_managers,
     update_listing,
+    update_property_manager,
 )
 from database import (
     Base,
@@ -23,24 +29,29 @@ from database import (
     get_sql_count,
     reset_sql_count,
 )
-from models import RentalListing
+from models import PropertyManager, RentalListing
 from routers.auth import require_session, router as auth_router
-from schemas import ListingCreate, ListingOut, ListingUpdate
+from schemas import (
+    ListingCreate,
+    ListingOut,
+    ListingUpdate,
+    PropertyManagerCreate,
+    PropertyManagerOut,
+    PropertyManagerUpdate,
+)
 
 
-# Create missing tables when the application starts.
-# The explicit code/init_db.py script remains the reproducible
-# schema initialization script for the assignment.
+# Create tables that do not already exist.
+# Existing tables are updated separately by migrate_hw5.py.
 Base.metadata.create_all(bind=db_session_basede26)
 
 
 app = FastAPI(
     title="Rental Housing Listings API",
-    version="4.0.0",
+    version="5.0.0",
 )
 
 
-# Allow the React development server to send cookie-based requests.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -53,7 +64,6 @@ app.add_middleware(
 )
 
 
-# Register authentication routes such as login, logout, and me.
 app.include_router(auth_router)
 
 
@@ -66,12 +76,153 @@ def health() -> dict[str, str]:
     }
 
 
+# ---------------------------------------------------------
+# Property-manager endpoints
+# ---------------------------------------------------------
+
+@app.post(
+    "/api/property-managers",
+    response_model=PropertyManagerOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def add_property_manager(
+    payload: PropertyManagerCreate,
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> PropertyManager:
+    """Create one property manager."""
+
+    return create_property_manager(
+        db=db,
+        payload=payload,
+    )
+
+
+@app.get(
+    "/api/property-managers",
+    response_model=list[PropertyManagerOut],
+)
+def read_property_managers(
+    skip: int = Query(
+        default=0,
+        ge=0,
+    ),
+    limit: int = Query(
+        default=50,
+        ge=1,
+        le=200,
+    ),
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> list[PropertyManager]:
+    """Return property managers with pagination."""
+
+    return list_property_managers(
+        db=db,
+        skip=skip,
+        limit=limit,
+    )
+
+
+@app.get(
+    "/api/property-managers/{manager_id}",
+    response_model=PropertyManagerOut,
+)
+def read_property_manager(
+    manager_id: int,
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> PropertyManager:
+    """Return one property manager by ID."""
+
+    return get_property_manager(
+        db=db,
+        manager_id=manager_id,
+    )
+
+
+@app.put(
+    "/api/property-managers/{manager_id}",
+    response_model=PropertyManagerOut,
+)
+def edit_property_manager(
+    manager_id: int,
+    payload: PropertyManagerUpdate,
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> PropertyManager:
+    """Update one property manager."""
+
+    return update_property_manager(
+        db=db,
+        manager_id=manager_id,
+        payload=payload,
+    )
+
+
+@app.delete(
+    "/api/property-managers/{manager_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def remove_property_manager(
+    manager_id: int,
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> Response:
+    """Delete a manager when no listings reference it."""
+
+    delete_property_manager(
+        db=db,
+        manager_id=manager_id,
+    )
+
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT,
+    )
+
+
+@app.get(
+    "/api/property-managers/{manager_id}/listings",
+    response_model=list[ListingOut],
+)
+def read_listings_for_property_manager(
+    manager_id: int,
+    skip: int = Query(
+        default=0,
+        ge=0,
+    ),
+    limit: int = Query(
+        default=50,
+        ge=1,
+        le=200,
+    ),
+    db: Session = Depends(get_db),
+    _session=Depends(require_session),
+) -> list[RentalListing]:
+    """Return listings associated with one property manager."""
+
+    return get_listings_by_property_manager(
+        db=db,
+        manager_id=manager_id,
+        skip=skip,
+        limit=limit,
+    )
+
+
+# ---------------------------------------------------------
+# Rental-listing endpoints
+# ---------------------------------------------------------
+
 @app.get(
     "/api/listings",
     response_model=list[ListingOut],
 )
 def list_listings(
     response: Response,
+    skip: int = Query(
+        default=0,
+        ge=0,
+    ),
     page_size: int = Query(
         default=50,
         ge=1,
@@ -80,11 +231,13 @@ def list_listings(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> list[RentalListing]:
-    """Return listings using eager loading."""
+    """Return listings using eager loading and pagination."""
+
     reset_sql_count(db)
 
     listings = get_listings_fixed(
         db=db,
+        skip=skip,
         limit=page_size,
     )
 
@@ -109,7 +262,8 @@ def list_listings_naive(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> list[RentalListing]:
-    """Return listings using the intentional N+1 pattern."""
+    """Retain the intentional HW4 N+1 endpoint."""
+
     reset_sql_count(db)
 
     listings = get_listings_naive(
@@ -128,7 +282,7 @@ def list_listings_naive(
     "/api/listings/fixed",
     response_model=list[ListingOut],
 )
-def list_listings_fixed(
+def list_listings_fixed_endpoint(
     response: Response,
     page_size: int = Query(
         default=10,
@@ -138,7 +292,8 @@ def list_listings_fixed(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> list[RentalListing]:
-    """Return listings using eager loading."""
+    """Retain the optimized HW4 eager-loading endpoint."""
+
     reset_sql_count(db)
 
     listings = get_listings_fixed(
@@ -162,33 +317,25 @@ def read_listing(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> RentalListing:
-    """Return one listing by ID for an authenticated user."""
+    """Return one rental listing by ID."""
 
-    listing = get_listing(
+    return get_listing(
         db=db,
         listing_id=listing_id,
     )
-
-    if listing is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Rental listing not found",
-        )
-
-    return listing
 
 
 @app.post(
     "/api/listings",
     response_model=ListingOut,
-    status_code=201,
+    status_code=status.HTTP_201_CREATED,
 )
 def add_listing(
     payload: ListingCreate,
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> RentalListing:
-    """Create one listing for an authenticated user."""
+    """Create one rental listing."""
 
     return create_listing(
         db=db,
@@ -206,44 +353,31 @@ def edit_listing(
     db: Session = Depends(get_db),
     _session=Depends(require_session),
 ) -> RentalListing:
-    """Update the primary and secondary listing fields."""
+    """Update one rental listing."""
 
-    listing = update_listing(
+    return update_listing(
         db=db,
         listing_id=listing_id,
         payload=payload,
     )
 
-    if listing is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Rental listing not found",
-        )
-
-    return listing
-
 
 @app.delete(
     "/api/listings/{listing_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
 )
 def remove_listing(
     listing_id: int,
     db: Session = Depends(get_db),
     _session=Depends(require_session),
-) -> dict[str, str]:
-    """Delete one listing by ID."""
+) -> Response:
+    """Delete one rental listing."""
 
-    listing = delete_listing(
+    delete_listing(
         db=db,
         listing_id=listing_id,
     )
 
-    if listing is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Rental listing not found",
-        )
-
-    return {
-        "message": "Rental listing deleted successfully",
-    }
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT,
+    )
