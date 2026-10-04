@@ -1,37 +1,107 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getListingById, updateListing } from "../api";
+import {
+  useEffect,
+  useState,
+} from "react";
+import {
+  useDispatch,
+  useSelector,
+} from "react-redux";
+import {
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
-export default function UpdateRecord({ onUpdated }) {
+import {
+  clearListingError,
+  updateListing,
+} from "../features/listings/listingsSlice";
+import {
+  getListingById,
+  getPropertyManagers,
+} from "../api";
+
+
+function getRequestError(error, fallbackMessage) {
+  const detail = error.response?.data?.detail;
+
+  if (typeof detail === "string") {
+    return detail;
+  }
+
+  return error.message || fallbackMessage;
+}
+
+
+export default function UpdateRecord() {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const {
+    saving,
+    error: reduxError,
+  } = useSelector((state) => state.listings);
 
   const [form, setForm] = useState({
     listingTitle: "",
+    listingCode: "",
     address: "",
+    submitterEmail: "",
+    description: "",
+    propertyType: "Apartment",
+    monthlyRent: "",
+    availableUnits: 0,
+    termsAccepted: true,
+    propertyManagerId: "",
   });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
 
-  // Load the existing listing before editing.
+  const [managers, setManagers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [localError, setLocalError] = useState("");
+
+
   useEffect(() => {
     let active = true;
 
-    async function loadListing() {
-      try {
-        const data = await getListingById(id);
+    dispatch(clearListingError());
 
-        if (active) {
-          setForm({
-            listingTitle: data.listingTitle,
-            address: data.address,
-          });
+    async function loadPageData() {
+      try {
+        const [
+          listing,
+          managerData,
+        ] = await Promise.all([
+          getListingById(id),
+          getPropertyManagers(),
+        ]);
+
+        if (!active) {
+          return;
         }
-      } catch (err) {
+
+        setManagers(managerData);
+
+        setForm({
+          listingTitle: listing.listingTitle,
+          listingCode: listing.listingCode,
+          address: listing.address,
+          submitterEmail: listing.submitterEmail,
+          description: listing.description,
+          propertyType: listing.propertyType,
+          monthlyRent: listing.monthlyRent,
+          availableUnits: listing.availableUnits,
+          termsAccepted: listing.termsAccepted,
+          propertyManagerId: String(
+            listing.propertyManagerId,
+          ),
+        });
+      } catch (error) {
         if (active) {
-          setError(
-            err.response?.data?.detail || "Could not load the listing."
+          setLocalError(
+            getRequestError(
+              error,
+              "Unable to load the rental listing.",
+            ),
           );
         }
       } finally {
@@ -41,53 +111,72 @@ export default function UpdateRecord({ onUpdated }) {
       }
     }
 
-    loadListing();
+    loadPageData();
 
-    // Prevent state updates after leaving the page.
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [dispatch, id]);
 
-  // Update one form field.
+
   function handleChange(event) {
-    const { name, value } = event.target;
+    const {
+      name,
+      type,
+      checked,
+      value,
+    } = event.target;
 
     setForm((current) => ({
       ...current,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
-  // Submit the PUT request.
+
   async function handleSubmit(event) {
     event.preventDefault();
-    setSaving(true);
-    setError("");
+    setLocalError("");
+
+    const payload = {
+      ...form,
+      monthlyRent: Number(form.monthlyRent),
+      availableUnits: Number(form.availableUnits),
+      propertyManagerId: Number(form.propertyManagerId),
+    };
 
     try {
-      const updatedListing = await updateListing(id, form);
+      await dispatch(
+        updateListing({
+          listingId: Number(id),
+          payload,
+        }),
+      ).unwrap();
 
-      onUpdated(updatedListing);
       navigate("/");
-    } catch (err) {
-      setError(
-        err.response?.data?.detail || "Could not update the listing."
-      );
-    } finally {
-      setSaving(false);
+    } catch {
+      // Redux stores the readable error message.
     }
   }
 
+
   if (loading) {
-    return <p>Loading listing...</p>;
+    return <p>Loading listing and property managers...</p>;
   }
+
+
+  const displayedError = localError || reduxError;
+
 
   return (
     <section className="form-card">
-      <h2>Update Listing</h2>
+      <h2>Update Rental Listing #{id}</h2>
 
-      {error && <p className="error-message">{error}</p>}
+      {displayedError && (
+        <p className="error-message">
+          {displayedError}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit}>
         <label>
@@ -96,6 +185,17 @@ export default function UpdateRecord({ onUpdated }) {
             name="listingTitle"
             value={form.listingTitle}
             onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Listing code
+          <input
+            name="listingCode"
+            value={form.listingCode}
+            onChange={handleChange}
+            pattern="[A-Za-z0-9-]+"
             required
           />
         </label>
@@ -110,8 +210,105 @@ export default function UpdateRecord({ onUpdated }) {
           />
         </label>
 
+        <label>
+          Submitter email
+          <input
+            name="submitterEmail"
+            type="email"
+            value={form.submitterEmail}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Description
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            minLength="26"
+            rows="4"
+            required
+          />
+        </label>
+
+        <label>
+          Property type
+          <select
+            name="propertyType"
+            value={form.propertyType}
+            onChange={handleChange}
+          >
+            <option value="Apartment">Apartment</option>
+            <option value="House">House</option>
+            <option value="Studio">Studio</option>
+            <option value="Shared Room">Shared Room</option>
+          </select>
+        </label>
+
+        <label>
+          Monthly rent
+          <input
+            name="monthlyRent"
+            type="number"
+            min="0.01"
+            step="0.01"
+            value={form.monthlyRent}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Available units
+          <input
+            name="availableUnits"
+            type="number"
+            min="0"
+            step="1"
+            value={form.availableUnits}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Property manager
+          <select
+            name="propertyManagerId"
+            value={form.propertyManagerId}
+            onChange={handleChange}
+            required
+          >
+            {managers.map((manager) => (
+              <option
+                key={manager.id}
+                value={manager.id}
+              >
+                {manager.id} - {manager.firstName}{" "}
+                {manager.lastName}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="checkbox-label">
+          <input
+            name="termsAccepted"
+            type="checkbox"
+            checked={form.termsAccepted}
+            onChange={handleChange}
+            required
+          />
+          Terms accepted
+        </label>
+
         <div className="form-actions">
-          <button type="submit" disabled={saving}>
+          <button
+            type="submit"
+            disabled={saving}
+          >
             {saving ? "Saving..." : "Update Listing"}
           </button>
 
@@ -119,6 +316,7 @@ export default function UpdateRecord({ onUpdated }) {
             type="button"
             className="secondary-button"
             onClick={() => navigate("/")}
+            disabled={saving}
           >
             Cancel
           </button>

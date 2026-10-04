@@ -48,6 +48,22 @@ export async function logoutUser() {
   return response.data;
 }
 
+export async function getPropertyManagers(
+  skip = 0,
+  limit = 200,
+) {
+  const response = await api.get(
+    "/api/property-managers",
+    {
+      params: {
+        skip,
+        limit,
+      },
+    },
+  );
+
+  return response.data;
+}
 
 export async function getListings(pageSize = 50) {
   const response = await api.get(

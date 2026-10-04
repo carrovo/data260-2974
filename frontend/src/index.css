@@ -176,3 +176,44 @@ button:disabled {
 .danger-link:hover {
   background: #b91c1c;
 }
+
+/* HW5 form controls. */
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+  background: white;
+  color: #1f2937;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+select:focus,
+textarea:focus {
+  outline: 2px solid #93c5fd;
+  border-color: #2563eb;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-label input {
+  width: auto;
+  margin: 0;
+}
