@@ -1,0 +1,235 @@
+HW5 RUN LOG
+Student: Xuanhua Li
+SID4: 2974
+Branch: hw5
+Local timezone: America/Los_Angeles
+
+CONFIGURATION
+PORT_BASE=8274
+PREFIX=s2974
+SEED=2974
+VERIFY_SEED=262974
+DOMAIN_ID=6
+DOMAIN=rental housing
+LOCAL_MODEL=qwen3:8b
+
+
+[2026-10-03T23:05:36-07:00] PART 1 DATABASE MIGRATION
+
+$ python code/migrate_hw5.py
+
+HW5 migration complete
+Default property manager ID: 1
+Rental listings preserved: 5000
+Added/verified listing columns:
+- availableUnits
+- listingCode
+- monthlyRent
+- propertyManagerId
+- updated_at
+
+
+[2026-10-04] PART 1 FASTAPI AND REDUX VERIFICATION
+
+FastAPI health endpoint:
+HTTP 200
+{"status":"ok"}
+
+Verified API routes:
+- /api/property-managers
+- /api/property-managers/{manager_id}
+- /api/property-managers/{manager_id}/listings
+- /api/listings
+- /api/listings/{listing_id}
+
+Postman verification:
+16/16 requested CRUD, validation, relationship, and
+error-handling scenarios passed.
+
+Frontend verification:
+$ npm run lint
+PASS
+
+$ npm run build
+PASS
+
+
+[2026-10-04T14:50:29-07:00] PART 2 THEMEALDB MCP TOOLS
+
+search_meals_by_name:
+Spicy Arrabiata Penne returned successfully.
+
+meals_by_ingredient:
+2 chicken meals returned successfully.
+
+meal_details:
+Meal ID 52771 returned successfully.
+Ingredient count: 8
+
+MCP Inspector:
+4/4 TheMealDB tools passed.
+
+
+[2026-10-04T15:51:00-07:00] PART 2 DOMAIN MCP TOOLS
+
+search_listings valid input:
+PASS
+
+search_listings invalid input:
+PASS
+
+listing_details valid input:
+PASS
+
+listing_details invalid input:
+PASS
+
+manager_rent_summary valid input:
+PASS
+
+manager_rent_summary invalid input:
+PASS
+
+DOMAIN TOOL SMOKE TEST: 6/6 PASS
+MCP Inspector scenarios: 6/6 PASS
+
+
+[2026-10-04T16:14:51-07:00] PART 3 RETRY DEMONSTRATION
+
+Scenario 1:
+Success on first attempt.
+
+Scenario 2:
+First attempt failed; second attempt succeeded.
+
+Scenario 3:
+All three attempts failed and returned a controlled error.
+
+RETRY DEMONSTRATION: 3/3 PASS
+
+
+[2026-10-04T16:22:00-07:00] PART 3 FAILURE-INJECTION EXPERIMENT
+
+VERIFY_SEED: 262974
+Retry policy:
+- Maximum attempts: 3
+- Timeout: 1.0 second
+- Backoff: 10 ms / 20 ms
+
+Failure rate 0%:
+- Calls: 50
+- Success rate: 100.00%
+- Mean latency: 0.889 ms
+- p99 latency: 20.232 ms
+
+Failure rate 20%:
+- Calls: 50
+- Success rate: 96.00%
+- Mean latency: 4.462 ms
+- p99 latency: 38.206 ms
+
+Failure rate 50%:
+- Calls: 50
+- Success rate: 94.00%
+- Mean latency: 10.929 ms
+- p99 latency: 39.003 ms
+
+Raw call records: 150
+Determinism check: PASS
+FAILURE-INJECTION EXPERIMENT: PASS
+
+
+[2026-10-04T19:24:00-07:00] PART 4 OFFLINE TESTS
+
+Database: temporary in-memory SQLite fixture
+LLM: not used
+
+Original Part 4 test result:
+FINAL SUMMARY: 8/8 PASS
+
+
+[2026-10-04T20:17:28-07:00] PART 5 SAFETY DEMONSTRATION
+
+Allowed call:
+query=Apartment
+ok=true
+
+Blocked call:
+query=no families with children
+ok=false
+error=Safety rule blocked a discriminatory housing search.
+
+SAFETY RULE DEMONSTRATION: 2/2 PASS
+
+
+[2026-10-04T19:54:19-07:00] PART 5 LIVE AGENT - SEARCH
+
+Model: qwen3:8b
+Tool: search_listings
+Step count: 2
+Tool-call count: 1
+Stop reason: normal_completion
+Result: PASS
+
+
+[2026-10-04T19:57:40-07:00] PART 5 LIVE AGENT - DETAILS
+
+Model: qwen3:8b
+Tool: listing_details
+Step count: 2
+Tool-call count: 1
+Stop reason: normal_completion
+Result: PASS
+
+
+[2026-10-04T19:58:43-07:00] PART 5 LIVE AGENT - SUMMARY
+
+Model: qwen3:8b
+Tool: manager_rent_summary
+Step count: 2
+Tool-call count: 1
+Stop reason: normal_completion
+Result: PASS
+
+
+[2026-10-04T20:00:43-07:00] PART 5 LIVE AGENT - SAFETY BLOCK
+
+Model: qwen3:8b
+Tool: search_listings
+Step count: 1
+Tool-call count: 1
+Stop reason: safety_block
+Result: PASS
+
+
+[2026-10-04T20:17:28-07:00] FINAL PART 4 + PART 5 OFFLINE TESTS
+
+PASS | search valid
+PASS | search invalid
+PASS | detail valid
+PASS | detail invalid
+PASS | aggregate valid
+PASS | aggregate invalid
+PASS | unknown tool
+PASS | non-object inputs
+PASS | safety rule block
+PASS | agent max steps
+
+FINAL SUMMARY: 10/10 PASS
+
+
+[2026-10-04T20:18:00-07:00] PART 5 AGENT METRICS
+
+JSONL records: 5
+Live scenarios: 4/4 PASS
+Average step count: 1.75
+Average tool-call count: 1.00
+Normal completions: 3
+Safety-rule blocks: 1
+
+Dependency check:
+No broken requirements found.
+
+Reflection word count:
+239 words
+REFLECTION LENGTH: PASS

@@ -1,0 +1,76 @@
+{
+  "homework": "HW5",
+  "student": "Xuanhua Li",
+  "sid4": 2974,
+  "commit_hash": "a496aadab906010956bb42ca5f5bb77f62862e9a",
+  "timestamp": "2026-10-04T20:36:29.376492-07:00",
+  "model": {
+    "provider": "Ollama",
+    "name": "qwen3:8b"
+  },
+  "configuration": {
+    "PORT_BASE": 8274,
+    "PREFIX": "s2974",
+    "SEED": 2974,
+    "VERIFY_SEED": 262974,
+    "DOMAIN_ID": 6,
+    "DOMAIN": "rental housing"
+  },
+  "checks": [
+    {
+      "name": "FastAPI health endpoint",
+      "passed": true,
+      "details": "Existing server returned {'status': 'ok'}"
+    },
+    {
+      "name": "MySQL relational schema",
+      "passed": true,
+      "details": "5 required tables; 5000 listings; 1 manager(s)"
+    },
+    {
+      "name": "Redux client",
+      "passed": true,
+      "details": "Redux Toolkit packages and listing store files found"
+    },
+    {
+      "name": "TheMealDB MCP tool",
+      "passed": true,
+      "details": "TheMealDB MCP server imported; tool returned Spicy Arrabiata Penne"
+    },
+    {
+      "name": "Rental domain MCP tool",
+      "passed": true,
+      "details": "Domain MCP server imported; tool returned S2974-000004"
+    },
+    {
+      "name": "Tool safety rule",
+      "passed": true,
+      "details": "Discriminatory housing search blocked before handler execution"
+    },
+    {
+      "name": "Offline tool tests",
+      "passed": true,
+      "details": "Part 4 + Part 5 offline tests: 10/10"
+    },
+    {
+      "name": "Ollama local model",
+      "passed": true,
+      "details": "Local model installed: qwen3:8b"
+    },
+    {
+      "name": "Failure-injection raw records",
+      "passed": true,
+      "details": "150 JSON records and 150 CSV records; VERIFY_SEED=262974"
+    },
+    {
+      "name": "Agent JSONL logs",
+      "passed": true,
+      "details": "5 logged runs; 4 normal; 1 safety-blocked"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "total": 10,
+    "all_passed": true
+  }
+}
