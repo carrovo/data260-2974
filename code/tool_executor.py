@@ -22,6 +22,49 @@ DEFAULT_TOOL_HANDLERS: dict[str, ToolHandler] = {
     "manager_rent_summary": manager_rent_summary,
 }
 
+BLOCKED_HOUSING_SEARCH_PHRASES = (
+    "no children",
+    "no kids",
+    "no families",
+    "families not allowed",
+    "adults only",
+    "christians only",
+    "no muslims",
+    "no disabled tenants",
+)
+
+SAFETY_ERROR_MESSAGE = (
+    "Safety rule blocked a discriminatory "
+    "housing search."
+)
+
+
+def _check_safety_rule(
+    name: str,
+    inputs: dict[str, Any],
+) -> str | None:
+    """Block discriminatory rental-housing searches."""
+
+    if name != "search_listings":
+        return None
+
+    query = inputs.get("query")
+
+    if not isinstance(query, str):
+        return None
+
+    normalized_query = " ".join(
+        query.lower().split()
+    )
+
+    if any(
+        phrase in normalized_query
+        for phrase in BLOCKED_HOUSING_SEARCH_PHRASES
+    ):
+        return SAFETY_ERROR_MESSAGE
+
+    return None
+
 
 def _has_valid_envelope(result: Any) -> bool:
     return (
@@ -58,6 +101,16 @@ def execute_tool(
             error_response(
                 "tool inputs must be a JSON object"
             )
+        )
+
+    safety_error = _check_safety_rule(
+        name,
+        inputs,
+    )
+
+    if safety_error is not None:
+        return json.dumps(
+            error_response(safety_error)
         )
 
     handler = registry.get(name)

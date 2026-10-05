@@ -11,7 +11,10 @@ os.environ["DATABASE_URL"] = (
 from sqlalchemy import create_engine, text
 from sqlalchemy.pool import StaticPool
 
+from langchain_core.messages import AIMessage
+
 import domain_tools
+from hw5_agent import run_agent
 from tool_executor import execute_tool
 
 
@@ -266,6 +269,94 @@ def test_non_object_inputs() -> None:
         "tool inputs must be a JSON object"
     )
 
+def test_safety_rule_block() -> None:
+    handler_called = False
+
+    def unsafe_handler(**_inputs):
+        nonlocal handler_called
+        handler_called = True
+
+        return {
+            "ok": True,
+            "data": [],
+            "error": None,
+        }
+
+    raw_result = execute_tool(
+        "search_listings",
+        {
+            "query": "no families with children",
+            "limit": 5,
+        },
+        handlers={
+            "search_listings": unsafe_handler,
+        },
+    )
+
+    result = json.loads(raw_result)
+
+    assert result["ok"] is False
+    assert result["data"] is None
+    assert result["error"] == (
+        "Safety rule blocked a discriminatory "
+        "housing search."
+    )
+    assert handler_called is False
+
+
+class AlwaysCallsToolModel:
+    def __init__(self) -> None:
+        self.call_count = 0
+
+    def invoke(self, _messages):
+        self.call_count += 1
+
+        return AIMessage(
+            content="",
+            tool_calls=[
+                {
+                    "name": "search_listings",
+                    "args": {
+                        "query": "Offline",
+                        "limit": 1,
+                    },
+                    "id": (
+                        f"mock-call-{self.call_count}"
+                    ),
+                    "type": "tool_call",
+                }
+            ],
+        )
+
+
+def test_agent_max_steps() -> None:
+    model = AlwaysCallsToolModel()
+
+    def fake_execute_tool(
+        _name: str,
+        _inputs: dict,
+    ) -> str:
+        return json.dumps(
+            {
+                "ok": True,
+                "data": [],
+                "error": None,
+            }
+        )
+
+    result = run_agent(
+        "Keep searching for another listing.",
+        model=model,
+        model_name="offline-mock-model",
+        max_steps=3,
+        execute_fn=fake_execute_tool,
+        log_path=None,
+    )
+
+    assert result["stop_reason"] == "max_steps"
+    assert result["step_count"] == 3
+    assert result["tool_call_count"] == 3
+    assert model.call_count == 3
 
 TESTS: list[tuple[str, Callable[[], None]]] = [
     ("search valid", test_search_valid),
@@ -276,14 +367,16 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     ("aggregate invalid", test_aggregate_invalid),
     ("unknown tool", test_unknown_tool),
     ("non-object inputs", test_non_object_inputs),
+    ("safety rule block", test_safety_rule_block),
+    ("agent max steps", test_agent_max_steps),
 ]
 
 
 def main() -> None:
     print(f"Student: {STUDENT_NAME} | SID4: {SID4}")
-    print("HW5 PART 4 OFFLINE TOOL TESTS")
+    print("HW5 PART 4 + PART 5 OFFLINE TESTS")
     print("Database: temporary in-memory SQLite fixture")
-    print("LLM: not used\n")
+    print("LLM: mocked; Ollama is not called\n")
 
     fixture_engine = create_fixture_engine()
     original_engine = domain_tools.db_session_basede26
