@@ -1,0 +1,29 @@
+version: 1
+description: Fixed HW6 probes for the controlled 30-turn rental-memory experiment.
+scoring_rubric:
+  5: Correct fact with no conflicting or outdated value.
+  4: Correct fact with minor irrelevant wording.
+  3: Correct fact appears together with a conflicting value.
+  2: Partial or uncertain recall without a clear correct answer.
+  1: Incorrect fact, outdated fact, or no usable recall.
+probes:
+  - id: budget
+    question: What is my current maximum monthly rent budget?
+    expected_any: ["2200", "2,200"]
+    forbidden_any: ["2400", "2,400"]
+  - id: city
+    question: Which city do I currently prefer for the rental search?
+    expected_any: ["san jose"]
+    forbidden_any: ["santa clara"]
+  - id: move_date
+    question: What is my current target move-in date?
+    expected_any: ["november 15", "nov 15", "2026-11-15"]
+    forbidden_any: ["november 1", "nov 1", "2026-11-01"]
+  - id: pet
+    question: What pet accommodation do I need?
+    expected_any: ["cat", "indoor cat"]
+    forbidden_any: ["no pet"]
+  - id: must_have
+    question: What feature did I say the rental must have?
+    expected_any: ["in-unit laundry", "in unit laundry"]
+    forbidden_any: []

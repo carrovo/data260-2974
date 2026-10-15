@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HW6 Rental Memory Assistant</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, system-ui, sans-serif; }
+    body { margin: 0; background: #f3f5f9; color: #19212c; }
+    main { width: min(920px, calc(100% - 32px)); margin: 32px auto; }
+    header, section { background: white; border: 1px solid #d9dfeb; border-radius: 14px; padding: 20px; box-shadow: 0 8px 30px #1d35570d; }
+    header { margin-bottom: 16px; }
+    h1 { margin: 0 0 8px; font-size: 24px; }
+    p { margin: 4px 0; color: #596577; }
+    .config { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    label { display: grid; gap: 5px; font-size: 12px; font-weight: 700; color: #536174; }
+    input, select, textarea, button { font: inherit; }
+    input, select, textarea { padding: 10px; border: 1px solid #c9d1df; border-radius: 8px; }
+    textarea { width: 100%; box-sizing: border-box; min-height: 80px; resize: vertical; }
+    button { border: 0; border-radius: 8px; padding: 11px 18px; background: #3157d5; color: white; font-weight: 700; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+    #messages { min-height: 260px; max-height: 500px; overflow-y: auto; padding: 4px; margin-bottom: 14px; }
+    .message { margin: 10px 0; padding: 12px 14px; border-radius: 10px; white-space: pre-wrap; }
+    .user { margin-left: 80px; background: #e6ecff; }
+    .assistant { margin-right: 80px; background: #eef2f5; }
+    .meta { font: 12px ui-monospace, monospace; color: #657187; margin-top: 6px; }
+    .composer { display: grid; gap: 10px; }
+    .error { color: #a61b1b; }
+    @media (max-width: 680px) { .config { grid-template-columns: 1fr; } .user, .assistant { margin-left: 0; margin-right: 0; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Rental Memory Assistant</h1>
+      <p>DATA 260 HW6 · SID4 2974 · Local qwen3:8b · MongoDB s2974_doc</p>
+    </header>
+    <section>
+      <div class="config">
+        <label>User ID<input id="user" value="carol-demo"></label>
+        <label>Session ID<input id="session" value="hw6-demo-session"></label>
+        <label>Memory mode
+          <select id="mode">
+            <option value="mongodb">MongoDB</option>
+            <option value="file">File</option>
+            <option value="hybrid">Hybrid</option>
+          </select>
+        </label>
+      </div>
+      <div id="messages"></div>
+      <form id="form" class="composer">
+        <textarea id="message" required placeholder="Tell the assistant a preference, or use /memory, /compact, /dream, /help"></textarea>
+        <button id="send" type="submit">Send message</button>
+      </form>
+    </section>
+  </main>
+  <script>
+    const form = document.querySelector("#form");
+    const send = document.querySelector("#send");
+    const messages = document.querySelector("#messages");
+
+    function addMessage(role, text, meta = "") {
+      const item = document.createElement("div");
+      item.className = `message ${role}`;
+      item.textContent = `${role === "user" ? "You" : "Assistant"}: ${text}`;
+      if (meta) {
+        const detail = document.createElement("div");
+        detail.className = "meta";
+        detail.textContent = meta;
+        item.appendChild(detail);
+      }
+      messages.appendChild(item);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const input = document.querySelector("#message");
+      const message = input.value.trim();
+      if (!message) return;
+      addMessage("user", message);
+      input.value = "";
+      send.disabled = true;
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: document.querySelector("#user").value.trim(),
+            session_id: document.querySelector("#session").value.trim(),
+            memory_mode: document.querySelector("#mode").value,
+            message,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || JSON.stringify(data));
+        const meta = `short=${data.used_memory.short_term_message_count ?? 0} · episodes=${data.used_memory.episodic_facts?.length ?? 0} · prompt=${data.metrics.prompt_tokens ?? 0} · latency=${data.metrics.latency_ms ?? 0}ms`;
+        addMessage("assistant", data.reply, meta);
+      } catch (error) {
+        addMessage("assistant", `ERROR: ${error.message}`);
+        messages.lastElementChild.classList.add("error");
+      } finally {
+        send.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

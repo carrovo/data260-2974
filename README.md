@@ -1,4 +1,4 @@
-# DATA 260 Homework 1
+# DATA 260 Homework 1-6
 
 ## Project Overview
 
@@ -204,3 +204,37 @@ The submitted verification checks required files, experiment counts, token accou
 ## Repository Link
 
 https://github.com/carrovo/data260-2974
+
+## Homework 6
+
+HW6 extends the same FastAPI application with a MongoDB document API,
+short-/long-/episodic conversation memory, controlled memory-cost
+experiments, and file-based memory through `AGENT.md` and `MEMORY.md`.
+
+Start the HW6 MongoDB service:
+
+```bash
+docker compose -f docker-compose.hw6.yml up -d
+```
+
+Start the application on the assigned port:
+
+```bash
+uvicorn main:app --app-dir code --host 127.0.0.1 --port 8274
+```
+
+Useful pages:
+
+- API documentation: `http://127.0.0.1:8274/docs`
+- Memory chat UI: `http://127.0.0.1:8274/hw6-chat`
+
+Run the deterministic checks before the model experiment:
+
+```bash
+python code/test_hw6_offline.py
+python code/hw6_memory_experiment.py --dry-run
+```
+
+Full reproduction steps and the screenshot checklist are in
+`reports/hw06/REPRODUCE.md` and
+`reports/hw06/SCREENSHOT_CHECKLIST.md`.

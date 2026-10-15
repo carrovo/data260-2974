@@ -1,12 +1,4 @@
-from fastapi import (
-    Depends,
-    FastAPI,
-    Query,
-    Response,
-    status,
-)
-from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
+from pathlib import Path
 
 from crud import (
     create_listing,
@@ -29,8 +21,22 @@ from database import (
     get_sql_count,
     reset_sql_count,
 )
+from fastapi import (
+    Depends,
+    FastAPI,
+    Query,
+    Response,
+    status,
+)
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from models import PropertyManager, RentalListing
-from routers.auth import require_session, router as auth_router
+from mongo_database import ensure_hw6_collections
+from pymongo.errors import PyMongoError
+from routers.auth import require_session
+from routers.auth import router as auth_router
+from routers.hw6_listings import router as hw6_listings_router
+from routers.hw6_memory import router as hw6_memory_router
 from schemas import (
     ListingCreate,
     ListingOut,
@@ -39,7 +45,7 @@ from schemas import (
     PropertyManagerOut,
     PropertyManagerUpdate,
 )
-
+from sqlalchemy.orm import Session
 
 # Create tables that do not already exist.
 # Existing tables are updated separately by migrate_hw5.py.
@@ -48,7 +54,7 @@ Base.metadata.create_all(bind=db_session_basede26)
 
 app = FastAPI(
     title="Rental Housing Listings API",
-    version="5.0.0",
+    version="6.0.0",
 )
 
 
@@ -65,6 +71,18 @@ app.add_middleware(
 
 
 app.include_router(auth_router)
+app.include_router(hw6_listings_router)
+app.include_router(hw6_memory_router)
+
+
+@app.on_event("startup")
+def initialize_hw6_mongodb() -> None:
+    """Apply MongoDB collection validators when MongoDB is available."""
+
+    try:
+        ensure_hw6_collections()
+    except PyMongoError as exc:
+        print(f"HW6 MongoDB startup warning: {type(exc).__name__}: {exc}")
 
 
 @app.get("/health")
@@ -76,9 +94,18 @@ def health() -> dict[str, str]:
     }
 
 
+@app.get("/hw6-chat", response_class=HTMLResponse)
+def hw6_chat_page() -> str:
+    """Small optional chat UI used for HW6 screenshots."""
+
+    path = Path(__file__).with_name("hw6_chat.html")
+    return path.read_text(encoding="utf-8")
+
+
 # ---------------------------------------------------------
 # Property-manager endpoints
 # ---------------------------------------------------------
+
 
 @app.post(
     "/api/property-managers",
@@ -213,6 +240,7 @@ def read_listings_for_property_manager(
 # Rental-listing endpoints
 # ---------------------------------------------------------
 
+
 @app.get(
     "/api/listings",
     response_model=list[ListingOut],
@@ -241,9 +269,7 @@ def list_listings(
         limit=page_size,
     )
 
-    response.headers["X-SQL-Statements"] = str(
-        get_sql_count(db)
-    )
+    response.headers["X-SQL-Statements"] = str(get_sql_count(db))
 
     return listings
 
@@ -271,9 +297,7 @@ def list_listings_naive(
         limit=page_size,
     )
 
-    response.headers["X-SQL-Statements"] = str(
-        get_sql_count(db)
-    )
+    response.headers["X-SQL-Statements"] = str(get_sql_count(db))
 
     return listings
 
@@ -301,9 +325,7 @@ def list_listings_fixed_endpoint(
         limit=page_size,
     )
 
-    response.headers["X-SQL-Statements"] = str(
-        get_sql_count(db)
-    )
+    response.headers["X-SQL-Statements"] = str(get_sql_count(db))
 
     return listings
 
