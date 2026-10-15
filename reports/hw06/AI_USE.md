@@ -1,5 +1,5 @@
 # AI Use Statement
 
-I used Codex to help implement and review the HW6 MongoDB and memory-system code, create test and experiment scripts, and identify integration issues with the existing project. I kept the existing application structure and will run the services, inspect the outputs, collect screenshots, and verify the final submission myself.
+I used Codex to assist with implementing and reviewing parts of the HW6 MongoDB and memory-system code, preparing test and experiment scripts, and troubleshooting integration issues. I reviewed the changes against the assignment requirements and kept them consistent with my existing FastAPI project structure.
 
-One item I independently verified was whether the provided long-term-memory demo could be copied directly. It used Flask and a hosted OpenAI model, while HW6 requires the existing FastAPI application and local Ollama adapter. I therefore kept FastAPI and `src/model_client.py`, then added the required MongoDB memory logic around them.
+I compared the provided long-term-memory demo with my existing application and found that it used Flask and a hosted OpenAI model, while HW6 requires FastAPI and the local Ollama adapter. Based on this comparison, I kept FastAPI and src/model_client.py and integrated the required MongoDB memory functionality into the existing project.
