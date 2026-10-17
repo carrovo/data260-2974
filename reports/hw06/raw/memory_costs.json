@@ -1,0 +1,31 @@
+{
+  "pricing": {
+    "input_per_million_tokens_usd": 1,
+    "output_per_million_tokens_usd": 5,
+    "conversation_count": 10000,
+    "turns_per_conversation": 30
+  },
+  "selection_rule": "Best is the lowest-cost setting within 0.5 points of the highest probe-quality score. Worst is the highest-cost measured setting.",
+  "best": {
+    "setting": "Importance eviction (N=12)",
+    "short_term_n": 12,
+    "policy": "importance_eviction",
+    "mean_prompt_tokens_per_turn": 911.567,
+    "mean_total_input_tokens_per_turn": 1262.7,
+    "mean_total_output_tokens_per_turn": 165.067,
+    "mean_latency_ms": 14989.82,
+    "mean_probe_quality": 4.6,
+    "estimated_cost_10000_30_turn_conversations_usd": 626.41
+  },
+  "worst": {
+    "setting": "SHORT_TERM_N=30",
+    "short_term_n": 30,
+    "policy": "standard",
+    "mean_prompt_tokens_per_turn": 1249.033,
+    "mean_total_input_tokens_per_turn": 1604.467,
+    "mean_total_output_tokens_per_turn": 179.9,
+    "mean_latency_ms": 19876.919,
+    "mean_probe_quality": 4.6,
+    "estimated_cost_10000_30_turn_conversations_usd": 751.19
+  }
+}

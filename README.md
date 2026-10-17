@@ -220,7 +220,8 @@ docker compose -f docker-compose.hw6.yml up -d
 Start the application on the assigned port:
 
 ```bash
-uvicorn main:app --app-dir code --host 127.0.0.1 --port 8274
+export PYTHONPATH="$PWD:$PWD/code"
+python -m uvicorn main:app --host 127.0.0.1 --port 8274
 ```
 
 Useful pages:

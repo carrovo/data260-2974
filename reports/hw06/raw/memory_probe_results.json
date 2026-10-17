@@ -1,0 +1,766 @@
+[
+  {
+    "setting": "SHORT_TERM_N=4",
+    "stage": "probe",
+    "turn_number": 31,
+    "probe_id": "budget",
+    "question": "What is my current maximum monthly rent budget?",
+    "answer": "Your current maximum monthly rent budget is **$2,200**.",
+    "score": 5,
+    "expected_any": [
+      "2200",
+      "2,200"
+    ],
+    "forbidden_any": [
+      "2400",
+      "2,400"
+    ],
+    "turn_id": "f875afd5c9ec4393b7d35eb1728eef2a",
+    "created_at": "2026-10-16T23:20:34.368328+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-4",
+    "session_id": "session-short_term_n-4",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 4,
+    "prompt_tokens": 1026,
+    "completion_tokens": 17,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 17,
+    "token_breakdown": {
+      "system_primer": 21,
+      "long_term_summary": 697,
+      "short_term_window": 278,
+      "episodic_facts": 26,
+      "file_memory": 0,
+      "current_message": 4
+    },
+    "latency_ms": 14813.722
+  },
+  {
+    "setting": "SHORT_TERM_N=4",
+    "stage": "probe",
+    "turn_number": 32,
+    "probe_id": "city",
+    "question": "Which city do I currently prefer for the rental search?",
+    "answer": "You currently prefer **San Jose** for the rental search.",
+    "score": 5,
+    "expected_any": [
+      "san jose"
+    ],
+    "forbidden_any": [
+      "santa clara"
+    ],
+    "turn_id": "ba2260129f864882b734a904d061fd7b",
+    "created_at": "2026-10-16T23:23:51.418409+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-4",
+    "session_id": "session-short_term_n-4",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 4,
+    "prompt_tokens": 1872,
+    "completion_tokens": 13,
+    "auxiliary_input_tokens": 2990,
+    "auxiliary_output_tokens": 1355,
+    "total_input_tokens": 4862,
+    "total_output_tokens": 1368,
+    "token_breakdown": {
+      "system_primer": 45,
+      "long_term_summary": 1476,
+      "short_term_window": 287,
+      "episodic_facts": 54,
+      "file_memory": 0,
+      "current_message": 10
+    },
+    "latency_ms": 25167.772
+  },
+  {
+    "setting": "SHORT_TERM_N=4",
+    "stage": "probe",
+    "turn_number": 33,
+    "probe_id": "move_date",
+    "question": "What is my current target move-in date?",
+    "answer": "Your current target move-in date is **November 15, 2026**.",
+    "score": 3,
+    "expected_any": [
+      "november 15",
+      "nov 15",
+      "2026-11-15"
+    ],
+    "forbidden_any": [
+      "november 1",
+      "nov 1",
+      "2026-11-01"
+    ],
+    "turn_id": "18cd4a59acae44a8a532d376800ff91b",
+    "created_at": "2026-10-16T23:24:14.724569+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-4",
+    "session_id": "session-short_term_n-4",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 4,
+    "prompt_tokens": 1591,
+    "completion_tokens": 21,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1591,
+    "total_output_tokens": 21,
+    "token_breakdown": {
+      "system_primer": 46,
+      "long_term_summary": 1424,
+      "short_term_window": 55,
+      "episodic_facts": 57,
+      "file_memory": 0,
+      "current_message": 9
+    },
+    "latency_ms": 21275.182
+  },
+  {
+    "setting": "SHORT_TERM_N=4",
+    "stage": "probe",
+    "turn_number": 34,
+    "probe_id": "pet",
+    "question": "What pet accommodation do I need?",
+    "answer": "You currently **do not require** pet accommodation, but you are **open to options** if they fit within your **$2,200/month budget**. However, since you now have an **indoor cat**, the rental must be **pet-friendly** to accommodate your cat.",
+    "score": 5,
+    "expected_any": [
+      "cat",
+      "indoor cat"
+    ],
+    "forbidden_any": [
+      "no pet"
+    ],
+    "turn_id": "7fd2443353b5401db91573fa97a5055d",
+    "created_at": "2026-10-16T23:24:24.740357+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-4",
+    "session_id": "session-short_term_n-4",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 4,
+    "prompt_tokens": 1587,
+    "completion_tokens": 60,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1587,
+    "total_output_tokens": 60,
+    "token_breakdown": {
+      "system_primer": 45,
+      "long_term_summary": 1420,
+      "short_term_window": 57,
+      "episodic_facts": 58,
+      "file_memory": 0,
+      "current_message": 7
+    },
+    "latency_ms": 9131.987
+  },
+  {
+    "setting": "SHORT_TERM_N=4",
+    "stage": "probe",
+    "turn_number": 35,
+    "probe_id": "must_have",
+    "question": "What feature did I say the rental must have?",
+    "answer": "You stated that the rental **must have in-unit laundry**.",
+    "score": 5,
+    "expected_any": [
+      "in-unit laundry",
+      "in unit laundry"
+    ],
+    "forbidden_any": [],
+    "turn_id": "d0df3ee8e12a41d1af8b634e37624944",
+    "created_at": "2026-10-16T23:24:29.800093+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-4",
+    "session_id": "session-short_term_n-4",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 4,
+    "prompt_tokens": 1622,
+    "completion_tokens": 14,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1622,
+    "total_output_tokens": 14,
+    "token_breakdown": {
+      "system_primer": 45,
+      "long_term_summary": 1413,
+      "short_term_window": 105,
+      "episodic_facts": 50,
+      "file_memory": 0,
+      "current_message": 9
+    },
+    "latency_ms": 4038.445
+  },
+  {
+    "setting": "SHORT_TERM_N=12",
+    "stage": "probe",
+    "turn_number": 31,
+    "probe_id": "budget",
+    "question": "What is my current maximum monthly rent budget?",
+    "answer": "Your current maximum monthly rent budget is **$2,200**.",
+    "score": 5,
+    "expected_any": [
+      "2200",
+      "2,200"
+    ],
+    "forbidden_any": [
+      "2400",
+      "2,400"
+    ],
+    "turn_id": "60b46de62c9c4c2f869e383fa6a8fbb5",
+    "created_at": "2026-10-16T23:40:17.395542+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-12",
+    "session_id": "session-short_term_n-12",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 12,
+    "prompt_tokens": 1714,
+    "completion_tokens": 17,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1714,
+    "total_output_tokens": 17,
+    "token_breakdown": {
+      "system_primer": 47,
+      "long_term_summary": 792,
+      "short_term_window": 808,
+      "episodic_facts": 58,
+      "file_memory": 0,
+      "current_message": 9
+    },
+    "latency_ms": 13530.47
+  },
+  {
+    "setting": "SHORT_TERM_N=12",
+    "stage": "probe",
+    "turn_number": 32,
+    "probe_id": "city",
+    "question": "Which city do I currently prefer for the rental search?",
+    "answer": "Your current preferred city for the rental search is **San Jose**.",
+    "score": 5,
+    "expected_any": [
+      "san jose"
+    ],
+    "forbidden_any": [
+      "santa clara"
+    ],
+    "turn_id": "a42824795a0b425e8c4db3a33b71c3eb",
+    "created_at": "2026-10-16T23:43:37.711063+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-12",
+    "session_id": "session-short_term_n-12",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 12,
+    "prompt_tokens": 1644,
+    "completion_tokens": 15,
+    "auxiliary_input_tokens": 2818,
+    "auxiliary_output_tokens": 1472,
+    "total_input_tokens": 4462,
+    "total_output_tokens": 1487,
+    "token_breakdown": {
+      "system_primer": 48,
+      "long_term_summary": 792,
+      "short_term_window": 736,
+      "episodic_facts": 57,
+      "file_memory": 0,
+      "current_message": 11
+    },
+    "latency_ms": 12327.277
+  },
+  {
+    "setting": "SHORT_TERM_N=12",
+    "stage": "probe",
+    "turn_number": 33,
+    "probe_id": "move_date",
+    "question": "What is my current target move-in date?",
+    "answer": "Your current target move-in date is **November 15, 2026**.",
+    "score": 3,
+    "expected_any": [
+      "november 15",
+      "nov 15",
+      "2026-11-15"
+    ],
+    "forbidden_any": [
+      "november 1",
+      "nov 1",
+      "2026-11-01"
+    ],
+    "turn_id": "04ff50890d5e41799e02098c2de1dabd",
+    "created_at": "2026-10-16T23:43:55.527781+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-12",
+    "session_id": "session-short_term_n-12",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 12,
+    "prompt_tokens": 1026,
+    "completion_tokens": 21,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 21,
+    "token_breakdown": {
+      "system_primer": 20,
+      "long_term_summary": 699,
+      "short_term_window": 278,
+      "episodic_facts": 25,
+      "file_memory": 0,
+      "current_message": 4
+    },
+    "latency_ms": 15805.244
+  },
+  {
+    "setting": "SHORT_TERM_N=12",
+    "stage": "probe",
+    "turn_number": 34,
+    "probe_id": "pet",
+    "question": "What pet accommodation do I need?",
+    "answer": "Your current **pet accommodation** requirement is:\n\n- **Pet-Friendly Policy:** **Required** (you now have an indoor cat).\n- **Pet Type:** **Indoor cat**.\n- **No specific restrictions** on the number or size of pets, unless otherwise noted in the listing.\n\n### ✅ Summary of Pet Accommodation Needs:\n- **Must allow cats** (specifically an indoor cat).\n- **No additional pet fees** unless explicitly stated (you may want to prioritize listings with no pet fees).\n- **No restrictions on cat size or number** unless specified in the rental agreement.\n\nLet me know if you'd like help filtering for **pet-friendly apartments** in San Jose or other areas that meet your full set of criteria!",
+    "score": 3,
+    "expected_any": [
+      "cat",
+      "indoor cat"
+    ],
+    "forbidden_any": [
+      "no pet"
+    ],
+    "turn_id": "e6d6ce9ce64a45b39a4c7b109511dc0a",
+    "created_at": "2026-10-16T23:44:26.350435+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-12",
+    "session_id": "session-short_term_n-12",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 12,
+    "prompt_tokens": 1026,
+    "completion_tokens": 151,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 151,
+    "token_breakdown": {
+      "system_primer": 21,
+      "long_term_summary": 724,
+      "short_term_window": 252,
+      "episodic_facts": 26,
+      "file_memory": 0,
+      "current_message": 3
+    },
+    "latency_ms": 29727.588
+  },
+  {
+    "setting": "SHORT_TERM_N=12",
+    "stage": "probe",
+    "turn_number": 35,
+    "probe_id": "must_have",
+    "question": "What feature did I say the rental must have?",
+    "answer": "The rental must have **in-unit laundry**.",
+    "score": 5,
+    "expected_any": [
+      "in-unit laundry",
+      "in unit laundry"
+    ],
+    "forbidden_any": [],
+    "turn_id": "0e9ee4f4a1604a9a9a4092d78a92de1d",
+    "created_at": "2026-10-16T23:44:41.879261+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-12",
+    "session_id": "session-short_term_n-12",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 12,
+    "prompt_tokens": 1026,
+    "completion_tokens": 11,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 11,
+    "token_breakdown": {
+      "system_primer": 20,
+      "long_term_summary": 708,
+      "short_term_window": 272,
+      "episodic_facts": 22,
+      "file_memory": 0,
+      "current_message": 4
+    },
+    "latency_ms": 14274.452
+  },
+  {
+    "setting": "SHORT_TERM_N=30",
+    "stage": "probe",
+    "turn_number": 31,
+    "probe_id": "budget",
+    "question": "What is my current maximum monthly rent budget?",
+    "answer": "Your current **maximum monthly rent budget** is **$2,200**.",
+    "score": 5,
+    "expected_any": [
+      "2200",
+      "2,200"
+    ],
+    "forbidden_any": [
+      "2400",
+      "2,400"
+    ],
+    "turn_id": "7aef39221cff4c298e6eb7ea5a807d6a",
+    "created_at": "2026-10-17T00:02:46.524230+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-30",
+    "session_id": "session-short_term_n-30",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 30,
+    "prompt_tokens": 1026,
+    "completion_tokens": 19,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 19,
+    "token_breakdown": {
+      "system_primer": 17,
+      "long_term_summary": 288,
+      "short_term_window": 697,
+      "episodic_facts": 21,
+      "file_memory": 0,
+      "current_message": 3
+    },
+    "latency_ms": 17519.375
+  },
+  {
+    "setting": "SHORT_TERM_N=30",
+    "stage": "probe",
+    "turn_number": 32,
+    "probe_id": "city",
+    "question": "Which city do I currently prefer for the rental search?",
+    "answer": "You currently prefer **San Jose** for your rental search.",
+    "score": 5,
+    "expected_any": [
+      "san jose"
+    ],
+    "forbidden_any": [
+      "santa clara"
+    ],
+    "turn_id": "0676cc322e894874906be714b0d4d1e8",
+    "created_at": "2026-10-17T00:05:59.479129+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-30",
+    "session_id": "session-short_term_n-30",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 30,
+    "prompt_tokens": 1026,
+    "completion_tokens": 13,
+    "auxiliary_input_tokens": 3036,
+    "auxiliary_output_tokens": 1259,
+    "total_input_tokens": 4062,
+    "total_output_tokens": 1272,
+    "token_breakdown": {
+      "system_primer": 17,
+      "long_term_summary": 290,
+      "short_term_window": 695,
+      "episodic_facts": 20,
+      "file_memory": 0,
+      "current_message": 4
+    },
+    "latency_ms": 15302.332
+  },
+  {
+    "setting": "SHORT_TERM_N=30",
+    "stage": "probe",
+    "turn_number": 33,
+    "probe_id": "move_date",
+    "question": "What is my current target move-in date?",
+    "answer": "Your current target move-in date is **November 15, 2026**.",
+    "score": 3,
+    "expected_any": [
+      "november 15",
+      "nov 15",
+      "2026-11-15"
+    ],
+    "forbidden_any": [
+      "november 1",
+      "nov 1",
+      "2026-11-01"
+    ],
+    "turn_id": "9c87551e349f44bf89f9e7e4183d445c",
+    "created_at": "2026-10-17T00:06:17.920033+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-30",
+    "session_id": "session-short_term_n-30",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 30,
+    "prompt_tokens": 1026,
+    "completion_tokens": 21,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 21,
+    "token_breakdown": {
+      "system_primer": 14,
+      "long_term_summary": 400,
+      "short_term_window": 591,
+      "episodic_facts": 18,
+      "file_memory": 0,
+      "current_message": 3
+    },
+    "latency_ms": 16191.148
+  },
+  {
+    "setting": "SHORT_TERM_N=30",
+    "stage": "probe",
+    "turn_number": 34,
+    "probe_id": "pet",
+    "question": "What pet accommodation do I need?",
+    "answer": "You currently need **pet accommodation that allows cats** (specifically an **indoor cat**). This is a **must-have requirement** for your rental search.",
+    "score": 5,
+    "expected_any": [
+      "cat",
+      "indoor cat"
+    ],
+    "forbidden_any": [
+      "no pet"
+    ],
+    "turn_id": "ed2ff76a3f7c470b8f0099c59197687f",
+    "created_at": "2026-10-17T00:06:37.065178+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-30",
+    "session_id": "session-short_term_n-30",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 30,
+    "prompt_tokens": 1026,
+    "completion_tokens": 34,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 34,
+    "token_breakdown": {
+      "system_primer": 15,
+      "long_term_summary": 405,
+      "short_term_window": 585,
+      "episodic_facts": 19,
+      "file_memory": 0,
+      "current_message": 2
+    },
+    "latency_ms": 17538.858
+  },
+  {
+    "setting": "SHORT_TERM_N=30",
+    "stage": "probe",
+    "turn_number": 35,
+    "probe_id": "must_have",
+    "question": "What feature did I say the rental must have?",
+    "answer": "You specified that the rental **must have in-unit laundry**. This is a **must-have requirement** for your rental search.",
+    "score": 5,
+    "expected_any": [
+      "in-unit laundry",
+      "in unit laundry"
+    ],
+    "forbidden_any": [],
+    "turn_id": "90bee82a284a4e2b90bfe7b5734fced9",
+    "created_at": "2026-10-17T00:06:55.227769+00:00",
+    "user_id": "hw6-20261016160549-short_term_n-30",
+    "session_id": "session-short_term_n-30",
+    "memory_mode": "mongodb",
+    "policy": "standard",
+    "short_term_n": 30,
+    "prompt_tokens": 1026,
+    "completion_tokens": 27,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1026,
+    "total_output_tokens": 27,
+    "token_breakdown": {
+      "system_primer": 15,
+      "long_term_summary": 410,
+      "short_term_window": 582,
+      "episodic_facts": 16,
+      "file_memory": 0,
+      "current_message": 3
+    },
+    "latency_ms": 16481.612
+  },
+  {
+    "setting": "Importance eviction (N=12)",
+    "stage": "probe",
+    "turn_number": 31,
+    "probe_id": "budget",
+    "question": "What is my current maximum monthly rent budget?",
+    "answer": "Your current maximum monthly rent budget is **$2,200**.",
+    "score": 5,
+    "expected_any": [
+      "2200",
+      "2,200"
+    ],
+    "forbidden_any": [
+      "2400",
+      "2,400"
+    ],
+    "turn_id": "23f177f0826d4c9588681d049d3a7998",
+    "created_at": "2026-10-17T00:22:00.718105+00:00",
+    "user_id": "hw6-20261016160549-importance-eviction-n-12",
+    "session_id": "session-importance-eviction-n-12",
+    "memory_mode": "mongodb",
+    "policy": "importance_eviction",
+    "short_term_n": 12,
+    "prompt_tokens": 1715,
+    "completion_tokens": 17,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1715,
+    "total_output_tokens": 17,
+    "token_breakdown": {
+      "system_primer": 46,
+      "long_term_summary": 661,
+      "short_term_window": 942,
+      "episodic_facts": 57,
+      "file_memory": 0,
+      "current_message": 9
+    },
+    "latency_ms": 14776.705
+  },
+  {
+    "setting": "Importance eviction (N=12)",
+    "stage": "probe",
+    "turn_number": 32,
+    "probe_id": "city",
+    "question": "Which city do I currently prefer for the rental search?",
+    "answer": "Your current preferred city for the rental search is **San Jose**.",
+    "score": 5,
+    "expected_any": [
+      "san jose"
+    ],
+    "forbidden_any": [
+      "santa clara"
+    ],
+    "turn_id": "de91cc01818147baaa3e138f9dce3d29",
+    "created_at": "2026-10-17T00:23:30.104326+00:00",
+    "user_id": "hw6-20261016160549-importance-eviction-n-12",
+    "session_id": "session-importance-eviction-n-12",
+    "memory_mode": "mongodb",
+    "policy": "importance_eviction",
+    "short_term_n": 12,
+    "prompt_tokens": 1652,
+    "completion_tokens": 15,
+    "auxiliary_input_tokens": 3805,
+    "auxiliary_output_tokens": 251,
+    "total_input_tokens": 5457,
+    "total_output_tokens": 266,
+    "token_breakdown": {
+      "system_primer": 47,
+      "long_term_summary": 662,
+      "short_term_window": 876,
+      "episodic_facts": 56,
+      "file_memory": 0,
+      "current_message": 11
+    },
+    "latency_ms": 14227.77
+  },
+  {
+    "setting": "Importance eviction (N=12)",
+    "stage": "probe",
+    "turn_number": 33,
+    "probe_id": "move_date",
+    "question": "What is my current target move-in date?",
+    "answer": "Your current target move-in date is **November 15, 2026**.",
+    "score": 3,
+    "expected_any": [
+      "november 15",
+      "nov 15",
+      "2026-11-15"
+    ],
+    "forbidden_any": [
+      "november 1",
+      "nov 1",
+      "2026-11-01"
+    ],
+    "turn_id": "5dc7aabc1da04cfa9ff24d80a9e51d6f",
+    "created_at": "2026-10-17T00:23:48.450974+00:00",
+    "user_id": "hw6-20261016160549-importance-eviction-n-12",
+    "session_id": "session-importance-eviction-n-12",
+    "memory_mode": "mongodb",
+    "policy": "importance_eviction",
+    "short_term_n": 12,
+    "prompt_tokens": 1196,
+    "completion_tokens": 21,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1196,
+    "total_output_tokens": 21,
+    "token_breakdown": {
+      "system_primer": 47,
+      "long_term_summary": 271,
+      "short_term_window": 809,
+      "episodic_facts": 59,
+      "file_memory": 0,
+      "current_message": 10
+    },
+    "latency_ms": 16752.961
+  },
+  {
+    "setting": "Importance eviction (N=12)",
+    "stage": "probe",
+    "turn_number": 34,
+    "probe_id": "pet",
+    "question": "What pet accommodation do I need?",
+    "answer": "You need a rental that **allows one indoor cat**. The listing must explicitly state that it is **pet-friendly**.",
+    "score": 5,
+    "expected_any": [
+      "cat",
+      "indoor cat"
+    ],
+    "forbidden_any": [
+      "no pet"
+    ],
+    "turn_id": "91d4e76146a04b03b23fa76ede1a7632",
+    "created_at": "2026-10-17T00:24:01.802655+00:00",
+    "user_id": "hw6-20261016160549-importance-eviction-n-12",
+    "session_id": "session-importance-eviction-n-12",
+    "memory_mode": "mongodb",
+    "policy": "importance_eviction",
+    "short_term_n": 12,
+    "prompt_tokens": 1107,
+    "completion_tokens": 26,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 1107,
+    "total_output_tokens": 26,
+    "token_breakdown": {
+      "system_primer": 47,
+      "long_term_summary": 271,
+      "short_term_window": 722,
+      "episodic_facts": 60,
+      "file_memory": 0,
+      "current_message": 7
+    },
+    "latency_ms": 12647.179
+  },
+  {
+    "setting": "Importance eviction (N=12)",
+    "stage": "probe",
+    "turn_number": 35,
+    "probe_id": "must_have",
+    "question": "What feature did I say the rental must have?",
+    "answer": "The rental must have **in-unit laundry**.",
+    "score": 5,
+    "expected_any": [
+      "in-unit laundry",
+      "in unit laundry"
+    ],
+    "forbidden_any": [],
+    "turn_id": "331eb00532ae4be38084c4fe1b751fd7",
+    "created_at": "2026-10-17T00:24:11.289326+00:00",
+    "user_id": "hw6-20261016160549-importance-eviction-n-12",
+    "session_id": "session-importance-eviction-n-12",
+    "memory_mode": "mongodb",
+    "policy": "importance_eviction",
+    "short_term_n": 12,
+    "prompt_tokens": 864,
+    "completion_tokens": 11,
+    "auxiliary_input_tokens": 0,
+    "auxiliary_output_tokens": 0,
+    "total_input_tokens": 864,
+    "total_output_tokens": 11,
+    "token_breakdown": {
+      "system_primer": 48,
+      "long_term_summary": 276,
+      "short_term_window": 477,
+      "episodic_facts": 53,
+      "file_memory": 0,
+      "current_message": 10
+    },
+    "latency_ms": 7967.572
+  }
+]

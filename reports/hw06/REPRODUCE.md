@@ -34,7 +34,8 @@ Make sure the existing MySQL database and Ollama are running, then start FastAPI
 
 ```bash
 source .venv/bin/activate
-uvicorn main:app --app-dir code --host 127.0.0.1 --port 8274
+export PYTHONPATH="$PWD:$PWD/code"
+python -m uvicorn main:app --host 127.0.0.1 --port 8274
 ```
 
 Open:

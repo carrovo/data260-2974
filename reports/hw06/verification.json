@@ -2,7 +2,7 @@
   "homework": 6,
   "student": "Xuanhua Li",
   "SID4": 2974,
-  "commit_hash": "7bba6d9c283711b7191f3f40b060ec92c772c1db",
+  "commit_hash": "4b71f34c730f4706b652c7696e2266d5462973a7",
   "model": "qwen3:8b",
   "configuration": {
     "PORT_BASE": 8274,
@@ -12,8 +12,8 @@
   },
   "SEED": 2974,
   "VERIFY_SEED": 262974,
-  "timestamp": "2026-10-15T15:03:25.804359-04:00",
-  "mode": "offline-only",
+  "timestamp": "2026-10-16T17:58:50.161868-07:00",
+  "mode": "full-smoke-test",
   "checks": [
     {
       "name": "Required repository files",
@@ -29,11 +29,41 @@
       "name": "Memory consolidation fixtures",
       "passed": true,
       "details": "MEMORY.md consolidation: 55 -> 29 lines"
+    },
+    {
+      "name": "MongoDB collections",
+      "passed": true,
+      "details": "MongoDB s2974_doc: five required collections found"
+    },
+    {
+      "name": "FastAPI health",
+      "passed": true,
+      "details": "FastAPI health returned {'status': 'ok'}"
+    },
+    {
+      "name": "MongoDB document CRUD",
+      "passed": true,
+      "details": "POST, GET, PUT, and DELETE document checks passed"
+    },
+    {
+      "name": "Pydantic validation",
+      "passed": true,
+      "details": "Invalid title, enums, and date returned HTTP 422"
+    },
+    {
+      "name": "Chat and MongoDB memory",
+      "passed": true,
+      "details": "Chat, memory retrieval, and aggregation checks passed"
+    },
+    {
+      "name": "File-memory commands",
+      "passed": true,
+      "details": "All four file-memory commands are advertised"
     }
   ],
   "summary": {
-    "passed": 3,
-    "total": 3,
+    "passed": 9,
+    "total": 9,
     "all_passed": true
   }
 }

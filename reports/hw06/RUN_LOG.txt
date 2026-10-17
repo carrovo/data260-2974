@@ -22,3 +22,13 @@ Real local run output will be appended by:
 [2026-10-15T15:03:25.774699-04:00] HW6 OFFLINE TESTS: 6/6 PASS
 
 [2026-10-15T15:03:48.807556-04:00] HW6 OFFLINE TESTS: 6/6 PASS
+
+[2026-10-16T17:24:11.374762-07:00] HW6 memory experiment completed.
+{"setting": "SHORT_TERM_N=4", "short_term_n": 4, "policy": "standard", "mean_prompt_tokens_per_turn": 936.8, "mean_total_input_tokens_per_turn": 1318.733, "mean_total_output_tokens_per_turn": 221.533, "mean_latency_ms": 12796.745, "mean_probe_quality": 4.6, "estimated_cost_10000_30_turn_conversations_usd": 727.92}
+{"setting": "SHORT_TERM_N=12", "short_term_n": 12, "policy": "standard", "mean_prompt_tokens_per_turn": 1044.2, "mean_total_input_tokens_per_turn": 1416.533, "mean_total_output_tokens_per_turn": 175.367, "mean_latency_ms": 15098.258, "mean_probe_quality": 4.2, "estimated_cost_10000_30_turn_conversations_usd": 688.01}
+{"setting": "SHORT_TERM_N=30", "short_term_n": 30, "policy": "standard", "mean_prompt_tokens_per_turn": 1249.033, "mean_total_input_tokens_per_turn": 1604.467, "mean_total_output_tokens_per_turn": 179.9, "mean_latency_ms": 19876.919, "mean_probe_quality": 4.6, "estimated_cost_10000_30_turn_conversations_usd": 751.19}
+{"setting": "Importance eviction (N=12)", "short_term_n": 12, "policy": "importance_eviction", "mean_prompt_tokens_per_turn": 911.567, "mean_total_input_tokens_per_turn": 1262.7, "mean_total_output_tokens_per_turn": 165.067, "mean_latency_ms": 14989.82, "mean_probe_quality": 4.6, "estimated_cost_10000_30_turn_conversations_usd": 626.41}
+
+[2026-10-16T17:53:22.396448-07:00] HW6 OFFLINE TESTS: 6/6 PASS
+
+[2026-10-16T17:58:33.511843-07:00] HW6 OFFLINE TESTS: 6/6 PASS
