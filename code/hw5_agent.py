@@ -294,6 +294,7 @@ def run_agent(
     max_steps: int | None = None,
     max_iterations: int = 6,
     max_tool_calls: int = 8,
+    max_total_tokens: int | None = None,
     required_tool_sequence: tuple[str, ...] | None = None,
     execute_fn: ToolExecutor = execute_tool,
     log_path: Path | None = DEFAULT_LOG_PATH,
@@ -332,6 +333,15 @@ def run_agent(
     ):
         raise ValueError(
             "max_tool_calls must be a positive integer"
+        )
+
+    if max_total_tokens is not None and (
+        not isinstance(max_total_tokens, int)
+        or isinstance(max_total_tokens, bool)
+        or max_total_tokens < 1
+    ):
+        raise ValueError(
+            "max_total_tokens must be a positive integer"
         )
 
     if required_tool_sequence is not None:
@@ -376,6 +386,7 @@ def run_agent(
         "user_input": user_input.strip(),
         "max_iterations": max_iterations,
         "max_tool_calls": max_tool_calls,
+        "max_total_tokens": max_total_tokens,
         "required_tool_sequence": list(
             required_tool_sequence or ()
         ),
@@ -496,6 +507,17 @@ def run_agent(
         run_record["input_tokens"] += completion.input_tokens
         run_record["output_tokens"] += completion.output_tokens
         run_record["total_tokens"] += completion.total_tokens
+
+        if (
+            max_total_tokens is not None
+            and run_record["total_tokens"] > max_total_tokens
+        ):
+            stop_reason = "token_budget_exhausted"
+            final_answer = (
+                "Agent stopped after reaching the per-attempt "
+                f"token ceiling of {max_total_tokens}."
+            )
+            break
 
         assistant_message = _assistant_message(completion)
         messages.append(assistant_message)

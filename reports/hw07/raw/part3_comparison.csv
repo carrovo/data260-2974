@@ -1,0 +1,3 @@
+status,system,run_count,task_success_count,task_success_rate_percent,unsupported_claims,retry_run_count,retry_rate_percent,total_tool_calls,average_tool_calls,total_tokens,average_tokens,average_latency_ms,verifier_false_rejections,verifier_false_rejection_candidates
+pending_real_model_comparison,original_loop,21,,,,,,,,,,,,
+pending_real_model_comparison,reflexion_loop,,,,,,,,,,,,,

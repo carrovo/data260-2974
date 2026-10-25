@@ -1,0 +1,375 @@
+{
+  "case_type": "controlled_offline_reflection_case",
+  "model": "scripted_fake_not_qwen3:8b",
+  "real_model_result": false,
+  "result": {
+    "run_id": "0864ca34094a4e9da18e2742f9839df3",
+    "task_id": "A",
+    "prompt": "Search for rental listings using the domain term \"Shared Room\" with limit 1. Then take the id of the first returned result and call listing_details for that exact id. Only after both tool calls, answer with the listing code, title, address, monthly rent, and property manager name. Do not ask me a follow-up question.",
+    "attempts": [
+      {
+        "attempt_number": 1,
+        "run_id": "1cec2656d7af4c73bf5bfdab38db00d2",
+        "verifier": {
+          "passed": false,
+          "checks": {
+            "agent_completed": true,
+            "required_tool_sequence": true,
+            "all_tool_observations_succeeded": true,
+            "search_parameters": true,
+            "detail_matches_first_result": true,
+            "final_listing_code_supported": false,
+            "final_rent_supported": false,
+            "final_manager_supported": false,
+            "no_unsupported_claims": false
+          },
+          "failed_checks": [
+            "final_listing_code_supported",
+            "final_rent_supported",
+            "final_manager_supported",
+            "no_unsupported_claims"
+          ],
+          "unsupported_claim_count": 3,
+          "unsupported_claims": [
+            {
+              "type": "listing_code",
+              "value": "S2974-999999",
+              "reason": "not present in tool observations"
+            },
+            {
+              "type": "rent",
+              "value": "9999.00",
+              "reason": "not present in tool observations"
+            },
+            {
+              "type": "manager_name",
+              "value": "invented manager",
+              "reason": "not present in tool observations"
+            }
+          ],
+          "evidence": {
+            "expected_tool_sequence": [
+              "search_listings",
+              "listing_details"
+            ],
+            "actual_tool_sequence": [
+              "search_listings",
+              "listing_details"
+            ],
+            "tool_call_count": 2,
+            "supported_values": {
+              "listing_codes": [
+                "S2974-000004"
+              ],
+              "listing_titles": [
+                "Shared Room Fixture"
+              ],
+              "rents": [
+                "1700.00"
+              ],
+              "listing_ids": [
+                4
+              ],
+              "manager_ids": [
+                1
+              ],
+              "manager_names": [
+                "Part2 Fixture Manager"
+              ],
+              "emails": [
+                "part2-manager@example.com"
+              ]
+            },
+            "failed_checks": [
+              "final_listing_code_supported",
+              "final_rent_supported",
+              "final_manager_supported",
+              "no_unsupported_claims"
+            ]
+          },
+          "false_rejection_audit": {
+            "candidate": false,
+            "confirmed_false_rejection": false,
+            "status": "not_applicable",
+            "reason": null
+          }
+        },
+        "task_success": false,
+        "unsupported_claims": 3,
+        "tool_calls": [
+          {
+            "call_id": "offline-1-search",
+            "name": "search_listings",
+            "inputs": {
+              "query": "Shared Room",
+              "limit": 1
+            },
+            "validation": "passed",
+            "validation_subreason": null,
+            "executed": true,
+            "result": {
+              "ok": true,
+              "data": [
+                {
+                  "id": 4,
+                  "listingCode": "S2974-000004",
+                  "listingTitle": "Shared Room Fixture",
+                  "address": "104 Market Street, San Jose, CA",
+                  "propertyType": "Shared Room",
+                  "monthlyRent": "1700.00",
+                  "availableUnits": 1,
+                  "propertyManagerId": 1
+                }
+              ],
+              "error": null
+            },
+            "iteration": 1,
+            "phase": "pre_repair"
+          },
+          {
+            "call_id": "offline-1-detail",
+            "name": "listing_details",
+            "inputs": {
+              "listing_id": 4
+            },
+            "validation": "passed",
+            "validation_subreason": null,
+            "executed": true,
+            "result": {
+              "ok": true,
+              "data": {
+                "id": 4,
+                "listingCode": "S2974-000004",
+                "listingTitle": "Shared Room Fixture",
+                "address": "104 Market Street, San Jose, CA",
+                "propertyType": "Shared Room",
+                "monthlyRent": "1700.00",
+                "availableUnits": 1,
+                "propertyManagerId": 1,
+                "propertyManager": {
+                  "id": 1,
+                  "firstName": "Part2",
+                  "lastName": "Fixture Manager",
+                  "email": "part2-manager@example.com"
+                }
+              },
+              "error": null
+            },
+            "iteration": 2,
+            "phase": "pre_repair"
+          }
+        ],
+        "model_call_count": 3,
+        "tool_call_count": 2,
+        "input_tokens": 300,
+        "output_tokens": 60,
+        "total_tokens": 360,
+        "latency_ms": 0.267,
+        "agent_stop_reason": "normal_completion",
+        "final_answer": "Listing Code: S2974-999999; Monthly Rent: $9999.00; Property Manager: Invented Manager",
+        "verifier_false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      {
+        "attempt_number": 2,
+        "run_id": "24574c6d58b145cd9bf894c91aec2719",
+        "verifier": {
+          "passed": true,
+          "checks": {
+            "agent_completed": true,
+            "required_tool_sequence": true,
+            "all_tool_observations_succeeded": true,
+            "search_parameters": true,
+            "detail_matches_first_result": true,
+            "final_listing_code_supported": true,
+            "final_rent_supported": true,
+            "final_manager_supported": true,
+            "no_unsupported_claims": true
+          },
+          "failed_checks": [],
+          "unsupported_claim_count": 0,
+          "unsupported_claims": [],
+          "evidence": {
+            "expected_tool_sequence": [
+              "search_listings",
+              "listing_details"
+            ],
+            "actual_tool_sequence": [
+              "search_listings",
+              "listing_details"
+            ],
+            "tool_call_count": 2,
+            "supported_values": {
+              "listing_codes": [
+                "S2974-000004"
+              ],
+              "listing_titles": [
+                "Shared Room Fixture"
+              ],
+              "rents": [
+                "1700.00"
+              ],
+              "listing_ids": [
+                4
+              ],
+              "manager_ids": [
+                1
+              ],
+              "manager_names": [
+                "Part2 Fixture Manager"
+              ],
+              "emails": [
+                "part2-manager@example.com"
+              ]
+            },
+            "failed_checks": []
+          },
+          "false_rejection_audit": {
+            "candidate": false,
+            "confirmed_false_rejection": false,
+            "status": "not_applicable",
+            "reason": null
+          }
+        },
+        "task_success": true,
+        "unsupported_claims": 0,
+        "tool_calls": [
+          {
+            "call_id": "offline-2-search",
+            "name": "search_listings",
+            "inputs": {
+              "query": "Shared Room",
+              "limit": 1
+            },
+            "validation": "passed",
+            "validation_subreason": null,
+            "executed": true,
+            "result": {
+              "ok": true,
+              "data": [
+                {
+                  "id": 4,
+                  "listingCode": "S2974-000004",
+                  "listingTitle": "Shared Room Fixture",
+                  "address": "104 Market Street, San Jose, CA",
+                  "propertyType": "Shared Room",
+                  "monthlyRent": "1700.00",
+                  "availableUnits": 1,
+                  "propertyManagerId": 1
+                }
+              ],
+              "error": null
+            },
+            "iteration": 1,
+            "phase": "pre_repair"
+          },
+          {
+            "call_id": "offline-2-detail",
+            "name": "listing_details",
+            "inputs": {
+              "listing_id": 4
+            },
+            "validation": "passed",
+            "validation_subreason": null,
+            "executed": true,
+            "result": {
+              "ok": true,
+              "data": {
+                "id": 4,
+                "listingCode": "S2974-000004",
+                "listingTitle": "Shared Room Fixture",
+                "address": "104 Market Street, San Jose, CA",
+                "propertyType": "Shared Room",
+                "monthlyRent": "1700.00",
+                "availableUnits": 1,
+                "propertyManagerId": 1,
+                "propertyManager": {
+                  "id": 1,
+                  "firstName": "Part2",
+                  "lastName": "Fixture Manager",
+                  "email": "part2-manager@example.com"
+                }
+              },
+              "error": null
+            },
+            "iteration": 2,
+            "phase": "pre_repair"
+          }
+        ],
+        "model_call_count": 3,
+        "tool_call_count": 2,
+        "input_tokens": 300,
+        "output_tokens": 60,
+        "total_tokens": 360,
+        "latency_ms": 0.128,
+        "agent_stop_reason": "normal_completion",
+        "final_answer": "Listing Code: S2974-000004; Title: Shared Room Fixture; Address: 104 Market Street, San Jose, CA; Monthly Rent: $1700.00; Property Manager: Part2 Fixture Manager",
+        "verifier_false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      }
+    ],
+    "reflections": [
+      {
+        "type": "run_local_untrusted_reflection",
+        "trigger_attempt": 1,
+        "failure_explanation": "The deterministic verifier rejected the attempt.",
+        "evidence": "failed checks: final_listing_code_supported, final_rent_supported, final_manager_supported, no_unsupported_claims; unsupported values: listing_code=S2974-999999, rent=9999.00, manager_name=invented manager",
+        "revised_strategy": "Repeat the fixed sequence search_listings -> listing_details; use returned IDs exactly and include only final claims supported by the tool observations."
+      }
+    ],
+    "retry_count": 1,
+    "task_success": true,
+    "unsupported_claims": 0,
+    "total_tool_calls": 4,
+    "input_tokens": 600,
+    "output_tokens": 120,
+    "total_tokens": 720,
+    "latency_ms": 0.879,
+    "stop_reason": "success",
+    "budgets": {
+      "max_retries": 2,
+      "total_tool_calls": 8,
+      "total_tokens": 4000,
+      "wall_clock_seconds": 30.0
+    },
+    "verifier_false_rejection_audit": [
+      {
+        "candidate": false,
+        "confirmed_false_rejection": false,
+        "status": "not_applicable",
+        "reason": null
+      },
+      {
+        "candidate": false,
+        "confirmed_false_rejection": false,
+        "status": "not_applicable",
+        "reason": null
+      }
+    ]
+  },
+  "security_invariants": {
+    "allowed_tools": [
+      "listing_details",
+      "manager_rent_summary",
+      "search_listings"
+    ],
+    "reflection_scope": "current_user_and_run_only",
+    "reflection_persistence": "none",
+    "can_modify_system_instructions": false,
+    "can_modify_tool_permissions": false,
+    "can_modify_safety_gates": false,
+    "can_modify_jwt_rbac": false
+  },
+  "client_audit": {
+    "client_count": 2,
+    "tool_schema_supplied_each_call": true
+  }
+}

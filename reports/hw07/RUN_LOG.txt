@@ -209,3 +209,68 @@ started, the guarded fixture was recreated and passed its seed checks, then
 preflight stopped with: required model qwen3:8b is not installed; no download
 was attempted. The helper stopped the --rm container. A subsequent filtered
 docker ps -a check confirmed that the temporary container was absent.
+
+
+HW7 Part 3 offline implementation and verification
+==================================================
+Local time: 2026-10-25 15:50:20 PDT
+Base data commit: 14f5389a15cf4c57852fec661b97138af9075ecd
+
+The enhanced deterministic verifier read all 21 real Part 2 original-loop
+runs without invoking Ollama. All 21 passed the stronger tool-chain and final
+evidence checks, with zero unsupported claims detected.
+
+Command: .venv/bin/python code/hw7_part3_runner.py controlled-offline
+Result: exit 0. This run was explicitly labeled
+controlled_offline_reflection_case and scripted_fake_not_qwen3:8b. Attempt 1
+failed with three unsupported claims; one concise reflection was stored;
+attempt 2 passed. STOP_REASON=success, RETRY_COUNT=1, TOTAL_TOOL_CALLS=4.
+
+Command: .venv/bin/python code/test_hw7_reflexion_offline.py
+Result: exit 0; 9/9 PASS. qwen3:8b was not called.
+
+Command: .venv/bin/python code/test_hw7_agent_offline.py
+Result: exit 0; 18/18 PASS. Scripted fake model and isolated SQLite only.
+
+Command: .venv/bin/python code/test_hw5_offline.py
+Result: exit 0; 10/10 PASS.
+
+Command: .venv/bin/python code/test_hw7_auth_rbac.py
+Result: exit 0; 24/24 PASS.
+
+Command: .venv/bin/python code/test_hw7_user_migration.py
+Result: exit 0; 5/5 PASS.
+
+Command: .venv/bin/ruff check code src
+Result: exit 0; All checks passed.
+
+Command: .venv/bin/python -m pip check
+Result: exit 0; no broken requirements found.
+
+Command: git diff --check
+Result: exit 0.
+
+Part 3 real qwen3:8b demos and the 21-run Reflexion comparison were not run
+in the cloud. Part 3 comparison JSON/CSV and METRICS.md remain explicitly
+pending_real_model_comparison; controlled offline values are excluded.
+
+Final regression checks at 2026-10-25 15:52:05 PDT:
+
+Command: .venv/bin/ruff check .
+Result: exit 0; All checks passed.
+
+Command: npm run lint (from frontend/)
+Result: exit 0; ESLint passed.
+
+Command: npm run build (from frontend/)
+Result: exit 0; Vite built 95 modules successfully. This is not a browser
+end-to-end result.
+
+Command: bash -n reports/hw07/part3_local.sh
+Command: zsh -n reports/hw07/part3_local.sh
+Command: .venv/bin/python code/hw7_part3_runner.py --help
+Result: all exited 0; helper syntax and runner modes were available.
+
+Command: PRE_COMMIT_HOME=/tmp/data260-pre-commit-cache
+         .venv/bin/pre-commit run --all-files
+Result: exit 0; ruff check passed.

@@ -1,0 +1,17 @@
+{
+  "status": "pending_real_model_comparison",
+  "model_config": {
+    "model": "qwen3:8b",
+    "temperature": 0.0,
+    "seed": 2974,
+    "reasoning": false,
+    "num_ctx": 4096,
+    "num_predict": 512
+  },
+  "original_loop_source": "reports/hw07/raw/part2_reliability.json",
+  "original_loop_run_count": 21,
+  "reflexion_loop_run_count": null,
+  "original_loop": null,
+  "reflexion_loop": null,
+  "note": "Run the real Part 3 comparison mode. Controlled scripted-model results are not used as real qwen3:8b metrics."
+}
