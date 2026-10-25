@@ -2,14 +2,21 @@ from datetime import UTC, datetime
 
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, Response, status
+from pymongo.database import Database
+from pymongo.errors import DuplicateKeyError, PyMongoError
+
 from hw6_schemas import (
     DocumentListingCreate,
     DocumentListingOut,
     DocumentListingUpdate,
 )
+from models import User
 from mongo_database import mongo_db_dependency
-from pymongo.database import Database
-from pymongo.errors import DuplicateKeyError, PyMongoError
+from routers.auth import (
+    get_current_user,
+    require_moderator,
+    require_writer,
+)
 
 router = APIRouter(
     prefix="/api/doc-listings",
@@ -59,6 +66,7 @@ def _database_error(action: str) -> HTTPException:
 def create_document_listing(
     payload: DocumentListingCreate,
     db: Database = Depends(mongo_db_dependency),
+    _user: User = Depends(require_writer),
 ) -> dict:
     now = _utc_now()
     document = payload.model_dump(mode="python")
@@ -85,6 +93,7 @@ def create_document_listing(
 )
 def list_document_listings(
     db: Database = Depends(mongo_db_dependency),
+    _user: User = Depends(get_current_user),
 ) -> list[dict]:
     try:
         documents = list(db.listings.find().sort("createdAt", -1))
@@ -101,6 +110,7 @@ def list_document_listings(
 def get_document_listing(
     listing_id: str,
     db: Database = Depends(mongo_db_dependency),
+    _user: User = Depends(get_current_user),
 ) -> dict:
     try:
         document = db.listings.find_one({"_id": _object_id(listing_id)})
@@ -124,6 +134,7 @@ def update_document_listing(
     listing_id: str,
     payload: DocumentListingUpdate,
     db: Database = Depends(mongo_db_dependency),
+    _user: User = Depends(require_writer),
 ) -> dict:
     object_id = _object_id(listing_id)
     updates = payload.model_dump(
@@ -176,6 +187,7 @@ def update_document_listing(
 def delete_document_listing(
     listing_id: str,
     db: Database = Depends(mongo_db_dependency),
+    _user: User = Depends(require_moderator),
 ) -> Response:
     try:
         result = db.listings.delete_one({"_id": _object_id(listing_id)})

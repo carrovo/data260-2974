@@ -9,11 +9,14 @@ import {
 } from "react-router-dom";
 
 import {
+  AUTH_UNAUTHORIZED_EVENT,
   getCurrentUser,
+  getStoredAccessToken,
   logoutUser,
 } from "./api";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Home from "./pages/Home";
 import CreateRecord from "./pages/CreateRecord";
 import UpdateRecord from "./pages/UpdateRecord";
@@ -21,11 +24,28 @@ import UpdateRecord from "./pages/UpdateRecord";
 
 function RequireAuth({ user, loading, children }) {
   if (loading) {
-    return <p>Checking login session...</p>;
+    return <p>Checking authentication...</p>;
   }
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+
+function RequireRole({ user, loading, roles, children }) {
+  if (loading) {
+    return <p>Checking authentication...</p>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!roles.includes(user.role)) {
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -41,32 +61,73 @@ export default function App() {
 
 
   useEffect(() => {
-    async function checkSession() {
+    let active = true;
+
+    function handleUnauthorized() {
+      if (!active) {
+        return;
+      }
+
+      dispatch(resetListings());
+      setUser(null);
+      setAuthLoading(false);
+      navigate("/login?reason=session-expired", {
+        replace: true,
+      });
+    }
+
+    async function restoreAuthentication() {
+      if (!getStoredAccessToken()) {
+        setAuthLoading(false);
+        return;
+      }
+
       try {
         const currentUser = await getCurrentUser();
-        setUser(currentUser);
+
+        if (active) {
+          setUser(currentUser);
+        }
       } catch {
-        setUser(null);
+        if (active) {
+          setUser(null);
+        }
       } finally {
-        setAuthLoading(false);
+        if (active) {
+          setAuthLoading(false);
+        }
       }
     }
 
-    checkSession();
-  }, []);
+    window.addEventListener(
+      AUTH_UNAUTHORIZED_EVENT,
+      handleUnauthorized,
+    );
+    restoreAuthentication();
+
+    return () => {
+      active = false;
+      window.removeEventListener(
+        AUTH_UNAUTHORIZED_EVENT,
+        handleUnauthorized,
+      );
+    };
+  }, [dispatch, navigate]);
 
 
   async function handleLogin() {
     const currentUser = await getCurrentUser();
+
+    dispatch(resetListings());
     setUser(currentUser);
   }
 
 
-  async function handleLogout() {
-    await logoutUser();
+  function handleLogout() {
+    logoutUser();
     dispatch(resetListings());
     setUser(null);
-    navigate("/login");
+    navigate("/login", { replace: true });
   }
 
 
@@ -77,7 +138,9 @@ export default function App() {
 
         {user && (
           <div className="user-area">
-            <span>Welcome, {user.name}</span>
+            <span>
+              Welcome, {user.name} ({user.role})
+            </span>
 
             <button onClick={handleLogout}>
               Log out
@@ -99,6 +162,17 @@ export default function App() {
         />
 
         <Route
+          path="/register"
+          element={
+            user ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Register />
+            )
+          }
+        />
+
+        <Route
           path="/"
           element={
             <RequireAuth
@@ -113,24 +187,26 @@ export default function App() {
         <Route
           path="/create"
           element={
-            <RequireAuth
+            <RequireRole
               user={user}
               loading={authLoading}
+              roles={["writer", "moderator"]}
             >
               <CreateRecord />
-            </RequireAuth>
+            </RequireRole>
           }
         />
 
         <Route
           path="/update/:id"
           element={
-            <RequireAuth
+            <RequireRole
               user={user}
               loading={authLoading}
+              roles={["writer", "moderator"]}
             >
               <UpdateRecord />
-            </RequireAuth>
+            </RequireRole>
           }
         />
 

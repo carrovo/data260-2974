@@ -1,12 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 
 import { loginUser } from "../api";
 
 export default function Login({ onLogin }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,16 +26,14 @@ export default function Login({ onLogin }) {
     setLoading(true);
 
     try {
-      // The browser stores the HTTP-only session cookie.
-      const loginResult = await loginUser({
-        email,
+      await loginUser({
+        username,
         password,
       });
 
-      // Wait until App.jsx confirms the current user.
-      await onLogin(loginResult);
+      // Verify the token and load the current database role.
+      await onLogin();
 
-      // Navigate only after the session is ready.
       navigate("/");
     } catch (requestError) {
       // Display a readable backend error message.
@@ -42,6 +47,14 @@ export default function Login({ onLogin }) {
     }
   }
 
+
+  const sessionExpired = (
+    searchParams.get("reason") === "session-expired"
+  );
+  const registrationComplete = Boolean(
+    location.state?.registrationComplete,
+  );
+
   return (
     <main className="page-container">
       <section className="card">
@@ -51,6 +64,18 @@ export default function Login({ onLogin }) {
           Sign in to manage rental housing listings.
         </p>
 
+        {sessionExpired && !error && (
+          <div className="error-message">
+            Your login is no longer valid. Please sign in again.
+          </div>
+        )}
+
+        {registrationComplete && (
+          <div className="success-message">
+            Account created as a reader. You can now sign in.
+          </div>
+        )}
+
         {error && (
           <div className="error-message">
             {error}
@@ -58,16 +83,15 @@ export default function Login({ onLogin }) {
         )}
 
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email">
-            Email
+          <label htmlFor="username">
+            Username
           </label>
 
           <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            autoComplete="email"
+            id="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            autoComplete="username"
             required
           />
 
@@ -91,6 +115,10 @@ export default function Login({ onLogin }) {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        <p>
+          Need an account? <Link to="/register">Register</Link>
+        </p>
       </section>
     </main>
   );

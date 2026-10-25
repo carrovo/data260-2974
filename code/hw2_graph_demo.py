@@ -5,7 +5,6 @@ import time
 from pathlib import Path
 from typing import Any
 
-
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1] # Get the repository root.
 
 if str(REPOSITORY_ROOT) not in sys.path: # Check if the repository root is not in the system path.
@@ -15,7 +14,6 @@ if str(REPOSITORY_ROOT) not in sys.path: # Check if the repository root is not i
 from src.hw2_graph.state import create_initial_state
 from src.hw2_graph.workflow import build_graph
 from src.model_client import ModelClient
-
 
 DEFAULT_TITLE = "Studio Near SJSU"
 

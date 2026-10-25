@@ -145,6 +145,13 @@ button:disabled {
   border-radius: 6px;
 }
 
+.success-message {
+  color: #166534;
+  background: #dcfce7;
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+
 .empty-message {
   color: #6b7280;
   text-align: center;

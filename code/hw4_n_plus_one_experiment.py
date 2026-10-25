@@ -8,7 +8,6 @@ from pathlib import Path
 
 import httpx
 
-
 BASE_URL = os.getenv("HW4_BASE_URL", "http://localhost:8274")
 DEFAULT_EMAIL = "carol.hw4@example.com"
 

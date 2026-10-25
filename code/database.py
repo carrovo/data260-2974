@@ -9,7 +9,6 @@ from sqlalchemy.orm import (
     sessionmaker,
 )
 
-
 # Load environment variables from the project-root .env file.
 load_dotenv()
 

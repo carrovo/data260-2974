@@ -8,7 +8,6 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from database import db_session_basede26
 
-
 logger = logging.getLogger("s2974_rel.domain_tools")
 
 Envelope = dict[str, Any]

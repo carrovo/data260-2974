@@ -7,6 +7,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from pydantic import ValidationError
+
 from file_memory import FileMemoryManager
 from hw6_agent_compliant import normalize_listing_title
 from hw6_config import HW6Settings
@@ -22,7 +24,6 @@ from hw6_schemas import (
     MemoryMode,
     MemoryPolicy,
 )
-from pydantic import ValidationError
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_LOG = ROOT / "reports" / "hw06" / "RUN_LOG.txt"

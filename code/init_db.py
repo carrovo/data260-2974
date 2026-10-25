@@ -1,10 +1,9 @@
 from sqlalchemy import inspect
 
-from database import Base, db_session_basede26
-
 # Import models so SQLAlchemy registers all model classes
 # in Base.metadata before creating the tables.
 import models  # noqa: F401
+from database import Base, db_session_basede26
 
 
 def main() -> None:

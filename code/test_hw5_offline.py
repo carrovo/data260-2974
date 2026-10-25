@@ -8,15 +8,13 @@ os.environ["DATABASE_URL"] = (
     "sqlite+pysqlite:///:memory:"
 )
 
+from langchain_core.messages import AIMessage
 from sqlalchemy import create_engine, text
 from sqlalchemy.pool import StaticPool
-
-from langchain_core.messages import AIMessage
 
 import domain_tools
 from hw5_agent import run_agent
 from tool_executor import execute_tool
-
 
 STUDENT_NAME = "Xuanhua Li"
 SID4 = 2974

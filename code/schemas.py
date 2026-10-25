@@ -277,25 +277,60 @@ class ListingOut(BaseModel):
 class UserCreate(BaseModel):
     """Request schema for creating a user account."""
 
+    model_config = ConfigDict(extra="forbid")
+
     name: str = Field(
         min_length=1,
         max_length=100,
     )
     email: EmailStr
+    username: str = Field(
+        min_length=3,
+        max_length=100,
+        pattern=r"^[A-Za-z0-9_.-]+$",
+    )
     password: str = Field(
         min_length=8,
         max_length=128,
     )
 
+    @field_validator("username")
+    @classmethod
+    def normalize_username(cls, value: str) -> str:
+        return value.strip().lower()
+
+    @field_validator("password")
+    @classmethod
+    def enforce_bcrypt_password_limit(cls, value: str) -> str:
+        if len(value.encode("utf-8")) > 72:
+            raise ValueError(
+                "password cannot exceed 72 UTF-8 bytes"
+            )
+
+        return value
+
 
 class UserLogin(BaseModel):
-    """Request schema for email/password login."""
+    """Request schema for username/password login."""
 
-    email: EmailStr
+    username: str = Field(
+        min_length=1,
+        max_length=100,
+    )
     password: str = Field(
         min_length=1,
         max_length=128,
     )
+
+    @field_validator("username")
+    @classmethod
+    def normalize_login_username(cls, value: str) -> str:
+        normalized = value.strip().lower()
+
+        if not normalized:
+            raise ValueError("username cannot be blank")
+
+        return normalized
 
 
 class UserOut(BaseModel):
@@ -306,11 +341,17 @@ class UserOut(BaseModel):
     id: int
     name: str
     email: EmailStr
+    username: str
+    role: Literal[
+        "reader",
+        "writer",
+        "moderator",
+    ]
 
 
-class LoginResponse(BaseModel):
-    """Response returned after successful login."""
+class TokenResponse(BaseModel):
+    """JWT access token returned after successful login."""
 
-    message: str
-    user_id: int
-    email: EmailStr
+    access_token: str
+    token_type: Literal["bearer"] = "bearer"
+    expires_in: int = Field(gt=0)

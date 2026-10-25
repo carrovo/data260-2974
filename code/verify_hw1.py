@@ -4,7 +4,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import urlopen
 
-
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 OUTPUT_PATH = (

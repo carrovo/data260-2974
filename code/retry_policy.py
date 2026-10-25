@@ -2,13 +2,14 @@ import random
 import time
 from concurrent.futures import (
     ThreadPoolExecutor,
+)
+from concurrent.futures import (
     TimeoutError as FutureTimeoutError,
 )
 from dataclasses import dataclass
 from typing import Any, Callable, TypeVar
 
 from sqlalchemy.exc import SQLAlchemyError
-
 
 T = TypeVar("T")
 

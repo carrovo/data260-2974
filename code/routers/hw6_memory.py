@@ -1,6 +1,10 @@
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pymongo.database import Database
+from pymongo.errors import PyMongoError
+from src.model_client import ModelClient
+
 from file_memory import FileMemoryManager
 from hw6_config import settings
 from hw6_memory import (
@@ -11,10 +15,6 @@ from hw6_memory import (
 )
 from hw6_schemas import ChatRequest, ChatResponse
 from mongo_database import mongo_db_dependency
-from pymongo.database import Database
-from pymongo.errors import PyMongoError
-
-from src.model_client import ModelClient
 
 router = APIRouter(tags=["HW6 Memory"])
 PROJECT_ROOT = Path(__file__).resolve().parents[2]

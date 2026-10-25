@@ -5,7 +5,6 @@ from typing import Any
 import httpx
 from mcp.server.fastmcp import FastMCP
 
-
 API_BASE_URL = "https://www.themealdb.com/api/json/v1/1"
 REQUEST_TIMEOUT_SECONDS = 10.0
 

@@ -12,7 +12,6 @@ from typing import Any, Callable
 
 import yaml
 
-
 ROOT = Path(__file__).resolve().parents[1]
 CODE_DIR = ROOT / "code"
 REPORT_DIR = ROOT / "reports" / "hw04"

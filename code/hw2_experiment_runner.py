@@ -9,7 +9,6 @@ from contextlib import redirect_stdout
 from pathlib import Path
 from typing import Any
 
-
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 if str(REPOSITORY_ROOT) not in sys.path:
@@ -19,7 +18,6 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from src.hw2_graph.state import create_initial_state
 from src.hw2_graph.workflow import build_graph
 from src.model_client import ModelClient
-
 
 DEFAULT_RAW_DIR = (
     REPOSITORY_ROOT

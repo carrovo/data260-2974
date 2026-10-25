@@ -1,15 +1,9 @@
-import secrets
-from datetime import datetime, timedelta
-
 import bcrypt
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from models import SessionToken, User
+from models import User, UserRole
 from schemas import UserCreate
-
-
-SESSION_TTL_MINUTES = 30
 
 
 def hash_password(password: str) -> str:
@@ -30,10 +24,15 @@ def verify_password(
 ) -> bool:
     """Compare a plain password with its stored bcrypt hash."""
 
-    return bcrypt.checkpw(
-        plain_password.encode("utf-8"),
-        password_hash.encode("utf-8"),
-    )
+    try:
+        return bcrypt.checkpw(
+            plain_password.encode("utf-8"),
+            password_hash.encode("utf-8"),
+        )
+    except ValueError:
+        # bcrypt rejects passwords over 72 bytes and malformed hashes.
+        # Neither condition should turn invalid credentials into a 500.
+        return False
 
 
 def create_user(
@@ -45,7 +44,9 @@ def create_user(
     user = User(
         name=payload.name.strip(),
         email=str(payload.email).lower(),
+        username=payload.username,
         password_hash=hash_password(payload.password),
+        role=UserRole.READER,
     )
 
     db.add(user)
@@ -68,68 +69,14 @@ def get_user_by_email(
     return db.scalar(statement)
 
 
-def create_session(
+def get_user_by_username(
     db: Session,
-    user_id: int,
-) -> SessionToken:
-    """
-    Create an opaque server-side session token.
+    username: str,
+) -> User | None:
+    """Find one user by normalized username."""
 
-    Only the token ID will be sent to the browser.
-    The user ID and expiration time remain in MySQL.
-    """
-
-    # Generate an opaque random token for the HTTP-only cookie.
-    token = secrets.token_urlsafe(32)
-    expires_at = (
-        datetime.utcnow()
-        + timedelta(minutes=SESSION_TTL_MINUTES)
+    statement = select(User).where(
+        User.username == username.strip().lower()
     )
 
-    session = SessionToken(
-        id=token,
-        user_id=user_id,
-        expires_at=expires_at,
-    )
-
-    db.add(session)
-    db.commit()
-    db.refresh(session)
-
-    return session
-
-
-def get_valid_session(
-    db: Session,
-    token: str,
-) -> SessionToken | None:
-    """Return a session only when its token exists and has not expired."""
-
-    session = db.get(SessionToken, token)
-
-    if session is None:
-        return None
-
-    if session.expires_at < datetime.utcnow():
-        db.delete(session)
-        db.commit()
-        return None
-
-    return session
-
-
-def delete_session(
-    db: Session,
-    token: str,
-) -> bool:
-    """Delete one server-side session."""
-
-    session = db.get(SessionToken, token)
-
-    if session is None:
-        return False
-
-    db.delete(session)
-    db.commit()
-
-    return True
+    return db.scalar(statement)

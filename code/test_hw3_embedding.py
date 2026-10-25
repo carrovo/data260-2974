@@ -1,7 +1,5 @@
 import numpy as np
-
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 

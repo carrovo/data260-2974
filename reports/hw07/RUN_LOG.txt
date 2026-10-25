@@ -1,0 +1,188 @@
+HW7 Part 1 - MySQL Integration Validation
+Date: 2026-10-25 UTC
+Branch: hw7-work
+Base commit: 2c5ccbe86dbb
+
+Security and isolation
+----------------------
+- Official image: mysql:8.4
+- Image digest: sha256:76f0358884cb92d9a086d24e5671c38048d3fef40f2588703d73eb55392d6b69
+- Server version reported by SELECT VERSION(): 8.4.13
+- MySQL was bound only to 127.0.0.1 on a temporary host port.
+- Three new, fixed-name integration databases were used. The harness refused
+  to run if any already existed.
+- Test passwords and JWT signing material were generated at runtime and were
+  not printed or saved.
+- All three isolated databases were dropped after the run. A query against
+  INFORMATION_SCHEMA.SCHEMATA returned 0 remaining test databases.
+- The temporary container used --rm and was stopped after validation.
+
+Commands and outcomes
+---------------------
+1. docker pull mysql:8.4
+   Result: exit 0; official image downloaded and digest verified by Docker.
+
+2. docker run --rm -d --name <isolated-container> \
+     -p 127.0.0.1:<temporary-port>:3306 \
+     <temporary-test-auth-option> mysql:8.4 --skip-log-bin
+   Result: exit 0; the container health command succeeded; no personal
+   database configuration or credential was used.
+
+3. .venv/bin/python /tmp/hw7_mysql_integration.py
+   Initial result: exit 1 before FastAPI startup.
+   Exact failure: /workspace/data260-2974/.venv/bin/python: No module named uvicorn
+   Database cleanup still completed; 0 isolated databases remained.
+
+4. .venv/bin/python -m pip install 'uvicorn[standard]==0.27.0'
+   Result: exit 0. This version was already pinned in requirements.txt, so no
+   dependency declaration changed.
+
+5. .venv/bin/python /tmp/hw7_mysql_integration.py
+   Result: exit 0. Database cleanup reported 0 isolated databases remaining.
+
+Fresh MySQL database checks
+---------------------------
+PASS - Base.metadata.create_all initialized the relational schema.
+PASS - migrate_user_schema validated the fresh users table.
+PASS - a second migration returned the same schema/data summary.
+PASS - duplicate username was rejected by MySQL.
+PASS - unsupported role was rejected by MySQL ENUM.
+PASS - blank username was rejected by the named CHECK constraint.
+PASS - users has password_hash and no plaintext password column.
+PASS - stored bcrypt hash differed from the runtime password and verified it.
+
+Legacy HW6 users migration checks
+---------------------------------
+PASS - all three legacy rows retained id, name, email, and password_hash.
+PASS - all migrated roles were reader.
+PASS - colliding email local parts became alice, alice-2, and alice-3.
+PASS - the second migration left rows and the validation summary unchanged.
+
+FastAPI + real MySQL HTTP checks
+--------------------------------
+HTTP 200 - reader login
+HTTP 200 - writer login
+HTTP 200 - moderator login
+HTTP 401 - failed login
+HTTP 401 - GET /auth/me without a token
+HTTP 401 - GET /auth/me with an invalid token
+HTTP 200 - GET /auth/me with a valid reader token
+HTTP 200 - reader GET /api/listings
+HTTP 403 - reader POST /api/listings
+HTTP 201 - writer POST /api/listings
+HTTP 403 - writer DELETE /api/listings/{id}
+HTTP 204 - moderator DELETE /api/listings/{id}
+
+Notes
+-----
+- Uvicorn started as a separate process and served requests over loopback TCP;
+  these were not ASGI in-process test requests.
+- MongoDB was deliberately pointed at an unavailable loopback port. The
+  existing startup warning was logged, and the relational API remained usable.
+- No application-code defect was found during this MySQL run, so no application
+  or migration code was changed as a result of the integration validation.
+
+Post-integration regression checks
+----------------------------------
+Command: .venv/bin/python code/test_hw7_auth_rbac.py
+Result: exit 0; 24/24 PASS using the isolated SQLite HTTP fixture.
+
+Command: .venv/bin/python code/test_hw7_user_migration.py
+Result: exit 0; 5/5 PASS using isolated SQLite migration fixtures.
+
+Command: .venv/bin/python -m pip check
+Result: exit 0; no broken requirements found.
+
+Command: git diff --check
+Result: exit 0.
+
+Final cleanup
+-------------
+Command: docker stop <isolated-container>
+Result: exit 0; Docker removed the container because it was started with
+--rm. A filtered docker ps -a check confirmed the container no longer exists.
+
+Ruff and pre-commit validation
+------------------------------
+Local time: 2026-10-25 00:07:20 PDT
+
+Configuration:
+- ruff==0.14.2
+- pre-commit==4.3.0
+- .pre-commit-config.yaml pins astral-sh/ruff-pre-commit at v0.14.2.
+- The ruff-check hook uses --no-fix so a commit cannot silently rewrite code.
+
+Command: PRE_COMMIT_HOME=<temporary-cache> .venv/bin/pre-commit install --install-hooks
+Result: exit 0; pre-commit installed .git/hooks/pre-commit and created the
+pinned Ruff hook environment.
+
+Command: .venv/bin/ruff check code
+Initial result: exit 1; 75 errors, 56 automatically fixable.
+Representative Part 1 failures:
+- I001: unsorted import block in code/jwt_service.py.
+- F401: unused sqlalchemy.orm.Session in code/test_hw7_auth_rbac.py.
+- E402: imports after the isolated test environment bootstrap in
+  code/test_hw7_auth_rbac.py.
+
+Failed commit evidence
+----------------------
+Local time: 2026-10-25 00:08:02 PDT
+
+Command: PRE_COMMIT_HOME=<temporary-cache> git commit -m
+  "feat: complete HW7 Part 1 authentication"
+Result: exit 1; no commit was created. Git invoked ruff-check, which reported
+"Failed", hook exit code 1, 18 errors in the staged Part 1 Python files, and
+8 auto-fixable errors. The output included I001 in code/jwt_service.py and
+F401 plus E402 in code/test_hw7_auth_rbac.py.
+
+Fixes and post-fix validation
+-----------------------------
+Local time: 2026-10-25 00:08:45 PDT
+
+Fix 1: Ruff mechanically organized Python imports across code/ and removed
+genuinely unused imports, including sqlalchemy.orm.Session from the HW7 auth
+test. No lint rule was disabled globally.
+
+Fix 2: pyproject.toml adds exact per-file E402 exceptions for six scripts that
+must prepare sys.path or isolated environment variables before importing
+project modules. Core application modules are not excluded from Ruff.
+
+Command: .venv/bin/ruff check code
+Result: exit 0; All checks passed.
+
+Command: .venv/bin/python code/test_hw7_auth_rbac.py
+Result: exit 0; 24/24 PASS using an isolated SQLite HTTP fixture.
+
+Command: .venv/bin/python code/test_hw7_user_migration.py
+Result: exit 0; 5/5 PASS using isolated SQLite migration fixtures.
+
+Command: .venv/bin/python code/test_hw5_offline.py
+Result: exit 0; 10/10 PASS using a temporary SQLite fixture and mocked LLM.
+
+Command: npm run lint (working directory: frontend)
+Result: exit 0; ESLint passed.
+
+Command: npm run build (working directory: frontend)
+Result: exit 0; Vite 8.3.1 transformed 95 modules and built successfully.
+
+Command: .venv/bin/python -m pip check
+Result: exit 0; no broken requirements found.
+
+Command: git diff --check
+Result: exit 0.
+
+Successful commit evidence
+--------------------------
+Local time: 2026-10-25 00:09:41 PDT
+Author: Xuanhua Li
+
+Command: PRE_COMMIT_HOME=<temporary-cache> git commit -m
+  "feat: complete HW7 Part 1 authentication"
+Result: exit 0. Git invoked the hook and printed:
+  ruff check...............................................................Passed
+Initial successful commit: 4b52216580b4080caacdb646c476137b9d812c33
+Commit summary: 60 files changed, 2378 insertions, 341 deletions.
+
+The commit is amended once, without bypassing hooks, to include this success
+record. A Python configuration comment is included in that amend so the final
+hook invocation runs Ruff rather than reporting no Python files to check.

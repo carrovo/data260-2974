@@ -5,7 +5,6 @@ import time
 import urllib.request
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_DIR = ROOT / "reports" / "hw02"
 VERIFY_FILE = REPORT_DIR / "verification.json"

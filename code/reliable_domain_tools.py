@@ -17,7 +17,6 @@ from retry_policy import (
     run_with_retry,
 )
 
-
 Envelope = dict[str, Any]
 FailureInjector = Callable[[int], None]
 

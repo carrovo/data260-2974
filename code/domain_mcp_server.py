@@ -14,7 +14,6 @@ from reliable_domain_tools import (
     search_listings as search_listings_operation,
 )
 
-
 logging.basicConfig(
     level=logging.INFO,
     stream=sys.stderr,

@@ -9,7 +9,6 @@ from urllib.request import urlopen
 
 from sqlalchemy import inspect, text
 
-
 STUDENT_NAME = "Xuanhua Li"
 SID4 = 2974
 PORT_BASE = 8274

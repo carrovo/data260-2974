@@ -3,7 +3,6 @@ from collections import Counter
 from pathlib import Path
 from statistics import mean
 
-
 STUDENT_NAME = "Xuanhua Li"
 SID4 = 2974
 

@@ -8,7 +8,6 @@ from llama_index.core.node_parser import (
 )
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
-
 ROOT = Path(__file__).resolve().parents[1]
 WARMUP_FILE = (
     ROOT

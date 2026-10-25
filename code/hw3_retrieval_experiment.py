@@ -1,4 +1,3 @@
-import csv
 import json
 import time
 from pathlib import Path
@@ -20,7 +19,6 @@ from llama_index.core.node_parser import (
 from llama_index.core.vector_stores import SimpleVectorStore
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from pypdf import PdfReader
-
 
 ROOT = Path(__file__).resolve().parents[1]
 CORPUS_DIR = ROOT / "corpus" / "hw03"

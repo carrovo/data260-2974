@@ -1,138 +1,187 @@
-import os
-
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+)
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+)
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from auth_service import (
-    SESSION_TTL_MINUTES,
-    create_session,
     create_user,
-    delete_session,
     get_user_by_email,
-    get_valid_session,
+    get_user_by_username,
     verify_password,
 )
 from database import get_db
-from models import SessionToken, User
+from jwt_service import (
+    AccessTokenError,
+    create_access_token,
+    decode_access_token,
+)
+from models import User, UserRole
 from schemas import (
-    LoginResponse,
+    TokenResponse,
     UserCreate,
     UserLogin,
     UserOut,
 )
 
-
 router = APIRouter(
-    prefix="/api/auth",
+    prefix="/auth",
     tags=["authentication"],
 )
-
-SESSION_COOKIE_NAME = "session_id"
-
-# Local development uses HTTP, so Secure must be false.
-# It should be enabled in production behind HTTPS.
-COOKIE_SECURE = os.getenv(
-    "COOKIE_SECURE",
-    "false",
-).lower() in {"true", "1", "yes"}
+bearer_scheme = HTTPBearer(auto_error=False)
 
 
-def require_session(
-    request: Request,
-    db: Session = Depends(get_db),
-) -> SessionToken:
-    """
-    Require a valid server-side session.
+def unauthorized(detail: str) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail=detail,
+        headers={
+            "WWW-Authenticate": "Bearer",
+        },
+    )
 
-    The browser sends only the opaque session_id cookie.
-    The actual user and expiration data are loaded from MySQL.
-    """
 
-    token = request.cookies.get(SESSION_COOKIE_NAME)
+def _bearer_token(
+    credentials: HTTPAuthorizationCredentials | None,
+) -> str:
+    if credentials is None:
+        raise unauthorized("Bearer token is required")
+
+    token = credentials.credentials.strip()
 
     if not token:
-        raise HTTPException(
-            status_code=401,
-            detail="Login required",
+        raise unauthorized("Bearer token is required")
+
+    return token
+
+
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(
+        bearer_scheme
+    ),
+    db: Session = Depends(get_db),
+) -> User:
+    """Authenticate a bearer token and load its current database user."""
+
+    token = _bearer_token(credentials)
+
+    try:
+        payload = decode_access_token(token)
+    except AccessTokenError as exc:
+        raise unauthorized(str(exc)) from exc
+
+    user = db.get(User, payload["user_id"])
+
+    if user is None:
+        raise unauthorized(
+            "Access token user no longer exists"
         )
 
-    session = get_valid_session(db, token)
+    return user
 
-    if session is None:
-        raise HTTPException(
-            status_code=401,
-            detail="Session expired or invalid",
+
+def require_roles(*allowed_roles: UserRole):
+    """Create a dependency that rejects authenticated users with 403."""
+
+    allowed_values = {
+        role.value
+        for role in allowed_roles
+    }
+
+    def dependency(
+        user: User = Depends(get_current_user),
+    ) -> User:
+        role = (
+            user.role.value
+            if isinstance(user.role, UserRole)
+            else str(user.role)
         )
 
-    return session
+        if role not in allowed_values:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Insufficient role for this operation",
+            )
+
+        return user
+
+    return dependency
+
+
+require_writer = require_roles(
+    UserRole.WRITER,
+    UserRole.MODERATOR,
+)
+require_moderator = require_roles(
+    UserRole.MODERATOR,
+)
 
 
 @router.post(
     "/register",
     response_model=UserOut,
-    status_code=201,
+    status_code=status.HTTP_201_CREATED,
 )
 def register(
     payload: UserCreate,
     db: Session = Depends(get_db),
 ) -> User:
-    """Create a new user account with a bcrypt password hash."""
+    """Create a reader account; public callers cannot select a role."""
+
+    if get_user_by_username(db, payload.username):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username already registered",
+        )
 
     if get_user_by_email(db, str(payload.email)):
         raise HTTPException(
-            status_code=409,
+            status_code=status.HTTP_409_CONFLICT,
             detail="Email already registered",
         )
 
     try:
         return create_user(db, payload)
-    except IntegrityError:
+    except IntegrityError as exc:
         db.rollback()
         raise HTTPException(
-            status_code=409,
-            detail="Email already registered",
-        )
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username or email already registered",
+        ) from exc
 
 
 @router.post(
     "/login",
-    response_model=LoginResponse,
+    response_model=TokenResponse,
 )
 def login(
     payload: UserLogin,
-    response: Response,
     db: Session = Depends(get_db),
-) -> LoginResponse:
-    """Verify credentials and issue an HTTP-only session cookie."""
+) -> TokenResponse:
+    """Verify username/password credentials and return a JWT."""
 
-    user = get_user_by_email(db, str(payload.email))
+    user = get_user_by_username(db, payload.username)
 
     if user is None or not verify_password(
         payload.password,
         user.password_hash,
     ):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password",
+        raise unauthorized(
+            "Invalid username or password"
         )
 
-    session = create_session(db, user.id)
+    token, expires_in = create_access_token(user)
 
-    response.set_cookie(
-        key=SESSION_COOKIE_NAME,
-        value=session.id,
-        httponly=True,
-        secure=COOKIE_SECURE,
-        samesite="lax",
-        max_age=SESSION_TTL_MINUTES * 60,
-        path="/",
-    )
-
-    return LoginResponse(
-        message="Logged in successfully",
-        user_id=user.id,
-        email=user.email,
+    return TokenResponse(
+        access_token=token,
+        expires_in=expires_in,
     )
 
 
@@ -141,40 +190,8 @@ def login(
     response_model=UserOut,
 )
 def me(
-    session: SessionToken = Depends(require_session),
-    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
 ) -> User:
-    """Return the user associated with the current session."""
-
-    user = db.get(User, session.user_id)
-
-    if user is None:
-        raise HTTPException(
-            status_code=401,
-            detail="Session user no longer exists",
-        )
+    """Return the identity and current role for a bearer token."""
 
     return user
-
-
-@router.post("/logout")
-def logout(
-    request: Request,
-    response: Response,
-    db: Session = Depends(get_db),
-) -> dict[str, str]:
-    """Delete the server-side session and browser cookie."""
-
-    token = request.cookies.get(SESSION_COOKIE_NAME)
-
-    if token:
-        delete_session(db, token)
-
-    response.delete_cookie(
-        key=SESSION_COOKIE_NAME,
-        path="/",
-    )
-
-    return {
-        "message": "Logged out successfully",
-    }

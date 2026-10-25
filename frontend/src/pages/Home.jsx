@@ -22,6 +22,12 @@ export default function Home({ user }) {
     error,
   } = useSelector((state) => state.listings);
 
+  const canWrite = [
+    "writer",
+    "moderator",
+  ].includes(user.role);
+  const canDelete = user.role === "moderator";
+
 
   useEffect(() => {
     if (!initialized && !loading) {
@@ -48,16 +54,19 @@ export default function Home({ user }) {
       <h2>Rental Housing Listings</h2>
 
       <p>
-        Welcome, {user?.name || user?.email}.
+        Welcome, {user.name || user.email}. Your current role is{" "}
+        <strong>{user.role}</strong>.
       </p>
 
       <div className="page-actions">
-        <Link
-          className="button-link"
-          to="/create"
-        >
-          Add Listing
-        </Link>
+        {canWrite && (
+          <Link
+            className="button-link"
+            to="/create"
+          >
+            Add Listing
+          </Link>
+        )}
 
         <button
           className="secondary-button"
@@ -125,24 +134,30 @@ export default function Home({ user }) {
 
             <p>{listing.description}</p>
 
-            <div className="listing-actions">
-              <Link
-                className="button-link"
-                to={`/update/${listing.id}`}
-              >
-                Update
-              </Link>
+            {(canWrite || canDelete) && (
+              <div className="listing-actions">
+                {canWrite && (
+                  <Link
+                    className="button-link"
+                    to={`/update/${listing.id}`}
+                  >
+                    Update
+                  </Link>
+                )}
 
-              <button
-                className="danger-button"
-                onClick={() => {
-                  handleDelete(listing.id);
-                }}
-                disabled={saving}
-              >
-                Delete
-              </button>
-            </div>
+                {canDelete && (
+                  <button
+                    className="danger-button"
+                    onClick={() => {
+                      handleDelete(listing.id);
+                    }}
+                    disabled={saving}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            )}
           </article>
         ))}
     </section>

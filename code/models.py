@@ -1,9 +1,14 @@
+import hashlib
 from datetime import datetime
 from decimal import Decimal
+from enum import Enum as PythonEnum
+from typing import Any
 
 from sqlalchemy import (
     Boolean,
+    CheckConstraint,
     DateTime,
+    Enum,
     ForeignKey,
     Index,
     Integer,
@@ -15,6 +20,43 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
+
+
+class UserRole(str, PythonEnum):
+    """Roles accepted by the HW7 authorization model."""
+
+    READER = "reader"
+    WRITER = "writer"
+    MODERATOR = "moderator"
+
+
+def default_username(context: Any) -> str:
+    """Give legacy ORM callers a unique deterministic username."""
+
+    parameters = context.get_current_parameters()
+    email = str(parameters.get("email", "")).strip().lower()
+
+    if not email:
+        raise ValueError(
+            "email is required to generate a default username"
+        )
+
+    local_part = email.partition("@")[0]
+    readable = "".join(
+        character
+        if character.isascii() and character.isalnum()
+        else "_"
+        for character in local_part
+    ).strip("_") or "user"
+    digest = hashlib.sha256(
+        email.encode("utf-8")
+    ).hexdigest()[:12]
+    suffix = f"-{digest}"
+
+    return (
+        readable[: 100 - len(suffix)]
+        + suffix
+    )
 
 
 class PropertyManager(Base):
@@ -161,6 +203,13 @@ class User(Base):
 
     __tablename__ = "users"
 
+    __table_args__ = (
+        CheckConstraint(
+            "LENGTH(TRIM(username)) > 0",
+            name="ck_users_username_not_blank",
+        ),
+    )
+
     id: Mapped[int] = mapped_column(
         Integer,
         primary_key=True,
@@ -178,8 +227,31 @@ class User(Base):
         nullable=False,
     )
 
+    username: Mapped[str] = mapped_column(
+        String(100),
+        unique=True,
+        nullable=False,
+        default=default_username,
+    )
+
     password_hash: Mapped[str] = mapped_column(
         String(255),
+        nullable=False,
+    )
+
+    role: Mapped[UserRole] = mapped_column(
+        Enum(
+            UserRole,
+            name="user_role",
+            values_callable=lambda roles: [
+                role.value
+                for role in roles
+            ],
+            validate_strings=True,
+            create_constraint=True,
+        ),
+        default=UserRole.READER,
+        server_default=UserRole.READER.value,
         nullable=False,
     )
 

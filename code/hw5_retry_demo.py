@@ -4,7 +4,6 @@ from datetime import datetime
 from reliable_domain_tools import listing_details
 from retry_policy import ScriptedFailureInjector
 
-
 STUDENT_NAME = "Xuanhua Li"
 SID4 = 2974
 

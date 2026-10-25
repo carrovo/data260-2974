@@ -1,19 +1,71 @@
 import axios from "axios";
 
 
+export const AUTH_UNAUTHORIZED_EVENT = "auth:unauthorized";
+export const TOKEN_STORAGE_KEY = "hw7_access_token";
+
+
+export function getStoredAccessToken() {
+  return window.localStorage.getItem(TOKEN_STORAGE_KEY);
+}
+
+
+export function storeAccessToken(token) {
+  if (typeof token !== "string" || !token.trim()) {
+    throw new Error("The login response did not include an access token.");
+  }
+
+  window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
+}
+
+
+export function clearAccessToken() {
+  window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+}
+
+
 const api = axios.create({
-    // Use the same hostname as the frontend.
-    baseURL: "http://localhost:8274",
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  baseURL: "http://localhost:8274",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+
+api.interceptors.request.use((config) => {
+  const token = getStoredAccessToken();
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      const hadToken = Boolean(getStoredAccessToken());
+
+      clearAccessToken();
+
+      if (hadToken) {
+        window.dispatchEvent(
+          new Event(AUTH_UNAUTHORIZED_EVENT),
+        );
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 
 export async function registerUser(payload) {
   const response = await api.post(
-    "/api/auth/register",
+    "/auth/register",
     payload,
   );
 
@@ -23,9 +75,11 @@ export async function registerUser(payload) {
 
 export async function loginUser(payload) {
   const response = await api.post(
-    "/api/auth/login",
+    "/auth/login",
     payload,
   );
+
+  storeAccessToken(response.data.access_token);
 
   return response.data;
 }
@@ -33,19 +87,15 @@ export async function loginUser(payload) {
 
 export async function getCurrentUser() {
   const response = await api.get(
-    "/api/auth/me",
+    "/auth/me",
   );
 
   return response.data;
 }
 
 
-export async function logoutUser() {
-  const response = await api.post(
-    "/api/auth/logout",
-  );
-
-  return response.data;
+export function logoutUser() {
+  clearAccessToken();
 }
 
 export async function getPropertyManagers(

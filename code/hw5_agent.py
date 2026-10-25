@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any, Callable
 
 from langchain_core.messages import (
-    AIMessage,
     HumanMessage,
     SystemMessage,
     ToolMessage,
@@ -18,7 +17,6 @@ from tool_executor import (
     SAFETY_ERROR_MESSAGE,
     execute_tool,
 )
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LOG_PATH = (

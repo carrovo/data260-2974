@@ -1,10 +1,11 @@
 from collections.abc import Iterator
 from threading import Lock
 
-from hw6_config import settings
 from pymongo import ASCENDING, DESCENDING, MongoClient
 from pymongo.database import Database
 from pymongo.errors import CollectionInvalid
+
+from hw6_config import settings
 
 _client: MongoClient | None = None
 _client_lock = Lock()

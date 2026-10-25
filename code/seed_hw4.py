@@ -8,7 +8,6 @@ from sqlalchemy import func, select
 from database import SessionLocal
 from models import ListingEvent, RentalListing
 
-
 load_dotenv()
 
 # HW4 requires deterministic seed data.

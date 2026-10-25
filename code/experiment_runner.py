@@ -10,7 +10,6 @@ from typing import Any
 
 from agents_demo import run_pipeline
 
-
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 INPUT_PATH = (

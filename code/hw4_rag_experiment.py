@@ -17,7 +17,6 @@ from llama_index.core.vector_stores import SimpleVectorStore
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from pypdf import PdfReader
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 # Allow importing the local model adapter.
@@ -25,7 +24,6 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.model_client import ModelClient
-
 
 CORPUS_DIRS = [
     ROOT / "corpus" / "hw03",

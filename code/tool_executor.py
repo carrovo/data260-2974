@@ -9,7 +9,6 @@ from reliable_domain_tools import (
     search_listings,
 )
 
-
 logger = logging.getLogger("s2974_rel.tool_executor")
 
 Envelope = dict[str, Any]

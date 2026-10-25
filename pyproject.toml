@@ -1,0 +1,17 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+src = ["code"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# These scripts must prepare sys.path or isolated test environment variables
+# before importing project modules.
+"code/agents_demo.py" = ["E402"]
+"code/hw1_client.py" = ["E402"]
+"code/hw2_experiment_runner.py" = ["E402"]
+"code/hw2_graph_demo.py" = ["E402"]
+"code/hw4_rag_experiment.py" = ["E402"]
+"code/test_hw7_auth_rbac.py" = ["E402"]

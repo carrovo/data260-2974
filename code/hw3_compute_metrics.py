@@ -5,7 +5,6 @@ from typing import Any
 
 import pandas as pd
 
-
 ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "reports" / "hw03" / "raw"
 

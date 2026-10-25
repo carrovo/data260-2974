@@ -1,5 +1,17 @@
 from pathlib import Path
 
+from fastapi import (
+    Depends,
+    FastAPI,
+    Query,
+    Response,
+    status,
+)
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from pymongo.errors import PyMongoError
+from sqlalchemy.orm import Session
+
 from crud import (
     create_listing,
     create_property_manager,
@@ -21,19 +33,13 @@ from database import (
     get_sql_count,
     reset_sql_count,
 )
-from fastapi import (
-    Depends,
-    FastAPI,
-    Query,
-    Response,
-    status,
-)
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
-from models import PropertyManager, RentalListing
+from models import PropertyManager, RentalListing, User
 from mongo_database import ensure_hw6_collections
-from pymongo.errors import PyMongoError
-from routers.auth import require_session
+from routers.auth import (
+    get_current_user,
+    require_moderator,
+    require_writer,
+)
 from routers.auth import router as auth_router
 from routers.hw6_listings import router as hw6_listings_router
 from routers.hw6_memory import router as hw6_memory_router
@@ -45,10 +51,9 @@ from schemas import (
     PropertyManagerOut,
     PropertyManagerUpdate,
 )
-from sqlalchemy.orm import Session
 
 # Create tables that do not already exist.
-# Existing tables are updated separately by migrate_hw5.py.
+# Existing tables are updated by the versioned migration scripts.
 Base.metadata.create_all(bind=db_session_basede26)
 
 
@@ -115,7 +120,7 @@ def hw6_chat_page() -> str:
 def add_property_manager(
     payload: PropertyManagerCreate,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(require_writer),
 ) -> PropertyManager:
     """Create one property manager."""
 
@@ -140,7 +145,7 @@ def read_property_managers(
         le=200,
     ),
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(get_current_user),
 ) -> list[PropertyManager]:
     """Return property managers with pagination."""
 
@@ -158,7 +163,7 @@ def read_property_managers(
 def read_property_manager(
     manager_id: int,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(get_current_user),
 ) -> PropertyManager:
     """Return one property manager by ID."""
 
@@ -176,7 +181,7 @@ def edit_property_manager(
     manager_id: int,
     payload: PropertyManagerUpdate,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(require_writer),
 ) -> PropertyManager:
     """Update one property manager."""
 
@@ -194,7 +199,7 @@ def edit_property_manager(
 def remove_property_manager(
     manager_id: int,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(require_moderator),
 ) -> Response:
     """Delete a manager when no listings reference it."""
 
@@ -224,7 +229,7 @@ def read_listings_for_property_manager(
         le=200,
     ),
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(get_current_user),
 ) -> list[RentalListing]:
     """Return listings associated with one property manager."""
 
@@ -257,7 +262,7 @@ def list_listings(
         le=200,
     ),
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(get_current_user),
 ) -> list[RentalListing]:
     """Return listings using eager loading and pagination."""
 
@@ -286,7 +291,7 @@ def list_listings_naive(
         le=200,
     ),
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(get_current_user),
 ) -> list[RentalListing]:
     """Retain the intentional HW4 N+1 endpoint."""
 
@@ -314,7 +319,7 @@ def list_listings_fixed_endpoint(
         le=200,
     ),
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(get_current_user),
 ) -> list[RentalListing]:
     """Retain the optimized HW4 eager-loading endpoint."""
 
@@ -337,7 +342,7 @@ def list_listings_fixed_endpoint(
 def read_listing(
     listing_id: int,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(get_current_user),
 ) -> RentalListing:
     """Return one rental listing by ID."""
 
@@ -355,7 +360,7 @@ def read_listing(
 def add_listing(
     payload: ListingCreate,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(require_writer),
 ) -> RentalListing:
     """Create one rental listing."""
 
@@ -373,7 +378,7 @@ def edit_listing(
     listing_id: int,
     payload: ListingUpdate,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(require_writer),
 ) -> RentalListing:
     """Update one rental listing."""
 
@@ -391,7 +396,7 @@ def edit_listing(
 def remove_listing(
     listing_id: int,
     db: Session = Depends(get_db),
-    _session=Depends(require_session),
+    _user: User = Depends(require_moderator),
 ) -> Response:
     """Delete one rental listing."""
 

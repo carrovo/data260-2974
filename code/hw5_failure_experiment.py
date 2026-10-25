@@ -10,7 +10,6 @@ from pathlib import Path
 from reliable_domain_tools import listing_details
 from retry_policy import SeededFailureInjector
 
-
 STUDENT_NAME = "Xuanhua Li"
 SID4 = 2974
 VERIFY_SEED = 262974

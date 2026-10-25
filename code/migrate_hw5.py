@@ -6,7 +6,6 @@ from sqlalchemy import inspect, text
 from database import db_session_basede26
 from models import PropertyManager
 
-
 load_dotenv()
 
 SID4 = int(os.getenv("SID4", "2974"))
