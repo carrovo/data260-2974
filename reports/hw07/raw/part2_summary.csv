@@ -1,2 +1,2 @@
 status,model,expected_runs,actual_runs,call_attempts,call_well_formed,call_well_formed_rate_percent,pre_repair_rate_percent,post_repair_rate_percent,completed_runs,run_completion_rate_percent,malformed_arguments,unknown_tool,text_when_tool_required,lost_multi_step_chain
-pending_real_model_run,qwen3:8b,21,,,,,,,,,,,,
+completed_real_model_run,qwen3:8b,21,21,49,49,100.0,100.0,,21,100.0,0,0,0,0

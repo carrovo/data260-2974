@@ -1,0 +1,61 @@
+{
+  "status": "completed_real_model_run",
+  "generated_at": "2026-10-25T15:00:44.291525-07:00",
+  "run": {
+    "attempt_id": "error-recovery-001",
+    "task_id": "error-recovery",
+    "prompt": "Look up full details for rental listing ID 999999. Use the listing_details tool, then explain the returned result without inventing a listing.",
+    "model_config": {
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "reasoning": false,
+      "num_ctx": 4096,
+      "num_predict": 512
+    },
+    "latency_ms": 3392.963,
+    "stop_reason": "normal_completion",
+    "task_success": true,
+    "model_call_count": 2,
+    "tool_call_attempt_count": 1,
+    "tool_call_count": 1,
+    "repair_count": 0,
+    "input_tokens": 971,
+    "output_tokens": 43,
+    "total_tokens": 1014,
+    "tool_calls": [
+      {
+        "iteration": 1,
+        "phase": "pre_repair",
+        "call_id": "421b044d-c897-479f-9207-9e689988ec3d",
+        "name": "listing_details",
+        "inputs": {
+          "listing_id": 999999
+        },
+        "validation": "passed",
+        "validation_subreason": null,
+        "executed": true,
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "listing 999999 was not found"
+        }
+      }
+    ],
+    "pre_repair_well_formed": {
+      "attempts": 1,
+      "well_formed_calls": 1,
+      "all_well_formed": true,
+      "rate_percent": 100.0
+    },
+    "post_repair_well_formed": {
+      "attempts": 0,
+      "well_formed_calls": 0,
+      "all_well_formed": null,
+      "rate_percent": null
+    },
+    "failure_categories": [],
+    "failure_subreasons": [],
+    "final_answer": "The rental listing with ID 999999 was not found."
+  }
+}

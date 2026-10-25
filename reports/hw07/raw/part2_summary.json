@@ -1,5 +1,6 @@
 {
-  "status": "pending_real_model_run",
+  "status": "completed_real_model_run",
+  "generated_at": "2026-10-25T15:19:23.418673-07:00",
   "student": "Xuanhua Li",
   "sid4": 2974,
   "model_config": {
@@ -11,9 +12,33 @@
     "num_predict": 512
   },
   "expected_run_count": 21,
-  "actual_run_count": null,
-  "call_level_well_formed_rate": null,
-  "run_level_completion_rate": null,
-  "failure_counts": null,
-  "note": "Run the real qwen3:8b reliability mode on the isolated MySQL fixture. No fake-model metrics are recorded here."
+  "actual_run_count": 21,
+  "call_level_well_formed_rate": {
+    "all_attempts": {
+      "attempts": 49,
+      "well_formed_calls": 49,
+      "rate_percent": 100.0
+    },
+    "pre_repair": {
+      "attempts": 49,
+      "well_formed_calls": 49,
+      "rate_percent": 100.0
+    },
+    "post_repair": {
+      "attempts": 0,
+      "well_formed_calls": 0,
+      "rate_percent": null
+    }
+  },
+  "run_level_completion_rate": {
+    "completed_runs": 21,
+    "total_runs": 21,
+    "rate_percent": 100.0
+  },
+  "failure_counts": {
+    "malformed_arguments": 0,
+    "unknown_tool": 0,
+    "text_when_tool_required": 0,
+    "lost_multi_step_chain": 0
+  }
 }
