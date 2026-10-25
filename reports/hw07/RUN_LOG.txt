@@ -186,3 +186,26 @@ Commit summary: 60 files changed, 2378 insertions, 341 deletions.
 The commit is amended once, without bypassing hooks, to include this success
 record. A Python configuration comment is included in that amend so the final
 hook invocation runs Ruff rather than reporting no Python files to check.
+
+
+HW7 Part 2 cloud availability check
+===================================
+Local time: 2026-10-25 14:28:47 PDT
+
+Command: curl --max-time 2 http://127.0.0.1:11434/api/version
+Result: exit 0; Ollama service version 0.40.11 responded.
+
+Command: curl --max-time 5 http://127.0.0.1:11434/api/tags
+Result: exit 0; response was {"models":[]}.
+
+The Ollama CLI is not installed in this cloud shell, and qwen3:8b is not
+present in the running Ollama service. No model download, real verification,
+or reliability attempt was started. Part 2 metrics remain explicitly pending;
+scripted-model offline tests are not reported as real model results.
+
+Command: source reports/hw07/part2_local.sh; hw7_part2_start
+Result: expected blocked preflight. The cached official MySQL 8.4 image
+started, the guarded fixture was recreated and passed its seed checks, then
+preflight stopped with: required model qwen3:8b is not installed; no download
+was attempted. The helper stopped the --rm container. A subsequent filtered
+docker ps -a check confirmed that the temporary container was absent.

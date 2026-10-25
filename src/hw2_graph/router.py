@@ -2,7 +2,6 @@ from typing import Any, Literal
 
 from .state import AgentState
 
-
 RouteName = Literal[
     "planner",
     "reviewer",

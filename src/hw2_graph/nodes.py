@@ -2,10 +2,10 @@ import json
 import time
 from typing import Any
 
-from .state import AgentState
 from pydantic import ValidationError
 
 from .schemas import PlannerProposal
+from .state import AgentState
 
 
 def _parse_json_object(content: str) -> dict[str, Any]: # Parse the json object.

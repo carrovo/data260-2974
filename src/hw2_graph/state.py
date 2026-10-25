@@ -1,6 +1,5 @@
 from typing import Any, Literal, TypedDict
 
-
 GraphStatus = Literal[
     "running",
     "completed",

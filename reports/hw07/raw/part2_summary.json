@@ -1,0 +1,19 @@
+{
+  "status": "pending_real_model_run",
+  "student": "Xuanhua Li",
+  "sid4": 2974,
+  "model_config": {
+    "model": "qwen3:8b",
+    "temperature": 0.0,
+    "seed": 2974,
+    "reasoning": false,
+    "num_ctx": 4096,
+    "num_predict": 512
+  },
+  "expected_run_count": 21,
+  "actual_run_count": null,
+  "call_level_well_formed_rate": null,
+  "run_level_completion_rate": null,
+  "failure_counts": null,
+  "note": "Run the real qwen3:8b reliability mode on the isolated MySQL fixture. No fake-model metrics are recorded here."
+}

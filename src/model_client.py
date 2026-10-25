@@ -1,7 +1,8 @@
 import json
-from dataclasses import dataclass
-from typing import Any
+from dataclasses import dataclass, field
+from typing import Any, Sequence
 
+from langchain_core.messages import AIMessage, BaseMessage
 from langchain_ollama import ChatOllama
 
 
@@ -14,6 +15,16 @@ class CompletionResult:
     output_tokens: int
     total_tokens: int
     metadata: dict[str, Any]
+    message: AIMessage | None = None
+    tool_calls: list[dict[str, Any]] = field(
+        default_factory=list
+    )
+    invalid_tool_calls: list[dict[str, Any]] = field(
+        default_factory=list
+    )
+    usage_metadata: dict[str, Any] = field(
+        default_factory=dict
+    )
 
 
 class ModelClient:
@@ -27,14 +38,16 @@ class ModelClient:
         reasoning: bool = False,
         base_url: str = "http://localhost:11434",
         seed: int | None = None,
+        num_ctx: int = 2048,
+        num_predict: int = 1024,
     ) -> None:
         model_options: dict[str, Any] = {
             "model": model_name,
             "temperature": temperature,
             "reasoning": reasoning,
             "base_url": base_url,
-            "num_ctx": 2048,
-            "num_predict": 1024
+            "num_ctx": num_ctx,
+            "num_predict": num_predict,
         }
 
         if output_format is not None:
@@ -46,8 +59,10 @@ class ModelClient:
 
     def complete(
         self,
-        messages: list[dict[str, str]],
-        tools: list[Any] | None = None
+        messages: Sequence[
+            BaseMessage | dict[str, Any]
+        ],
+        tools: list[Any] | None = None,
     ) -> CompletionResult:
         """
         Send messages to the model through one stable interface.
@@ -98,5 +113,19 @@ class ModelClient:
             input_tokens=input_tokens,
             output_tokens=output_tokens,
             total_tokens=total_tokens,
-            metadata=metadata
+            metadata=dict(metadata),
+            message=response,
+            tool_calls=list(
+                getattr(response, "tool_calls", None)
+                or []
+            ),
+            invalid_tool_calls=list(
+                getattr(
+                    response,
+                    "invalid_tool_calls",
+                    None,
+                )
+                or []
+            ),
+            usage_metadata=dict(usage),
         )
