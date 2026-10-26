@@ -471,3 +471,36 @@ Checks:
 - JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
 - Ruff, pre-commit, pip check, frontend lint/build (96 modules), zsh syntax,
   `git diff --check`, and count-only secret scan (0 matches): PASS
+
+
+HW7 Part 4 bounded wall-clock budget reliability fix
+=====================================================
+PDT time: 2026-10-26T00:19:53-07:00
+
+The reported Mac run completed the request-timeout and native structured-
+output boundaries but exhausted the former 120-second total wall budget. The
+workflow has several sequential qwen3:8b ReAct turns for the required tools,
+a final ReAct turn, and a native JSON-schema structured-output turn. No real
+qwen3:8b inference was run in the cloud.
+
+The default total wall budget is now 300 seconds with a finite 600-second hard
+cap and the non-secret `HW7_PART4_WALL_BUDGET_SECONDS` override. The existing
+request timeout defaults to 60 seconds and is capped by the effective wall
+budget. Both settings reject nonnumeric, non-finite, zero, and negative
+values. Each run resolves these settings once; the same wall value controls
+AgentBudget checks, the framework Future timeout, messages, and metrics.
+
+Controlled wall/request timeout diagnostics contain only elapsed time, model
+call count, completed tool-call count, last completed tool name, and whether
+structured output started. Raw acceptance remained
+`pending_real_part4_agent_run` with zero runs and METRICS.md remained pending;
+no failed real-run artifact was added.
+
+Checks:
+- Part 4 agent offline: initial new fake-executor test harness 9/10 because
+  its dummy graph lacked an `invoke` attribute; harness fixed, rerun 10/10 PASS
+- Part 4 data/security: 12/12 PASS; committed evidence verification: PASS
+- Part 2: 18/18 PASS; Part 3: 9/9 PASS; HW5: 10/10 PASS; HW6: 6/6 PASS
+- JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
+- Ruff, pre-commit, pip check, frontend lint/build (96 modules), zsh syntax,
+  `git diff --check`, and count-only secret scan (0 matches): PASS

@@ -7,10 +7,9 @@ from urllib.request import urlopen
 
 from hw7_part4_agent import (
     MODEL_CONFIG,
-    OLLAMA_TIMEOUT_ENV,
     POLICY_SNAPSHOT_PATH,
     Part4AgentError,
-    ollama_timeout_seconds,
+    effective_runtime_limits,
     run_part4_agent,
     validate_uploaded_csv,
 )
@@ -59,11 +58,11 @@ def preflight() -> bool:
         print(f"FIXTURE_ERROR: {exc}")
         fixture_verified = False
     try:
-        request_timeout = ollama_timeout_seconds()
+        runtime_limits = effective_runtime_limits()
         timeout_valid = True
     except Part4AgentError as exc:
         print(f"TIMEOUT_CONFIG_ERROR: {exc}")
-        request_timeout = None
+        runtime_limits = None
         timeout_valid = False
     checks: dict[str, bool] = {
         "sanitized_policy_snapshot": verify_snapshot_hash(POLICY_SNAPSHOT_PATH),
@@ -89,10 +88,14 @@ def preflight() -> bool:
         checks["ollama"] = False
         checks["qwen3:8b"] = False
     print("MODEL_CONFIG: " + json.dumps(MODEL_CONFIG, sort_keys=True))
-    if request_timeout is not None:
+    if runtime_limits is not None:
         print(
-            f"{OLLAMA_TIMEOUT_ENV}: {request_timeout:g} "
-            "(overall agent budget: 120 seconds)"
+            "OLLAMA_REQUEST_TIMEOUT_SECONDS: "
+            f"{runtime_limits.ollama_request_timeout_seconds:g}"
+        )
+        print(
+            "AGENT_WALL_BUDGET_SECONDS: "
+            f"{runtime_limits.wall_budget_seconds:g}"
         )
     for name, passed in checks.items():
         print(f"{'PASS' if passed else 'FAIL'} | {name}")
@@ -249,9 +252,13 @@ def main() -> int:
         print(f"STOP_REASON: {exc.stop_reason}")
         print(f"ERROR: {exc}")
         if exc.diagnostics is not None:
+            label = (
+                "FINAL_RESPONSE_DIAGNOSTICS"
+                if exc.stop_reason == "invalid_final_response"
+                else "FAILURE_DIAGNOSTICS"
+            )
             print(
-                "FINAL_RESPONSE_DIAGNOSTICS: "
-                + json.dumps(exc.diagnostics, sort_keys=True)
+                f"{label}: " + json.dumps(exc.diagnostics, sort_keys=True)
             )
         return 1
     return 0

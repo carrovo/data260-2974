@@ -42,7 +42,9 @@ MAX_UPLOAD_BYTES = 10_000_000
 MIN_UPLOAD_ROWS = 500
 MAX_UPLOAD_ROWS = 250_000
 MAX_TOOL_CALLS = 12
-MAX_WALL_SECONDS = 120.0
+DEFAULT_WALL_BUDGET_SECONDS = 300.0
+MAX_WALL_BUDGET_SECONDS = 600.0
+WALL_BUDGET_ENV = "HW7_PART4_WALL_BUDGET_SECONDS"
 DEFAULT_OLLAMA_TIMEOUT_SECONDS = 60.0
 OLLAMA_TIMEOUT_ENV = "HW7_PART4_OLLAMA_TIMEOUT_SECONDS"
 RECURSION_LIMIT = 50
@@ -341,9 +343,17 @@ def decode_final_response(
     return model, diagnostics
 
 
+@dataclass(frozen=True)
+class Part4RuntimeLimits:
+    wall_budget_seconds: float
+    ollama_request_timeout_seconds: float
+
+
 @dataclass
 class AgentBudget:
-    started: float = field(default_factory=time.monotonic)
+    wall_budget_seconds: float = DEFAULT_WALL_BUDGET_SECONDS
+    clock: Callable[[], float] = field(default=time.monotonic, repr=False)
+    started: float | None = None
     tool_calls: int = 0
     model_calls: int = 0
     input_tokens: int = 0
@@ -353,13 +363,38 @@ class AgentBudget:
     fatal_message: str | None = None
     final_response_diagnostics: dict[str, Any] | None = None
     structured_response_latency_ms: float = 0.0
+    structured_output_started: bool = False
+
+    def __post_init__(self) -> None:
+        if self.started is None:
+            self.started = self.clock()
+
+    def elapsed_seconds(self) -> float:
+        assert self.started is not None
+        return max(0.0, self.clock() - self.started)
+
+    def timeout_diagnostics(self) -> dict[str, Any]:
+        return {
+            "elapsed_seconds": round(self.elapsed_seconds(), 3),
+            "model_call_count": self.model_calls,
+            "completed_tool_call_count": len(self.timeline),
+            "last_completed_tool_name": (
+                self.timeline[-1]["tool"] if self.timeline else None
+            ),
+            "structured_output_started": self.structured_output_started,
+        }
+
+    def wall_timeout_error(self, message: str | None = None) -> Part4AgentError:
+        limit = f"{self.wall_budget_seconds:g}"
+        return Part4AgentError(
+            message or f"Part 4 analysis exceeded {limit} seconds",
+            stop_reason="wall_clock_budget_exhausted",
+            diagnostics=self.timeout_diagnostics(),
+        )
 
     def check_time(self) -> None:
-        if time.monotonic() - self.started > MAX_WALL_SECONDS:
-            raise Part4AgentError(
-                "Part 4 analysis exceeded 120 seconds",
-                stop_reason="wall_clock_budget_exhausted",
-            )
+        if self.elapsed_seconds() > self.wall_budget_seconds:
+            raise self.wall_timeout_error()
 
 
 class MeteredChatModel(BaseChatModel):
@@ -402,6 +437,7 @@ class MeteredChatModel(BaseChatModel):
             config: Any = None,
         ) -> Part4AdvisorResult:
             self.budget.check_time()
+            self.budget.structured_output_started = True
             self.budget.model_calls += 1
             started = time.monotonic()
             try:
@@ -520,7 +556,24 @@ class MeteredChatModel(BaseChatModel):
         return ChatResult(generations=[ChatGeneration(message=response)])
 
 
-def ollama_timeout_seconds() -> float:
+def wall_budget_seconds() -> float:
+    """Return one finite, positive wall budget capped at 600 seconds."""
+
+    raw_value = os.getenv(WALL_BUDGET_ENV, str(DEFAULT_WALL_BUDGET_SECONDS))
+    try:
+        wall_budget = float(raw_value)
+    except (TypeError, ValueError) as exc:
+        raise Part4AgentError(
+            f"{WALL_BUDGET_ENV} must be a finite positive number"
+        ) from exc
+    if not math.isfinite(wall_budget) or wall_budget <= 0:
+        raise Part4AgentError(
+            f"{WALL_BUDGET_ENV} must be a finite positive number"
+        )
+    return min(wall_budget, MAX_WALL_BUDGET_SECONDS)
+
+
+def ollama_timeout_seconds(*, wall_budget: float | None = None) -> float:
     """Return one finite, positive request timeout bounded by wall time."""
 
     raw_value = os.getenv(
@@ -535,16 +588,32 @@ def ollama_timeout_seconds() -> float:
         ) from exc
     if not math.isfinite(timeout) or timeout <= 0:
         raise Part4AgentError(f"{OLLAMA_TIMEOUT_ENV} must be a finite positive number")
-    return min(timeout, MAX_WALL_SECONDS)
+    effective_wall_budget = wall_budget_seconds() if wall_budget is None else wall_budget
+    return min(timeout, effective_wall_budget)
 
 
-def create_real_model() -> BaseChatModel:
+def effective_runtime_limits() -> Part4RuntimeLimits:
+    """Read each bounded runtime setting once for a single agent run."""
+
+    wall_budget = wall_budget_seconds()
+    return Part4RuntimeLimits(
+        wall_budget_seconds=wall_budget,
+        ollama_request_timeout_seconds=ollama_timeout_seconds(
+            wall_budget=wall_budget,
+        ),
+    )
+
+
+def create_real_model(
+    runtime_limits: Part4RuntimeLimits | None = None,
+) -> BaseChatModel:
     """Create the fixed local Ollama model; this does not invoke it."""
 
+    limits = runtime_limits or effective_runtime_limits()
     return ChatOllama(
         **MODEL_CONFIG,
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-        sync_client_kwargs={"timeout": ollama_timeout_seconds()},
+        sync_client_kwargs={"timeout": limits.ollama_request_timeout_seconds},
     )
 
 
@@ -1020,6 +1089,27 @@ def verify_agent_result(
     }
 
 
+def _invoke_graph_with_budget(
+    graph: Any,
+    graph_input: dict[str, Any],
+    graph_config: dict[str, Any],
+    budget: AgentBudget,
+    *,
+    executor_factory: Callable[..., Any] = ThreadPoolExecutor,
+) -> dict[str, Any]:
+    """Invoke one graph using the run's already-resolved wall budget."""
+
+    executor = executor_factory(max_workers=1)
+    future = executor.submit(graph.invoke, graph_input, graph_config)
+    try:
+        return future.result(timeout=budget.wall_budget_seconds)
+    except FutureTimeoutError as exc:
+        future.cancel()
+        raise budget.wall_timeout_error() from exc
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
+
+
 def run_part4_agent(
     *,
     csv_path: Path,
@@ -1029,6 +1119,7 @@ def run_part4_agent(
     policy_fetcher: Callable[[str], FetchedPage] = committed_policy_fetcher,
     tool_overrides: dict[str, Callable[..., dict[str, Any]]] | None = None,
     recursion_limit: int = RECURSION_LIMIT,
+    runtime_limits: Part4RuntimeLimits | None = None,
 ) -> dict[str, Any]:
     upload = validate_uploaded_csv(csv_path)
     try:
@@ -1039,8 +1130,9 @@ def run_part4_agent(
         )
     except ValidationError as exc:
         raise Part4AgentError("Pricing URL is not an allowed official URL") from exc
-    budget = AgentBudget()
-    selected_model = model or create_real_model()
+    limits = runtime_limits or effective_runtime_limits()
+    budget = AgentBudget(wall_budget_seconds=limits.wall_budget_seconds)
+    selected_model = model or create_real_model(limits)
     metered = MeteredChatModel(
         delegate=selected_model,
         structured_delegate=selected_model,
@@ -1070,22 +1162,12 @@ def run_part4_agent(
     )
     stop_reason = "success"
     try:
-        executor = ThreadPoolExecutor(max_workers=1)
-        future = executor.submit(
-            graph.invoke,
+        state = _invoke_graph_with_budget(
+            graph,
             {"messages": [HumanMessage(content=user_message)]},
             {"recursion_limit": recursion_limit},
+            budget,
         )
-        try:
-            state = future.result(timeout=MAX_WALL_SECONDS)
-        except FutureTimeoutError as exc:
-            future.cancel()
-            raise Part4AgentError(
-                "Part 4 analysis exceeded 120 seconds",
-                stop_reason="wall_clock_budget_exhausted",
-            ) from exc
-        finally:
-            executor.shutdown(wait=False, cancel_futures=True)
         messages = state["messages"]
         final_message = messages[-1]
         if not isinstance(final_message, AIMessage) or final_message.tool_calls:
@@ -1127,9 +1209,10 @@ def run_part4_agent(
     except Part4AgentError:
         raise
     except httpx.TimeoutException as exc:
-        raise Part4AgentError(
-            "Ollama model request timed out within the 120-second agent budget",
-            stop_reason="wall_clock_budget_exhausted",
+        wall_limit = f"{limits.wall_budget_seconds:g}"
+        raise budget.wall_timeout_error(
+            "Ollama model request timed out within the bounded "
+            f"{wall_limit}-second agent budget"
         ) from exc
     except Exception as exc:
         reason = getattr(exc, "stop_reason", "agent_error")
@@ -1138,7 +1221,7 @@ def run_part4_agent(
             stop_reason=reason,
         ) from exc
 
-    latency_ms = round((time.monotonic() - budget.started) * 1000, 3)
+    latency_ms = round(budget.elapsed_seconds() * 1000, 3)
     return {
         "result": final,
         "timeline": budget.timeline,
@@ -1154,6 +1237,10 @@ def run_part4_agent(
                 budget.structured_response_latency_ms,
                 3,
             ),
+            "ollama_request_timeout_seconds": (
+                limits.ollama_request_timeout_seconds
+            ),
+            "wall_budget_seconds": limits.wall_budget_seconds,
         },
         "stop_reason": stop_reason,
         "errors": [],

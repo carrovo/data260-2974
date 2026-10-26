@@ -33,19 +33,26 @@ import hw7_part4_runner as part4_runner
 from auth_service import hash_password
 from database import Base, SessionLocal, db_session_basede26
 from hw7_part4_agent import (
+    DEFAULT_WALL_BUDGET_SECONDS,
+    MAX_TOOL_CALLS,
     MAX_UPLOAD_BYTES,
     OLLAMA_TIMEOUT_ENV,
     POLICY_SNAPSHOT_PATH,
     TARGET_STATS_SQL,
     TOTAL_ROWS_SQL,
+    WALL_BUDGET_ENV,
     WEEKLY_SQL,
+    AgentBudget,
     Part4AgentError,
+    Part4RuntimeLimits,
     create_real_model,
     decode_final_response,
+    effective_runtime_limits,
     ollama_timeout_seconds,
     run_part4_agent,
     validate_uploaded_csv,
     verify_agent_result,
+    wall_budget_seconds,
 )
 from hw7_part4_schemas import Part4AdvisorResult
 from hw7_part4_tools import PRICING_URL
@@ -416,6 +423,9 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         assert result["metrics"]["model_calls"] == 11
         assert result["metrics"]["total_tokens"] == 165
         assert result["metrics"]["structured_response_latency_ms"] >= 0
+        assert result["metrics"]["ollama_request_timeout_seconds"] == 60.0
+        assert result["metrics"]["wall_budget_seconds"] == 300.0
+        assert MAX_TOOL_CALLS == 12
         assert result["final_response_diagnostics"]["source"] == ("structured_response")
         assert result["final_response_diagnostics"]["classification"] == (
             "native_structured"
@@ -518,27 +528,151 @@ def test_native_provider_missing_and_parse_error_fail_closed() -> None:
 
 
 def test_ollama_timeout_configuration() -> None:
-    previous = os.environ.pop(OLLAMA_TIMEOUT_ENV, None)
+    previous_timeout = os.environ.pop(OLLAMA_TIMEOUT_ENV, None)
+    previous_wall = os.environ.pop(WALL_BUDGET_ENV, None)
     try:
+        assert wall_budget_seconds() == DEFAULT_WALL_BUDGET_SECONDS == 300.0
         assert ollama_timeout_seconds() == 60.0
         assert create_real_model().sync_client_kwargs["timeout"] == 60.0
 
+        os.environ[WALL_BUDGET_ENV] = "425.5"
+        assert wall_budget_seconds() == 425.5
         os.environ[OLLAMA_TIMEOUT_ENV] = "75.5"
         assert ollama_timeout_seconds() == 75.5
         assert create_real_model().sync_client_kwargs["timeout"] == 75.5
 
-        for value in ("", "not-a-number", "0", "-1", "nan", "inf", "-inf"):
+        invalid = ("", "not-a-number", "0", "-1", "nan", "inf", "-inf")
+        for value in invalid:
             os.environ[OLLAMA_TIMEOUT_ENV] = value
             _expect_error(ollama_timeout_seconds, "validation_error")
 
-        for value in ("120", "120.01", "999999"):
-            os.environ[OLLAMA_TIMEOUT_ENV] = value
-            assert ollama_timeout_seconds() == 120.0
+        os.environ[OLLAMA_TIMEOUT_ENV] = "90"
+        for value in invalid:
+            os.environ[WALL_BUDGET_ENV] = value
+            _expect_error(effective_runtime_limits, "validation_error")
+
+        os.environ[WALL_BUDGET_ENV] = "999999"
+        assert wall_budget_seconds() == 600.0
+        os.environ[WALL_BUDGET_ENV] = "45"
+        assert effective_runtime_limits() == Part4RuntimeLimits(45.0, 45.0)
+        os.environ[WALL_BUDGET_ENV] = "300"
+        os.environ[OLLAMA_TIMEOUT_ENV] = "999999"
+        assert effective_runtime_limits() == Part4RuntimeLimits(300.0, 300.0)
     finally:
-        if previous is None:
+        if previous_timeout is None:
             os.environ.pop(OLLAMA_TIMEOUT_ENV, None)
         else:
-            os.environ[OLLAMA_TIMEOUT_ENV] = previous
+            os.environ[OLLAMA_TIMEOUT_ENV] = previous_timeout
+        if previous_wall is None:
+            os.environ.pop(WALL_BUDGET_ENV, None)
+        else:
+            os.environ[WALL_BUDGET_ENV] = previous_wall
+
+
+def test_wall_budget_clock_future_and_safe_diagnostics() -> None:
+    now = [100.0]
+    budget = AgentBudget(
+        wall_budget_seconds=300.0,
+        clock=lambda: now[0],
+    )
+    budget.model_calls = 4
+    budget.timeline.append(
+        {
+            "tool": "calculator",
+            "observation": {"unsafe_model_content": "must-not-leak"},
+        }
+    )
+    budget.structured_output_started = True
+    now[0] = 401.0
+    try:
+        budget.check_time()
+    except Part4AgentError as exc:
+        assert exc.stop_reason == "wall_clock_budget_exhausted"
+        assert str(exc) == "Part 4 analysis exceeded 300 seconds"
+        assert exc.diagnostics == {
+            "elapsed_seconds": 301.0,
+            "model_call_count": 4,
+            "completed_tool_call_count": 1,
+            "last_completed_tool_name": "calculator",
+            "structured_output_started": True,
+        }
+        assert "must-not-leak" not in json.dumps(exc.diagnostics)
+    else:
+        raise AssertionError("fake clock did not exhaust the wall budget")
+
+    recorded: dict[str, Any] = {}
+
+    class FakeFuture:
+        def result(self, *, timeout: float) -> dict[str, Any]:
+            recorded["timeout"] = timeout
+            return {"messages": []}
+
+        def cancel(self) -> None:
+            recorded["cancelled"] = True
+
+    class FakeExecutor:
+        def __init__(self, *, max_workers: int):
+            recorded["max_workers"] = max_workers
+
+        def submit(self, *_args: Any) -> FakeFuture:
+            return FakeFuture()
+
+        def shutdown(self, **kwargs: Any) -> None:
+            recorded["shutdown"] = kwargs
+
+    class FakeGraph:
+        def invoke(self, *_args: Any) -> dict[str, Any]:
+            raise AssertionError("fake executor must not invoke the graph")
+
+    result = part4_agent._invoke_graph_with_budget(
+        FakeGraph(),
+        {},
+        {},
+        AgentBudget(wall_budget_seconds=300.0),
+        executor_factory=FakeExecutor,
+    )
+    assert result == {"messages": []}
+    assert recorded["timeout"] == 300.0
+    assert recorded["max_workers"] == 1
+
+    timeout_recorded: dict[str, Any] = {}
+
+    class TimeoutFuture:
+        def result(self, *, timeout: float) -> dict[str, Any]:
+            timeout_recorded["timeout"] = timeout
+            raise part4_agent.FutureTimeoutError
+
+        def cancel(self) -> None:
+            timeout_recorded["cancelled"] = True
+
+    class TimeoutExecutor(FakeExecutor):
+        def submit(self, *_args: Any) -> TimeoutFuture:
+            return TimeoutFuture()
+
+    future_budget = AgentBudget(wall_budget_seconds=300.0)
+    future_budget.model_calls = 2
+    try:
+        part4_agent._invoke_graph_with_budget(
+            FakeGraph(),
+            {},
+            {},
+            future_budget,
+            executor_factory=TimeoutExecutor,
+        )
+    except Part4AgentError as exc:
+        assert exc.stop_reason == "wall_clock_budget_exhausted"
+        assert exc.diagnostics is not None
+        assert exc.diagnostics["model_call_count"] == 2
+        assert set(exc.diagnostics) == {
+            "elapsed_seconds",
+            "model_call_count",
+            "completed_tool_call_count",
+            "last_completed_tool_name",
+            "structured_output_started",
+        }
+    else:
+        raise AssertionError("fake Future timeout was not controlled")
+    assert timeout_recorded == {"timeout": 300.0, "cancelled": True}
 
 
 def test_controlled_cli_timeout_preserves_pending_artifacts() -> None:
@@ -624,6 +758,10 @@ def test_controlled_cli_timeout_preserves_pending_artifacts() -> None:
         assert "TASK_SUCCESS: false" in terminal
         assert "STOP_REASON: wall_clock_budget_exhausted" in terminal
         assert "ERROR: Ollama model request timed out" in terminal
+        assert "FAILURE_DIAGNOSTICS:" in terminal
+        assert '"model_call_count": 1' in terminal
+        assert '"completed_tool_call_count": 0' in terminal
+        assert "model response" not in terminal
         assert "Traceback" not in terminal
         assert pending_unchanged
         assert completed_exit_code != 0
@@ -743,19 +881,10 @@ def test_malformed_envelope_and_budgets() -> None:
         ),
         "recursion_limit",
     )
-    original_wall_budget = part4_agent.MAX_WALL_SECONDS
-    part4_agent.MAX_WALL_SECONDS = -1
-    try:
-        _expect_error(
-            lambda: run_part4_agent(
-                csv_path=MEMBERSHIP_CSV,
-                pricing_url=PRICING_URL,
-                model=ScriptedReActModel(),
-            ),
-            "wall_clock_budget_exhausted",
-        )
-    finally:
-        part4_agent.MAX_WALL_SECONDS = original_wall_budget
+    fake_clock = [10.0]
+    expired = AgentBudget(wall_budget_seconds=1.0, clock=lambda: fake_clock[0])
+    fake_clock[0] = 12.0
+    _expect_error(expired.check_time, "wall_clock_budget_exhausted")
 
 
 def _reader_token() -> str:
@@ -871,6 +1000,10 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
         test_native_provider_missing_and_parse_error_fail_closed,
     ),
     ("bounded Ollama timeout configuration", test_ollama_timeout_configuration),
+    (
+        "bounded wall clock and safe diagnostics",
+        test_wall_budget_clock_future_and_safe_diagnostics,
+    ),
     (
         "controlled CLI timeout preserves pending artifacts",
         test_controlled_cli_timeout_preserves_pending_artifacts,

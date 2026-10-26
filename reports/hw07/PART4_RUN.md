@@ -16,7 +16,8 @@ schema as an ordinary domain-tool call. LangGraph performs this one final
 structured-response model call after the tool loop. The raw AIMessage usage
 is counted exactly once in model-call and token metrics; its latency is
 reported in `structured_response_latency_ms` and included in total latency.
-The call stays inside the 120-second wall-clock budget and is not a tool call.
+The call stays inside the effective bounded wall-clock budget and is not a
+tool call.
 
 ## Strict final-response compatibility
 
@@ -70,11 +71,21 @@ slower Mac needs a different bounded value:
 
 ```zsh
 export HW7_PART4_OLLAMA_TIMEOUT_SECONDS=90
+export HW7_PART4_WALL_BUDGET_SECONDS=300
 ```
 
-The value must be finite and positive. Values above 120 are capped at 120;
-zero, negative, non-numeric, NaN, and infinite values are rejected. This does
-not change the separate 120-second overall agent wall-clock budget.
+Both values must be finite and positive; zero, negative, non-numeric, NaN,
+and infinite values are rejected. The request timeout defaults to 60 seconds
+and is capped by the effective wall budget. The wall budget defaults to 300
+seconds and values above its hard maximum of 600 seconds are capped at 600.
+The wall setting is read once per run and that same effective value controls
+deadline checks, the framework Future, timeout messages, and reported metrics.
+
+The earlier 120-second wall budget was empirically insufficient for the
+sequential local qwen3:8b workflow: several ReAct model turns and tool calls
+are followed by both a final ReAct turn and the native JSON-schema structured
+output turn. The 300-second default remains a strict, finite budget; it does
+not add a retry or fallback answer.
 
 Run the two real acceptance scenarios separately for readable screenshots:
 
@@ -89,8 +100,10 @@ both verified scenarios exist.
 
 A controlled model request timeout exits nonzero and prints `TASK_SUCCESS:
 false`, `STOP_REASON: wall_clock_budget_exhausted`, and a short error without a
-Python traceback. A failed run does not overwrite pending, partial, or already
-completed raw results and metrics.
+Python traceback. Wall-budget diagnostics contain only elapsed time, model and
+completed-tool counts, the last completed tool name, and whether structured
+output had started. A failed run does not overwrite pending, partial, or
+already completed raw results and metrics.
 
 The acceptance fixture's expected winner is passed only to the deterministic
 post-run verifier. It is never included in model messages. Completed real-model
@@ -124,8 +137,9 @@ JWT, raw HTML, secret, or hidden reasoning.
 
 The model configuration is `qwen3:8b`, temperature `0.0`, seed `2974`,
 reasoning disabled, `num_ctx=4096`, and `num_predict=1024`. The framework
-recursion limit is 50, with at most 12 actual tool calls and 120 seconds wall
-time. The default bounded Ollama request timeout is 60 seconds. Explicit stops
+recursion limit is 50, with at most 12 actual tool calls and a default
+300-second wall time (hard maximum 600). The default bounded Ollama request
+timeout is 60 seconds and cannot exceed the effective wall budget. Explicit stops
 include `success`, `tool_call_budget_exhausted`,
 `wall_clock_budget_exhausted`, `recursion_limit`, `malformed_tool_envelope`,
 `invalid_final_response`, and `verification_failed`.
