@@ -274,3 +274,48 @@ Result: all exited 0; helper syntax and runner modes were available.
 Command: PRE_COMMIT_HOME=/tmp/data260-pre-commit-cache
          .venv/bin/pre-commit run --all-files
 Result: exit 0; ruff check passed.
+
+
+HW7 Part 4 public-data tools and preparation workflow
+=====================================================
+Local time: 2026-10-25 17:46:31 PDT
+
+Official URL attempts:
+- https://www.lyft.com/bikes/bay-wheels/pricing
+- https://lyftbikes.com/pricing
+- https://www.lyft.com/bikes/bay-wheels/system-data
+- https://s3.amazonaws.com/baywheels-data/index.html
+
+Result: every normal and escalated curl attempt failed before an origin HTTP
+response with `CONNECT tunnel failed, response 403`. The Python integration
+capture also reported a requests ProxyError caused by `Tunnel connection
+failed: 403 Forbidden`. No official HTML, snapshot, archive, or derived trip
+CSV was created in this environment.
+
+Required outbound allowlist domains: www.lyft.com, lyftbikes.com,
+www.lyftbikes.com, s3.amazonaws.com, baywheels-data.s3.amazonaws.com.
+
+Command: .venv/bin/python code/test_hw7_part4_offline.py
+Result: exit 0; 7/7 PASS. HTML and trip inputs were explicitly labeled
+test-only fixtures. Temporary 600-row scenario files were deleted by the
+test and were not represented as official data.
+
+Command: .venv/bin/python code/test_hw7_part4_integration.py
+Result: exit 0 with an explicit SKIP caused by the proxy 403. No fallback
+fixture was saved as an official capture.
+
+Final regression checks at 2026-10-25 17:47:32 PDT:
+- Part 4 offline: 7/7 PASS
+- Part 3 offline: 9/9 PASS
+- Part 2 offline: 18/18 PASS
+- HW5 offline: 10/10 PASS
+- Part 1 JWT/RBAC: 24/24 PASS
+- Part 1 user migration: 5/5 PASS
+- Total scripted/offline checks: 73/73 PASS
+- `.venv/bin/ruff check .`: exit 0
+- `npm run lint`: exit 0
+- `npm run build`: exit 0; 95 modules built (not browser E2E)
+- `.venv/bin/python -m pip check`: exit 0
+- `git diff --check`: exit 0
+- `PRE_COMMIT_HOME=/tmp/data260-pre-commit-cache .venv/bin/pre-commit run
+  --all-files`: exit 0; Ruff hook passed
