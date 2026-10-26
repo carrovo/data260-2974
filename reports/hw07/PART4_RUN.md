@@ -58,6 +58,13 @@ tool call must still originate from the model and is executed normally by the
 unchanged LangGraph v2 graph; the wrapper never synthesizes a tool call or
 calls a tool directly.
 
+Because the fixed model uses temperature `0.0`, repeated repair invocations
+must not receive identical input. Each bounded repair now carries its attempt
+number and a safe classification of the prior mismatch. For a missing CSV
+stage it also includes only that stage's exact SQL between explicit markers
+and forbids parallel or additional tool calls. No rejected model content is
+copied into the repair message or logs.
+
 Each run permits at most three progress-repair model calls. Every repair is
 included in model-call, token, latency, and wall-budget accounting but is not a
 tool call. Exhaustion stops with `required_tool_progress_exhausted`. The

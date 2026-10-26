@@ -548,3 +548,28 @@ Checks:
   `git diff --check`, and count-only secret scan (0 matches): PASS
 - Official pricing network integration: SKIP because the cloud network request
   timed out; no real qwen3:8b inference was attempted
+
+
+HW7 Part 4 deterministic repair prompt follow-up
+=================================================
+Date: 2026-10-26
+
+The first real Mac run with the progress guard passed preflight and completed
+Stage 1, then stopped safely after all three Stage 2 repairs. Diagnostics were
+limited to tool names/counts, missing stages, repair/model-call counts, and
+elapsed time. Acceptance JSON and METRICS remained pending.
+
+Inspection found that the three repair invocations used identical messages
+with a temperature-0 model, so an unsuccessful first repair could repeat
+deterministically. Repairs now differ by bounded attempt number and safe
+mismatch category. A CSV-stage repair includes only the next stage's exact SQL
+between explicit markers and requires exactly one `csv_sql` call with no
+parallel call or final text. The three-repair ceiling, exact-SQL validation,
+model/token accounting, LangGraph ToolNode execution, and structured-output
+isolation remain unchanged.
+
+Checks:
+- Part 4 agent offline: 14/14 PASS, including blocked parallel Stage 2/3 calls,
+  exact ordered execution, unique bounded repair prompts, and exhaustion safety
+- Part 4 data/security: 12/12 PASS
+- Ruff and `git diff --check`: PASS

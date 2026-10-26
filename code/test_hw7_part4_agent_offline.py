@@ -279,6 +279,7 @@ class ProgressRepairModel(ScriptedReActModel):
 
     premature_points: list[str] = Field(default_factory=list)
     invalid_first_csv: bool = False
+    parallel_second_csv: bool = False
     always_premature: bool = False
     correction_messages: list[str] = Field(default_factory=list)
 
@@ -309,6 +310,23 @@ class ProgressRepairModel(ScriptedReActModel):
             return self._message(content="premature model answer must not be exposed")
         if self.invalid_first_csv and not observations and correction is None:
             return self._call(1, "csv_sql", {"sql": TARGET_STATS_SQL})
+        if self.parallel_second_csv and len(observations) == 1 and correction is None:
+            return self._message(
+                calls=[
+                    {
+                        "name": "csv_sql",
+                        "args": {"sql": TARGET_STATS_SQL},
+                        "id": "part4-parallel-stage-2",
+                        "type": "tool_call",
+                    },
+                    {
+                        "name": "csv_sql",
+                        "args": {"sql": WEEKLY_SQL},
+                        "id": "part4-parallel-stage-3",
+                        "type": "tool_call",
+                    },
+                ]
+            )
 
         point = {
             0: "before_any_tool",
@@ -963,6 +981,27 @@ def test_invalid_csv_blocked_and_progress_accounting() -> None:
     assert repaired["metrics"]["model_calls"] == 12
     assert repaired["metrics"]["total_tokens"] == 180
 
+    parallel = ProgressRepairModel(parallel_second_csv=True)
+    serialized = run_part4_agent(
+        csv_path=MEMBERSHIP_CSV,
+        pricing_url=PRICING_URL,
+        model=parallel,
+        expected_winner="Buy Monthly Membership",
+    )
+    parallel_csv_events = [
+        event for event in serialized["timeline"] if event["tool"] == "csv_sql"
+    ]
+    assert [event["inputs"]["sql"] for event in parallel_csv_events] == [
+        TOTAL_ROWS_SQL,
+        TARGET_STATS_SQL,
+        WEEKLY_SQL,
+    ]
+    assert serialized["metrics"]["progress_repair_count"] == 1
+    assert "Parallel or multiple tool calls are not allowed" in (
+        parallel.correction_messages[0]
+    )
+    assert TARGET_STATS_SQL in parallel.correction_messages[0]
+
     complete = ProgressRepairModel()
     no_repair = run_part4_agent(
         csv_path=MEMBERSHIP_CSV,
@@ -992,8 +1031,11 @@ def test_invalid_csv_blocked_and_progress_accounting() -> None:
     assert "Complete these five required stages in order" in instruction
     assert "next action must start with Stage 1 and TOTAL_ROWS_SQL" in instruction
     assert "sequentially, one per model turn" in instruction
-    assert "Do not produce a final answer until every" in instruction
-    assert "stage is complete" in instruction
+    normalized_instruction = " ".join(instruction.split())
+    assert (
+        "Do not produce a final answer until every stage is complete"
+        in normalized_instruction
+    )
 
 
 def test_progress_repair_exhaustion_preserves_acceptance_files() -> None:
@@ -1029,6 +1071,10 @@ def test_progress_repair_exhaustion_preserves_acceptance_files() -> None:
     else:
         raise AssertionError("progress repair exhaustion unexpectedly passed")
     assert len(model.correction_messages) == 3
+    assert len(set(model.correction_messages)) == 3
+    for attempt, correction in enumerate(model.correction_messages, start=1):
+        assert f"Bounded repair {attempt} of 3" in correction
+        assert TOTAL_ROWS_SQL in correction
 
     with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
         root = Path(temp)

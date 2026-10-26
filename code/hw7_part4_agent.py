@@ -797,35 +797,43 @@ def _required_tool_progress(
     }
 
 
-def _stage_correction(stage: str) -> str:
-    instructions = {
-        "stage_1_total_rows_sql": (
-            "Stage 1 (TOTAL_ROWS_SQL) is the next missing stage. Emit exactly "
-            "one csv_sql tool call using the exact required TOTAL_ROWS_SQL query; "
-            "do not answer yet."
-        ),
-        "stage_2_target_stats_sql": (
-            "Stage 2 (TARGET_STATS_SQL) is the next missing stage. Emit exactly "
-            "one csv_sql tool call using the exact required TARGET_STATS_SQL query; "
-            "do not answer yet."
-        ),
-        "stage_3_weekly_sql": (
-            "Stage 3 (WEEKLY_SQL) is the next missing stage. Emit exactly one "
-            "csv_sql tool call using the exact required WEEKLY_SQL query; do not "
-            "answer yet."
-        ),
-        "stage_4_policy_evidence": (
-            "Stage 4 (policy evidence for all five pricing rules) is the next "
-            "missing stage. Emit a policy_retriever tool call that advances this "
-            "stage; do not answer yet."
-        ),
-        "stage_5_calculator_evidence": (
-            "Stage 5 (calculator evidence for membership cost, pay-per-use cost, "
-            "and savings) is the next missing stage. Emit a calculator tool call "
-            "that advances this stage; do not answer yet."
-        ),
+def _stage_correction(stage: str, *, attempt: int, issue: str) -> str:
+    stage_labels = {
+        "stage_1_total_rows_sql": "Stage 1 (TOTAL_ROWS_SQL)",
+        "stage_2_target_stats_sql": "Stage 2 (TARGET_STATS_SQL)",
+        "stage_3_weekly_sql": "Stage 3 (WEEKLY_SQL)",
+        "stage_4_policy_evidence": "Stage 4 (policy evidence)",
+        "stage_5_calculator_evidence": "Stage 5 (calculator evidence)",
     }
-    return instructions[stage]
+    csv_stages = {
+        "stage_1_total_rows_sql": (stage_labels["stage_1_total_rows_sql"], TOTAL_ROWS_SQL),
+        "stage_2_target_stats_sql": (
+            stage_labels["stage_2_target_stats_sql"],
+            TARGET_STATS_SQL,
+        ),
+        "stage_3_weekly_sql": (stage_labels["stage_3_weekly_sql"], WEEKLY_SQL),
+    }
+    prefix = (
+        f"Bounded repair {attempt} of {MAX_PROGRESS_REPAIRS}. {issue} "
+        f"{stage_labels[stage]} is the next missing stage."
+    )
+    if stage in csv_stages:
+        label, sql = csv_stages[stage]
+        return (
+            f"{prefix} For {label}, emit exactly one csv_sql tool call and no "
+            "other tool calls or final text. Set arguments.sql byte-for-byte to "
+            "the SQL between these markers:\n<BEGIN_REQUIRED_SQL>\n"
+            f"{sql}\n<END_REQUIRED_SQL>"
+        )
+    if stage == "stage_4_policy_evidence":
+        return (
+            f"{prefix} Emit exactly one policy_retriever tool call that advances "
+            "evidence for all five pricing rules; do not answer yet."
+        )
+    return (
+        f"{prefix} Emit exactly one calculator tool call that advances evidence "
+        "for membership cost, pay-per-use cost, and savings; do not answer yet."
+    )
 
 
 def _required_progress_correction(
@@ -836,6 +844,7 @@ def _required_progress_correction(
     calls = response.tool_calls if isinstance(response, AIMessage) else []
     next_stage = progress["next_stage"]
     expected_sql = progress["expected_csv_sql"]
+    attempt = budget.progress_repair_count + 1
 
     if expected_sql is not None:
         valid = (
@@ -844,26 +853,53 @@ def _required_progress_correction(
             and isinstance(calls[0].get("args"), dict)
             and str(calls[0]["args"].get("sql", "")).strip() == expected_sql
         )
-        return None if valid else _stage_correction(next_stage)
+        if valid:
+            return None
+        if not calls:
+            issue = "The prior response contained no tool call."
+        elif len(calls) != 1:
+            issue = "Parallel or multiple tool calls are not allowed here."
+        elif calls[0].get("name") != "csv_sql":
+            issue = "The prior response selected the wrong tool."
+        else:
+            issue = "The prior SQL did not exactly match the required statement."
+        return _stage_correction(next_stage, attempt=attempt, issue=issue)
 
     if next_stage == "stage_4_policy_evidence":
         if not calls:
-            return _stage_correction(next_stage)
+            return _stage_correction(
+                next_stage,
+                attempt=attempt,
+                issue="The prior response contained no tool call.",
+            )
         if any(call.get("name") == "csv_sql" for call in calls):
-            return _stage_correction(next_stage)
+            return _stage_correction(
+                next_stage,
+                attempt=attempt,
+                issue="Required CSV work is already complete.",
+            )
         return None
 
     if next_stage == "stage_5_calculator_evidence":
         if not calls:
-            return _stage_correction(next_stage)
+            return _stage_correction(
+                next_stage,
+                attempt=attempt,
+                issue="The prior response contained no tool call.",
+            )
         if any(call.get("name") == "csv_sql" for call in calls):
-            return _stage_correction(next_stage)
+            return _stage_correction(
+                next_stage,
+                attempt=attempt,
+                issue="Required CSV work is already complete.",
+            )
         return None
 
     if any(call.get("name") == "csv_sql" for call in calls):
         return (
-            "All required CSV stages are complete. Do not call csv_sql again; "
-            "produce the final response without another CSV query."
+            f"Bounded repair {attempt} of {MAX_PROGRESS_REPAIRS}. All required "
+            "tool stages are complete. Do not call csv_sql again; produce the "
+            "final response without another tool call."
         )
     return None
 
@@ -886,8 +922,10 @@ pay-per-use cost, and savings.
 
 Your next action must start with Stage 1 and TOTAL_ROWS_SQL. Make the first
 three csv_sql calls sequentially, one per model turn, so parallel v2 tool
-completion cannot reorder them. Do not produce a final answer until every
-stage is complete."""
+completion cannot reorder them. Each CSV-stage response must contain exactly
+one tool call and no other tool call. After its ToolMessage arrives, continue
+with the next stage in a new model turn. Do not produce a final answer until
+every stage is complete."""
 
 
 def validate_uploaded_csv(path: Path) -> dict[str, Any]:
