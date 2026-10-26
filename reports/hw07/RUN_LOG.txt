@@ -608,6 +608,33 @@ Checks:
   METRICS remains pending, and no failed real-run artifact was added
 
 
+HW7 Parts 5 and 6 deterministic security validation
+=====================================================
+Date: 2026-10-26
+
+Part 5 uses a local hostile pricing fixture with recommendation override,
+non-read-only SQL, and raw-CSV exfiltration payloads. The production Part 4
+system and runtime prompts label tool content untrusted. The real csv_sql
+boundary rejected UPDATE and left the CSV unchanged. Strict schema and
+allowlisted grounded assumptions reject raw CSV additions. Prompt-only SQL remained marked
+FAIL because prompt text is not a tool boundary.
+
+Command: .venv/bin/python code/test_hw7_part5_security.py
+Result: exit 0; 6/6 PASS.
+
+Part 6 implements six sandboxed file tools plus module-level SAFE_PREFIXES,
+confirm_bash, and an approval-independent is_destructive deny check. The
+integration sequence created three Python files and used glob -> search -> read
+to find and display DEBUG. Five benign commands passed and five destructive
+commands were blocked without execution.
+
+Command: .venv/bin/python code/test_hw7_part6_file_tools.py
+Result: exit 0; 7/7 PASS.
+
+Command: .venv/bin/python code/hw7_part6_file_tools.py --write-evidence
+Result: exit 0; integration PASS and safety total 10/10 PASS.
+
+
 HW7 Part 4 native structured-output grounding follow-up
 ========================================================
 Date: 2026-10-26
