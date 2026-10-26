@@ -407,3 +407,36 @@ Checks:
 - frontend lint/build: PASS; 96 modules built (not browser E2E)
 - zsh helper syntax and `git diff --check`: PASS
 - pre-commit Ruff hook: PASS
+
+
+HW7 Part 4 strict structured final-response compatibility fix
+==============================================================
+UTC time: 2026-10-26T06:40:42Z
+
+The reported Mac run reached a final assistant response but the implementation
+only called `json.loads` on assistant text, so non-plain JSON formatting was
+classified as `invalid_final_response`. Repository inspection confirmed that
+raw acceptance data remained `pending_real_part4_agent_run` with zero runs and
+METRICS.md remained pending. No failed real-run artifact was present or added.
+No real qwen3:8b inference was run in the cloud.
+
+The existing `langgraph.prebuilt.create_react_agent(version="v2")` graph now
+uses its pinned `response_format` support with the strict
+`Part4AdvisorResult` Pydantic schema. The additional structured-response model
+call is counted in model calls/tokens/latency, remains under the 120-second
+wall budget, and is not a tool call. Native structured output, one plain JSON
+object, or exactly one `json` fenced object are accepted; prose wrapping,
+multiple/malformed objects, non-finite values, schema errors, and unsupported
+recommendations fail closed before the independent verifier.
+
+Checks:
+- Part 4 agent offline: 8/8 PASS, including native/plain/fenced responses,
+  strict rejection cases, safe diagnostics, independent verification,
+  create_react_agent execution, timeout/budget regressions, and failed-run
+  artifact preservation
+- Part 4 data/security: 12/12 PASS
+- Part 4 committed evidence verification: PASS
+- Part 2: 18/18 PASS; Part 3: 9/9 PASS; HW5: 10/10 PASS; HW6: 6/6 PASS
+- JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
+- Ruff, pre-commit, pip check, frontend lint/build (96 modules), zsh syntax,
+  `git diff --check`, and count-only secret scan (0 matches): PASS

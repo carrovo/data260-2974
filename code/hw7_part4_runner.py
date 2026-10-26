@@ -248,6 +248,11 @@ def main() -> int:
         print("TASK_SUCCESS: false")
         print(f"STOP_REASON: {exc.stop_reason}")
         print(f"ERROR: {exc}")
+        if exc.diagnostics is not None:
+            print(
+                "FINAL_RESPONSE_DIAGNOSTICS: "
+                + json.dumps(exc.diagnostics, sort_keys=True)
+            )
         return 1
     return 0
 

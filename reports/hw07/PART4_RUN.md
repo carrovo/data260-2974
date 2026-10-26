@@ -7,6 +7,27 @@ from the pinned LangGraph dependencies. The graph receives three
 sanitized policy snapshot are injected by trusted server code; neither is a
 model argument.
 
+The same framework graph uses its supported `response_format` parameter with
+the strict `Part4AdvisorResult` Pydantic schema. LangGraph performs one final
+structured-response model call after the tool loop. That call is included in
+model-call, token, and total-latency metrics, stays inside the 120-second
+wall-clock budget, and is not counted as a tool call.
+
+## Strict final-response compatibility
+
+The preferred result is LangGraph's validated `structured_response`. For
+compatibility with local Ollama output, the decoder also accepts either one
+plain JSON object or exactly one Markdown `json` code block containing one
+JSON object. All three encodings must contain every required field and pass
+the same strict schema and independent cost/evidence verifier.
+
+Prose surrounding JSON, multiple objects, malformed JSON, NaN/Infinity,
+missing or extra fields, wrong types, and unsupported recommendation labels
+are rejected. The code never computes or substitutes a missing model answer.
+On an invalid result the CLI prints only safe diagnostics: response source,
+content type, character count, and classification. It never prints the invalid
+response text or hidden reasoning.
+
 ## Mac prerequisites
 
 - macOS zsh, Git, Python 3.12, Node/npm, and Ollama.

@@ -1,10 +1,14 @@
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class Part4StrictModel(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+        strict=True,
+        allow_inf_nan=False,
+    )
 
 
 class WeeklyRideRow(Part4StrictModel):
@@ -14,7 +18,10 @@ class WeeklyRideRow(Part4StrictModel):
 
 
 class Part4AdvisorResult(Part4StrictModel):
-    recommendation: str
+    recommendation: Literal[
+        "Buy Monthly Membership",
+        "Pay Per Ride/Minute",
+    ]
     membership_cost: float
     pay_per_use_cost: float
     dollar_savings: float
@@ -63,5 +70,6 @@ class Part4AnalyzeResponse(Part4StrictModel):
     errors: list[str]
     upload: Part4UploadSummary
     framework: str
+    final_response_diagnostics: dict[str, Any]
     message_trace: list[dict[str, Any]]
     model_configuration: dict[str, Any] = Field(alias="model_config")

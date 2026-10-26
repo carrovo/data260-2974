@@ -39,11 +39,13 @@ from hw7_part4_agent import (
     WEEKLY_SQL,
     Part4AgentError,
     create_real_model,
+    decode_final_response,
     ollama_timeout_seconds,
     run_part4_agent,
     validate_uploaded_csv,
     verify_agent_result,
 )
+from hw7_part4_schemas import Part4AdvisorResult
 from hw7_part4_tools import PRICING_URL
 from jwt_service import create_access_token
 from main import app
@@ -61,13 +63,18 @@ class ScriptedReActModel(BaseChatModel):
     """Deterministic fake that still executes the real LangGraph ReAct graph."""
 
     loop_forever: bool = False
+    structured_mode: bool = False
+    structured_encoding: str = "native"
 
     @property
     def _llm_type(self) -> str:
         return "scripted-part4-react"
 
-    def bind_tools(self, _tools: Any, **_kwargs: Any) -> "ScriptedReActModel":
-        return self
+    def bind_tools(self, tools: Any, **kwargs: Any) -> "ScriptedReActModel":
+        structured = kwargs.get("tool_choice") == "any" and any(
+            tool is Part4AdvisorResult for tool in tools
+        )
+        return self.model_copy(update={"structured_mode": structured})
 
     def _message(
         self, *, content: str = "", calls: list[dict] | None = None
@@ -192,7 +199,24 @@ class ScriptedReActModel(BaseChatModel):
             "official_source_url": snapshot["final_url"],
             "citations": unique_passages[:3],
         }
-        return self._message(content=json.dumps(final))
+        if not self.structured_mode:
+            return self._message(content=json.dumps(final))
+        if self.structured_encoding == "plain_json":
+            return self._message(content=json.dumps(final))
+        if self.structured_encoding == "fenced_json":
+            return self._message(content="```json\n" + json.dumps(final) + "\n```")
+        if self.structured_encoding == "prose_wrapped_json":
+            return self._message(content="Here is the result:\n" + json.dumps(final))
+        return self._message(
+            calls=[
+                {
+                    "name": Part4AdvisorResult.__name__,
+                    "args": final,
+                    "id": "part4-structured-response",
+                    "type": "tool_call",
+                }
+            ]
+        )
 
 
 class TimeoutReActModel(ScriptedReActModel):
@@ -230,6 +254,94 @@ def _copy_with_rows(source: Path, destination: Path, count: int) -> None:
         writer.writerows(rows)
 
 
+def _valid_final_payload() -> dict[str, Any]:
+    return {
+        "recommendation": "Buy Monthly Membership",
+        "membership_cost": 29.0,
+        "pay_per_use_cost": 119.47,
+        "dollar_savings": 90.47,
+        "target_ride_count": 40,
+        "target_minutes": 418.283333,
+        "average_target_minutes": 10.457083,
+        "classic_target_count": 40,
+        "ebike_target_count": 0,
+        "weekly_table": [
+            {
+                "week": "2024-01",
+                "target_rides": 40,
+                "target_minutes": 418.283333,
+            }
+        ],
+        "assumptions": ["Only scenario_target=true rows are costed."],
+        "official_source_url": "https://lyftbikes.com/pricing",
+        "citations": ["$29/month"],
+    }
+
+
+def _expect_decode_error(value: Any, classification: str) -> None:
+    try:
+        decode_final_response(value, source="assistant_content")
+    except Part4AgentError as exc:
+        assert exc.stop_reason == "invalid_final_response"
+        assert exc.diagnostics is not None
+        assert exc.diagnostics["classification"] == classification
+        assert set(exc.diagnostics) == {
+            "source",
+            "content_type",
+            "character_count",
+            "classification",
+        }
+    else:
+        raise AssertionError("expected strict final-response rejection")
+
+
+def test_strict_final_response_decoder() -> None:
+    payload = _valid_final_payload()
+    native = Part4AdvisorResult.model_validate(payload)
+    decoded_native, native_metadata = decode_final_response(
+        native,
+        source="structured_response",
+    )
+    assert decoded_native == native
+    assert native_metadata["classification"] == "native_structured"
+
+    plain = json.dumps(payload)
+    decoded_plain, plain_metadata = decode_final_response(
+        plain,
+        source="assistant_content",
+    )
+    assert decoded_plain.model_dump(mode="json") == payload
+    assert plain_metadata["classification"] == "plain_json"
+
+    fenced = "```json\n" + plain + "\n```"
+    decoded_fenced, fenced_metadata = decode_final_response(
+        fenced,
+        source="assistant_content",
+    )
+    assert decoded_fenced == decoded_plain
+    assert fenced_metadata["classification"] == "fenced_json"
+
+    _expect_decode_error("Here is the result: " + plain, "prose_wrapped_json")
+    _expect_decode_error(plain + "\n" + plain, "multiple_objects")
+    _expect_decode_error('{"recommendation":', "malformed_json")
+
+    non_finite = dict(payload)
+    non_finite["membership_cost"] = float("nan")
+    _expect_decode_error(json.dumps(non_finite), "malformed_json")
+    non_finite["membership_cost"] = float("inf")
+    _expect_decode_error(json.dumps(non_finite), "malformed_json")
+
+    missing = dict(payload)
+    missing.pop("citations")
+    _expect_decode_error(json.dumps(missing), "plain_json")
+    extra = {**payload, "unsupported": "field"}
+    _expect_decode_error(json.dumps(extra), "plain_json")
+    wrong_type = {**payload, "target_ride_count": "40"}
+    _expect_decode_error(json.dumps(wrong_type), "plain_json")
+    unsupported = {**payload, "recommendation": "Ride a scooter"}
+    _expect_decode_error(json.dumps(unsupported), "plain_json")
+
+
 def test_actual_framework_graph_and_opposite_recommendations() -> None:
     results = [
         run_part4_agent(
@@ -253,8 +365,12 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         assert result["framework"].startswith("langgraph.prebuilt.create_react_agent")
         assert result["verification"]["passed"] is True
         assert result["metrics"]["tool_calls"] == 9
-        assert result["metrics"]["model_calls"] == 10
-        assert result["metrics"]["total_tokens"] == 150
+        assert result["metrics"]["model_calls"] == 11
+        assert result["metrics"]["total_tokens"] == 165
+        assert result["final_response_diagnostics"]["source"] == ("structured_response")
+        assert result["final_response_diagnostics"]["classification"] == (
+            "native_structured"
+        )
         assert {event["tool"] for event in result["timeline"]} == {
             "csv_sql",
             "policy_retriever",
@@ -267,6 +383,27 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
             tool_message = trace[position + 1]
             assert tool_message["role"] == "tool"
             assert tool_message["tool_call_id"] == item["tool_calls"][0]["id"]
+
+    compatibility = {
+        encoding: run_part4_agent(
+            csv_path=MEMBERSHIP_CSV,
+            pricing_url=PRICING_URL,
+            model=ScriptedReActModel(structured_encoding=encoding),
+            expected_winner="Buy Monthly Membership",
+        )
+        for encoding in ("plain_json", "fenced_json")
+    }
+    assert (
+        compatibility["plain_json"]["final_response_diagnostics"]["classification"]
+        == "plain_json"
+    )
+    assert (
+        compatibility["fenced_json"]["final_response_diagnostics"]["classification"]
+        == "fenced_json"
+    )
+    assert all(
+        result["verification"]["passed"] is True for result in compatibility.values()
+    )
 
     unsupported_number = dict(results[0]["result"])
     unsupported_number["membership_cost"] = 999
@@ -397,6 +534,60 @@ def test_controlled_cli_timeout_preserves_pending_artifacts() -> None:
         assert json.loads(raw_path.read_text(encoding="utf-8"))["status"] == (
             "completed_real_part4_agent_run"
         )
+
+
+def test_cli_invalid_final_prints_only_safe_diagnostics() -> None:
+    with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
+        raw_path = Path(temp) / "part4_agent_acceptance.json"
+        pending = {
+            "status": "pending_real_part4_agent_run",
+            "model_config": part4_agent.MODEL_CONFIG,
+            "runs": [],
+        }
+        raw_path.write_text(json.dumps(pending) + "\n", encoding="utf-8")
+        raw_before = raw_path.read_bytes()
+        original_analyze = part4_runner.analyze
+        original_raw = part4_runner.RAW_OUTPUT
+        original_argv = sys.argv
+
+        def invalid_analyze(
+            csv_path: Path,
+            url: str,
+            expected: str | None = None,
+        ) -> dict:
+            return run_part4_agent(
+                csv_path=csv_path,
+                pricing_url=url,
+                model=ScriptedReActModel(structured_encoding="prose_wrapped_json"),
+                expected_winner=expected,
+            )
+
+        try:
+            part4_runner.analyze = invalid_analyze
+            part4_runner.RAW_OUTPUT = raw_path
+            sys.argv = [
+                "hw7_part4_runner.py",
+                "acceptance",
+                "--scenario",
+                "membership_wins",
+            ]
+            output = io.StringIO()
+            with redirect_stdout(output):
+                exit_code = part4_runner.main()
+        finally:
+            part4_runner.analyze = original_analyze
+            part4_runner.RAW_OUTPUT = original_raw
+            sys.argv = original_argv
+
+        terminal = output.getvalue()
+        assert exit_code != 0
+        assert "STOP_REASON: invalid_final_response" in terminal
+        assert "FINAL_RESPONSE_DIAGNOSTICS:" in terminal
+        assert '"source": "assistant_content"' in terminal
+        assert '"classification": "prose_wrapped_json"' in terminal
+        assert '"character_count":' in terminal
+        assert "Here is the result" not in terminal
+        assert raw_path.read_bytes() == raw_before
 
 
 def test_upload_validation_failures() -> None:
@@ -572,6 +763,7 @@ def test_endpoint_auth_reader_upload_and_cleanup() -> None:
 
 
 TESTS: list[tuple[str, Callable[[], None]]] = [
+    ("strict final response decoder", test_strict_final_response_decoder),
     (
         "actual framework graph and opposite recommendations",
         test_actual_framework_graph_and_opposite_recommendations,
@@ -580,6 +772,10 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     (
         "controlled CLI timeout preserves pending artifacts",
         test_controlled_cli_timeout_preserves_pending_artifacts,
+    ),
+    (
+        "invalid final CLI safe diagnostics",
+        test_cli_invalid_final_prints_only_safe_diagnostics,
     ),
     ("upload validation failures", test_upload_validation_failures),
     ("malformed envelope and bounded stops", test_malformed_envelope_and_budgets),

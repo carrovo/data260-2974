@@ -15,12 +15,14 @@ import httpx
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
+from langchain_core.runnables import Runnable, RunnableLambda
 from langchain_core.tools import StructuredTool
 from langchain_ollama import ChatOllama
 from langgraph.errors import GraphRecursionError
 from langgraph.prebuilt import create_react_agent
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
+from hw7_part4_schemas import Part4AdvisorResult
 from hw7_part4_tools import (
     CalculatorArguments,
     CsvSqlArguments,
@@ -124,14 +126,219 @@ The citations list must contain exact retrieved passages that together prove
 all five pricing rules.
 Do not reveal hidden reasoning.
 """
+STRUCTURED_RESPONSE_PROMPT = """Return the final bike membership analysis using
+the required structured response schema. Copy only values supported by the
+tool observations. Do not add prose, hidden reasoning, or unsupported claims.
+"""
+FENCED_JSON_PATTERN = re.compile(
+    r"\A\s*```json[ \t]*\r?\n(?P<body>.*?)\r?\n```[ \t]*\s*\Z",
+    re.DOTALL,
+)
 
 
 class Part4AgentError(RuntimeError):
     """Bounded error safe to expose through the Part 4 API."""
 
-    def __init__(self, message: str, *, stop_reason: str = "validation_error"):
+    def __init__(
+        self,
+        message: str,
+        *,
+        stop_reason: str = "validation_error",
+        diagnostics: dict[str, Any] | None = None,
+    ):
         super().__init__(message)
         self.stop_reason = stop_reason
+        self.diagnostics = diagnostics
+
+
+def _final_diagnostics(
+    *,
+    source: str,
+    value: Any,
+    classification: str,
+) -> dict[str, Any]:
+    if isinstance(value, str):
+        character_count = len(value)
+    elif value is None:
+        character_count = 0
+    else:
+        try:
+            character_count = len(json.dumps(value, ensure_ascii=False, default=str))
+        except (TypeError, ValueError):
+            character_count = 0
+    return {
+        "source": source,
+        "content_type": type(value).__name__,
+        "character_count": character_count,
+        "classification": classification,
+    }
+
+
+def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON object key")
+        result[key] = value
+    return result
+
+
+def _reject_nonfinite_json(_value: str) -> None:
+    raise ValueError("non-finite JSON number")
+
+
+def _parse_json_object(text: str) -> tuple[dict[str, Any], str]:
+    stripped = text.strip()
+    if not stripped:
+        raise Part4AgentError(
+            "Agent final response is missing",
+            stop_reason="invalid_final_response",
+            diagnostics=_final_diagnostics(
+                source="assistant_content",
+                value=text,
+                classification="missing_response",
+            ),
+        )
+
+    fenced = FENCED_JSON_PATTERN.fullmatch(text)
+    classification = "fenced_json" if fenced else "plain_json"
+    candidate = fenced.group("body") if fenced else stripped
+    if not fenced and ("```" in stripped or not stripped.startswith(("{", "["))):
+        raise Part4AgentError(
+            "Agent final response contains prose outside JSON",
+            stop_reason="invalid_final_response",
+            diagnostics=_final_diagnostics(
+                source="assistant_content",
+                value=text,
+                classification="prose_wrapped_json",
+            ),
+        )
+
+    try:
+        payload = json.loads(
+            candidate,
+            parse_constant=_reject_nonfinite_json,
+            object_pairs_hook=_reject_duplicate_keys,
+        )
+    except json.JSONDecodeError as exc:
+        error_classification = (
+            "multiple_objects" if exc.msg == "Extra data" else "malformed_json"
+        )
+        raise Part4AgentError(
+            "Agent final response is not one valid JSON object",
+            stop_reason="invalid_final_response",
+            diagnostics=_final_diagnostics(
+                source="assistant_content",
+                value=text,
+                classification=error_classification,
+            ),
+        ) from exc
+    except ValueError as exc:
+        raise Part4AgentError(
+            "Agent final response contains invalid JSON values",
+            stop_reason="invalid_final_response",
+            diagnostics=_final_diagnostics(
+                source="assistant_content",
+                value=text,
+                classification="malformed_json",
+            ),
+        ) from exc
+
+    if not isinstance(payload, dict):
+        raise Part4AgentError(
+            "Agent final response must be one JSON object",
+            stop_reason="invalid_final_response",
+            diagnostics=_final_diagnostics(
+                source="assistant_content",
+                value=text,
+                classification=classification,
+            ),
+        )
+    return payload, classification
+
+
+def decode_final_response(
+    value: Any,
+    *,
+    source: str,
+) -> tuple[Part4AdvisorResult, dict[str, Any]]:
+    """Strictly decode only native, plain JSON, or one JSON fence."""
+
+    actual_source = source
+    classification = "native_structured"
+    diagnostic_value = value
+
+    if isinstance(value, Part4AdvisorResult):
+        model = value
+    else:
+        if isinstance(value, AIMessage):
+            diagnostic_value = value.content
+            if value.tool_calls:
+                if len(value.tool_calls) != 1:
+                    raise Part4AgentError(
+                        "Agent returned multiple structured responses",
+                        stop_reason="invalid_final_response",
+                        diagnostics=_final_diagnostics(
+                            source="structured_response",
+                            value=value.content,
+                            classification="multiple_objects",
+                        ),
+                    )
+                call = value.tool_calls[0]
+                if call.get("name") != Part4AdvisorResult.__name__:
+                    raise Part4AgentError(
+                        "Agent returned an unsupported structured response",
+                        stop_reason="invalid_final_response",
+                        diagnostics=_final_diagnostics(
+                            source="structured_response",
+                            value=value.content,
+                            classification="missing_response",
+                        ),
+                    )
+                payload = call.get("args")
+                actual_source = "structured_response"
+                diagnostic_value = payload
+            else:
+                value = value.content
+                actual_source = "assistant_content"
+                payload = None
+        else:
+            payload = value
+
+        if isinstance(value, str):
+            payload, classification = _parse_json_object(value)
+            actual_source = "assistant_content"
+            diagnostic_value = value
+        elif payload is None:
+            raise Part4AgentError(
+                "Agent final response is missing",
+                stop_reason="invalid_final_response",
+                diagnostics=_final_diagnostics(
+                    source=actual_source,
+                    value=diagnostic_value,
+                    classification="missing_response",
+                ),
+            )
+
+        try:
+            model = Part4AdvisorResult.model_validate(payload)
+        except ValidationError as exc:
+            raise Part4AgentError(
+                "Agent final response failed strict schema validation",
+                stop_reason="invalid_final_response",
+                diagnostics=_final_diagnostics(
+                    source=actual_source,
+                    value=diagnostic_value,
+                    classification=classification,
+                ),
+            ) from exc
+
+    diagnostics = _final_diagnostics(
+        source=actual_source,
+        value=diagnostic_value,
+        classification=classification,
+    )
+    return model, diagnostics
 
 
 @dataclass
@@ -144,6 +351,7 @@ class AgentBudget:
     timeline: list[dict[str, Any]] = field(default_factory=list)
     fatal_stop_reason: str | None = None
     fatal_message: str | None = None
+    final_response_diagnostics: dict[str, Any] | None = None
 
     def check_time(self) -> None:
         if time.monotonic() - self.started > MAX_WALL_SECONDS:
@@ -168,6 +376,36 @@ class MeteredChatModel(BaseChatModel):
             delegate=self.delegate.bind_tools(tools, **kwargs),
             budget=self.budget,
         )
+
+    def with_structured_output(
+        self,
+        schema: dict[str, Any] | type[BaseModel],
+        *,
+        include_raw: bool = False,
+        **kwargs: Any,
+    ) -> Runnable:
+        if include_raw or kwargs:
+            raise ValueError("Unsupported structured-output options")
+        if schema is not Part4AdvisorResult:
+            raise ValueError("Unsupported Part 4 structured response schema")
+        bound = self.bind_tools(
+            [schema],
+            tool_choice="any",
+            ls_structured_output_format={
+                "kwargs": {"method": "function_calling"},
+                "schema": schema,
+            },
+        )
+
+        def parse(message: AIMessage) -> Part4AdvisorResult:
+            result, diagnostics = decode_final_response(
+                message,
+                source="structured_response",
+            )
+            self.budget.final_response_diagnostics = diagnostics
+            return result
+
+        return bound | RunnableLambda(parse)
 
     def _generate(
         self,
@@ -726,6 +964,10 @@ def run_part4_agent(
         metered,
         tools,
         prompt=SYSTEM_PROMPT,
+        response_format=(
+            STRUCTURED_RESPONSE_PROMPT,
+            Part4AdvisorResult,
+        ),
         post_model_hook=lambda state: _enforce_model_output_budget(state, budget),
         version="v2",
         name="hw7_part4_bike_advisor",
@@ -759,23 +1001,26 @@ def run_part4_agent(
                 "Agent did not produce a final answer",
                 stop_reason="incomplete_agent_result",
             )
-        try:
-            final = json.loads(str(final_message.content))
-        except json.JSONDecodeError as exc:
+        structured_response = state.get("structured_response")
+        if structured_response is not None:
+            final_model, fallback_diagnostics = decode_final_response(
+                structured_response,
+                source="structured_response",
+            )
+        else:
             if "more steps" in str(final_message.content).lower():
                 raise Part4AgentError(
                     "Part 4 agent reached the framework recursion limit",
                     stop_reason="recursion_limit",
-                ) from exc
-            raise Part4AgentError(
-                "Agent final answer is not valid JSON",
-                stop_reason="invalid_final_response",
-            ) from exc
-        if not isinstance(final, dict):
-            raise Part4AgentError(
-                "Agent final answer must be a JSON object",
-                stop_reason="invalid_final_response",
+                )
+            final_model, fallback_diagnostics = decode_final_response(
+                final_message,
+                source="assistant_content",
             )
+        final_response_diagnostics = (
+            budget.final_response_diagnostics or fallback_diagnostics
+        )
+        final = final_model.model_dump(mode="json")
         verification = verify_agent_result(
             final,
             budget.timeline,
@@ -818,6 +1063,7 @@ def run_part4_agent(
         "errors": [],
         "upload": upload,
         "framework": "langgraph.prebuilt.create_react_agent(version='v2')",
+        "final_response_diagnostics": final_response_diagnostics,
         "message_trace": _trace_messages(messages),
         "model_config": MODEL_CONFIG,
     }
