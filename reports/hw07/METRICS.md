@@ -41,19 +41,16 @@ Status: `completed_real_model_comparison`
 <!-- PART4_AGENT_METRICS_START -->
 ## Part 4 — Framework ReAct Bike Membership Advisor
 
-Status: `pending_real_part4_agent_run`
+Status: `completed_real_part4_agent_run`
 
 Framework: `langgraph.prebuilt.create_react_agent(version="v2")`
 
-Model configuration: `qwen3:8b`, temperature `0.0`, seed `2974`, reasoning
-disabled, `num_ctx=4096`, `num_predict=1024`.
+Model configuration: `qwen3:8b`, temperature `0.0`, seed `2974`, reasoning disabled, `num_ctx=4096`, `num_predict=1024`.
 
-| Acceptance scenario | Recommendation | Tool calls | Tokens | Latency |
+| Acceptance scenario | Recommendation | Tool calls | Tokens | Latency (ms) |
 |---|---|---:|---:|---:|
-| `membership_wins` | pending real Mac run | pending | pending | pending |
-| `pay_per_use_wins` | pending real Mac run | pending | pending | pending |
+| `membership_wins` | Buy Monthly Membership | 7 | 27245 | 151516.944 |
+| `pay_per_use_wins` | Pay Per Ride/Minute | 9 | 42573 | 268624.734 |
 
-The scripted-model tests exercise the actual LangGraph prebuilt graph but are
-offline implementation tests only. Their outputs are not reported as real
-`qwen3:8b` evidence.
+Only real local qwen3:8b acceptance runs are included above.
 <!-- PART4_AGENT_METRICS_END -->
