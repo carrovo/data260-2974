@@ -54,6 +54,7 @@ class Part4Metrics(Part4StrictModel):
     total_tokens: int
     latency_ms: float
     structured_response_latency_ms: float
+    progress_repair_count: int
     ollama_request_timeout_seconds: float
     wall_budget_seconds: float
 

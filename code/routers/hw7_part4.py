@@ -35,6 +35,7 @@ def _http_error(exc: Part4AgentError) -> HTTPException:
         code = status.HTTP_422_UNPROCESSABLE_ENTITY
     elif exc.stop_reason in {
         "tool_call_budget_exhausted",
+        "required_tool_progress_exhausted",
         "wall_clock_budget_exhausted",
         "recursion_limit",
     }:

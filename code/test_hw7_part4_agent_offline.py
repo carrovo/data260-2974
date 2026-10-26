@@ -23,7 +23,7 @@ if str(CODE_ROOT) not in sys.path:
 
 import httpx
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_core.messages import AIMessage, BaseMessage, ToolMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
 from langchain_core.runnables import Runnable, RunnableLambda
 from pydantic import Field
@@ -34,6 +34,7 @@ from auth_service import hash_password
 from database import Base, SessionLocal, db_session_basede26
 from hw7_part4_agent import (
     DEFAULT_WALL_BUDGET_SECONDS,
+    MAX_PROGRESS_REPAIRS,
     MAX_TOOL_CALLS,
     MAX_UPLOAD_BYTES,
     OLLAMA_TIMEOUT_ENV,
@@ -164,7 +165,7 @@ class ScriptedReActModel(BaseChatModel):
             message for message in messages if isinstance(message, ToolMessage)
         ]
         index = len(observations) + 1
-        if self.loop_forever:
+        if self.loop_forever and len(observations) >= 3:
             return self._call(
                 index, "calculator", {"expression": "1+1", "units": "USD"}
             )
@@ -271,6 +272,85 @@ class ScriptedReActModel(BaseChatModel):
                 }
             ]
         )
+
+
+class ProgressRepairModel(ScriptedReActModel):
+    """Script early stops and invalid SQL while preserving model-owned calls."""
+
+    premature_points: list[str] = Field(default_factory=list)
+    invalid_first_csv: bool = False
+    always_premature: bool = False
+    correction_messages: list[str] = Field(default_factory=list)
+
+    def _generate(
+        self,
+        messages: list[BaseMessage],
+        stop: list[str] | None = None,
+        run_manager: Any = None,
+        **kwargs: Any,
+    ) -> ChatResult:
+        if self.structured_mode:
+            return super()._generate(messages, stop, run_manager, **kwargs)
+
+        observations = [
+            message for message in messages if isinstance(message, ToolMessage)
+        ]
+        correction = (
+            messages[-1].content
+            if messages
+            and isinstance(messages[-1], HumanMessage)
+            and "next missing stage" in str(messages[-1].content)
+            else None
+        )
+        if correction is not None:
+            self.correction_messages.append(str(correction))
+
+        if self.always_premature:
+            return self._message(content="premature model answer must not be exposed")
+        if self.invalid_first_csv and not observations and correction is None:
+            return self._call(1, "csv_sql", {"sql": TARGET_STATS_SQL})
+
+        point = {
+            0: "before_any_tool",
+            3: "after_csv",
+            6: "before_calculator",
+        }.get(len(observations))
+        if point in self.premature_points and correction is None:
+            return self._message(content=f"premature at {point}")
+        return super()._generate(messages, stop, run_manager, **kwargs)
+
+
+class InvalidFinalProgressModel(ProgressRepairModel):
+    """Return schema-valid but unsupported costs to exercise the verifier."""
+
+    def with_structured_output(
+        self,
+        schema: dict[str, Any] | type,
+        *,
+        method: str = "json_schema",
+        include_raw: bool = False,
+        **kwargs: Any,
+    ) -> Runnable:
+        native = super().with_structured_output(
+            schema,
+            method=method,
+            include_raw=include_raw,
+            **kwargs,
+        )
+
+        def invoke(messages: list[BaseMessage]) -> dict[str, Any]:
+            response = native.invoke(messages)
+            parsed = response["parsed"]
+            payload = (
+                parsed.model_dump(mode="json")
+                if isinstance(parsed, Part4AdvisorResult)
+                else dict(parsed)
+            )
+            payload["membership_cost"] = 999.0
+            response["parsed"] = payload
+            return response
+
+        return RunnableLambda(invoke)
 
 
 class TimeoutReActModel(ScriptedReActModel):
@@ -422,6 +502,7 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         assert result["metrics"]["tool_calls"] == 9
         assert result["metrics"]["model_calls"] == 11
         assert result["metrics"]["total_tokens"] == 165
+        assert result["metrics"]["progress_repair_count"] == 0
         assert result["metrics"]["structured_response_latency_ms"] >= 0
         assert result["metrics"]["ollama_request_timeout_seconds"] == 60.0
         assert result["metrics"]["wall_budget_seconds"] == 300.0
@@ -826,6 +907,324 @@ def test_cli_invalid_final_prints_only_safe_diagnostics() -> None:
         assert raw_path.read_bytes() == raw_before
 
 
+def test_required_progress_repairs_at_three_early_stops() -> None:
+    cases = {
+        "before_any_tool": "Stage 1 (TOTAL_ROWS_SQL)",
+        "after_csv": "Stage 4 (policy evidence",
+        "before_calculator": "Stage 5 (calculator evidence",
+    }
+    for point, expected_correction in cases.items():
+        model = ProgressRepairModel(premature_points=[point])
+        result = run_part4_agent(
+            csv_path=MEMBERSHIP_CSV,
+            pricing_url=PRICING_URL,
+            model=model,
+            expected_winner="Buy Monthly Membership",
+        )
+        assert result["verification"]["passed"] is True
+        assert result["metrics"]["progress_repair_count"] == 1
+        assert result["metrics"]["model_calls"] == 12
+        assert result["metrics"]["total_tokens"] == 180
+        assert len(model.correction_messages) == 1
+        assert expected_correction in model.correction_messages[0]
+        assert [event["tool"] for event in result["timeline"][:3]] == [
+            "csv_sql",
+            "csv_sql",
+            "csv_sql",
+        ]
+        assert [
+            event["inputs"]["sql"] for event in result["timeline"][:3]
+        ] == [TOTAL_ROWS_SQL, TARGET_STATS_SQL, WEEKLY_SQL]
+        assert {event["tool"] for event in result["timeline"]} == {
+            "csv_sql",
+            "policy_retriever",
+            "calculator",
+        }
+
+
+def test_invalid_csv_blocked_and_progress_accounting() -> None:
+    invalid = ProgressRepairModel(invalid_first_csv=True)
+    repaired = run_part4_agent(
+        csv_path=MEMBERSHIP_CSV,
+        pricing_url=PRICING_URL,
+        model=invalid,
+        expected_winner="Buy Monthly Membership",
+    )
+    csv_events = [
+        event for event in repaired["timeline"] if event["tool"] == "csv_sql"
+    ]
+    assert [event["inputs"]["sql"] for event in csv_events] == [
+        TOTAL_ROWS_SQL,
+        TARGET_STATS_SQL,
+        WEEKLY_SQL,
+    ]
+    assert repaired["metrics"]["tool_calls"] == 9
+    assert repaired["metrics"]["progress_repair_count"] == 1
+    assert repaired["metrics"]["model_calls"] == 12
+    assert repaired["metrics"]["total_tokens"] == 180
+
+    complete = ProgressRepairModel()
+    no_repair = run_part4_agent(
+        csv_path=MEMBERSHIP_CSV,
+        pricing_url=PRICING_URL,
+        model=complete,
+        expected_winner="Buy Monthly Membership",
+    )
+    assert no_repair["metrics"]["progress_repair_count"] == 0
+    assert no_repair["metrics"]["model_calls"] == 11
+    assert no_repair["metrics"]["total_tokens"] == 165
+
+    maximum = ProgressRepairModel(
+        premature_points=["before_any_tool", "after_csv", "before_calculator"]
+    )
+    maximum_result = run_part4_agent(
+        csv_path=MEMBERSHIP_CSV,
+        pricing_url=PRICING_URL,
+        model=maximum,
+        expected_winner="Buy Monthly Membership",
+    )
+    assert MAX_PROGRESS_REPAIRS == 3
+    assert maximum_result["metrics"]["progress_repair_count"] == 3
+    assert maximum_result["metrics"]["model_calls"] == 14
+    assert maximum_result["metrics"]["total_tokens"] == 210
+
+    instruction = part4_agent._runtime_user_instruction(PRICING_URL)
+    assert "Complete these five required stages in order" in instruction
+    assert "next action must start with Stage 1 and TOTAL_ROWS_SQL" in instruction
+    assert "sequentially, one per model turn" in instruction
+    assert "Do not produce a final answer until every" in instruction
+    assert "stage is complete" in instruction
+
+
+def test_progress_repair_exhaustion_preserves_acceptance_files() -> None:
+    model = ProgressRepairModel(always_premature=True)
+    try:
+        run_part4_agent(
+            csv_path=MEMBERSHIP_CSV,
+            pricing_url=PRICING_URL,
+            model=model,
+            expected_winner="Buy Monthly Membership",
+        )
+    except Part4AgentError as exc:
+        assert exc.stop_reason == "required_tool_progress_exhausted"
+        assert exc.diagnostics == {
+            "ordered_completed_tool_names": [],
+            "tool_counts": {
+                "csv_sql": 0,
+                "policy_retriever": 0,
+                "calculator": 0,
+            },
+            "missing_required_stages": [
+                "stage_1_total_rows_sql",
+                "stage_2_target_stats_sql",
+                "stage_3_weekly_sql",
+                "stage_4_policy_evidence",
+                "stage_5_calculator_evidence",
+            ],
+            "progress_repair_count": 3,
+            "model_call_count": 4,
+            "elapsed_seconds": exc.diagnostics["elapsed_seconds"],
+        }
+        assert "premature model answer" not in json.dumps(exc.diagnostics)
+    else:
+        raise AssertionError("progress repair exhaustion unexpectedly passed")
+    assert len(model.correction_messages) == 3
+
+    with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
+        root = Path(temp)
+        raw_path = root / "part4_agent_acceptance.json"
+        metrics_path = root / "METRICS.md"
+        raw_path.write_text(
+            json.dumps(
+                {
+                    "status": "pending_real_part4_agent_run",
+                    "model_config": part4_agent.MODEL_CONFIG,
+                    "runs": [],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        metrics_path.write_text(
+            "before\n<!-- PART4_AGENT_METRICS_START -->\n"
+            "pending\n<!-- PART4_AGENT_METRICS_END -->\nafter\n",
+            encoding="utf-8",
+        )
+        raw_before = raw_path.read_bytes()
+        metrics_before = metrics_path.read_bytes()
+        original_analyze = part4_runner.analyze
+        original_raw = part4_runner.RAW_OUTPUT
+        original_metrics = part4_runner.METRICS_PATH
+        original_argv = sys.argv
+
+        def exhausted_analyze(
+            csv_path: Path,
+            url: str,
+            expected: str | None = None,
+        ) -> dict:
+            return run_part4_agent(
+                csv_path=csv_path,
+                pricing_url=url,
+                model=ProgressRepairModel(always_premature=True),
+                expected_winner=expected,
+            )
+
+        try:
+            part4_runner.analyze = exhausted_analyze
+            part4_runner.RAW_OUTPUT = raw_path
+            part4_runner.METRICS_PATH = metrics_path
+            sys.argv = [
+                "hw7_part4_runner.py",
+                "acceptance",
+                "--scenario",
+                "membership_wins",
+            ]
+            output = io.StringIO()
+            with redirect_stdout(output):
+                exit_code = part4_runner.main()
+        finally:
+            part4_runner.analyze = original_analyze
+            part4_runner.RAW_OUTPUT = original_raw
+            part4_runner.METRICS_PATH = original_metrics
+            sys.argv = original_argv
+
+        terminal = output.getvalue()
+        assert exit_code != 0
+        assert "STOP_REASON: required_tool_progress_exhausted" in terminal
+        assert "FAILURE_DIAGNOSTICS:" in terminal
+        assert "premature model answer" not in terminal
+        assert raw_path.read_bytes() == raw_before
+        assert metrics_path.read_bytes() == metrics_before
+
+
+def test_structured_output_bypasses_repair_and_verifier_diagnostics_are_safe() -> None:
+    structured_failure = ProgressRepairModel(structured_encoding="empty")
+    try:
+        run_part4_agent(
+            csv_path=MEMBERSHIP_CSV,
+            pricing_url=PRICING_URL,
+            model=structured_failure,
+            expected_winner="Buy Monthly Membership",
+        )
+    except Part4AgentError as exc:
+        assert exc.stop_reason == "invalid_final_response"
+    else:
+        raise AssertionError("empty structured response unexpectedly passed")
+    assert structured_failure.correction_messages == []
+
+    verifier_model = InvalidFinalProgressModel()
+    try:
+        run_part4_agent(
+            csv_path=MEMBERSHIP_CSV,
+            pricing_url=PRICING_URL,
+            model=verifier_model,
+            expected_winner="Buy Monthly Membership",
+        )
+    except Part4AgentError as exc:
+        assert exc.stop_reason == "verification_failed"
+        assert exc.diagnostics is not None
+        assert exc.diagnostics["ordered_completed_tool_names"] == [
+            "csv_sql",
+            "csv_sql",
+            "csv_sql",
+            "policy_retriever",
+            "policy_retriever",
+            "policy_retriever",
+            "calculator",
+            "calculator",
+            "calculator",
+        ]
+        assert exc.diagnostics["tool_counts"] == {
+            "csv_sql": 3,
+            "policy_retriever": 3,
+            "calculator": 3,
+        }
+        assert exc.diagnostics["missing_required_stages"] == []
+        assert exc.diagnostics["progress_repair_count"] == 0
+        assert exc.diagnostics["model_call_count"] == 11
+        assert set(exc.diagnostics) == {
+            "ordered_completed_tool_names",
+            "tool_counts",
+            "missing_required_stages",
+            "progress_repair_count",
+            "model_call_count",
+            "elapsed_seconds",
+        }
+        assert "999" not in json.dumps(exc.diagnostics)
+    else:
+        raise AssertionError("independent verifier accepted unsupported cost")
+
+    with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
+        root = Path(temp)
+        raw_path = root / "part4_agent_acceptance.json"
+        metrics_path = root / "METRICS.md"
+        raw_path.write_text(
+            json.dumps(
+                {
+                    "status": "pending_real_part4_agent_run",
+                    "model_config": part4_agent.MODEL_CONFIG,
+                    "runs": [],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        metrics_path.write_text(
+            "before\n<!-- PART4_AGENT_METRICS_START -->\n"
+            "pending\n<!-- PART4_AGENT_METRICS_END -->\nafter\n",
+            encoding="utf-8",
+        )
+        raw_before = raw_path.read_bytes()
+        metrics_before = metrics_path.read_bytes()
+        original_analyze = part4_runner.analyze
+        original_raw = part4_runner.RAW_OUTPUT
+        original_metrics = part4_runner.METRICS_PATH
+        original_argv = sys.argv
+
+        def verifier_failure_analyze(
+            csv_path: Path,
+            url: str,
+            expected: str | None = None,
+        ) -> dict:
+            return run_part4_agent(
+                csv_path=csv_path,
+                pricing_url=url,
+                model=InvalidFinalProgressModel(),
+                expected_winner=expected,
+            )
+
+        try:
+            part4_runner.analyze = verifier_failure_analyze
+            part4_runner.RAW_OUTPUT = raw_path
+            part4_runner.METRICS_PATH = metrics_path
+            sys.argv = [
+                "hw7_part4_runner.py",
+                "acceptance",
+                "--scenario",
+                "membership_wins",
+            ]
+            output = io.StringIO()
+            with redirect_stdout(output):
+                exit_code = part4_runner.main()
+        finally:
+            part4_runner.analyze = original_analyze
+            part4_runner.RAW_OUTPUT = original_raw
+            part4_runner.METRICS_PATH = original_metrics
+            sys.argv = original_argv
+
+        terminal = output.getvalue()
+        assert exit_code != 0
+        assert "STOP_REASON: verification_failed" in terminal
+        assert "ERROR: Independent Part 4 verification failed" in terminal
+        assert "FAILURE_DIAGNOSTICS:" in terminal
+        assert '"ordered_completed_tool_names"' in terminal
+        assert '"tool_counts"' in terminal
+        assert "999" not in terminal
+        assert "retrieved page" not in terminal
+        assert raw_path.read_bytes() == raw_before
+        assert metrics_path.read_bytes() == metrics_before
+
+
 def test_upload_validation_failures() -> None:
     missing = TEST_TMP_ROOT / "missing-part4.csv"
     _expect_error(lambda: validate_uploaded_csv(missing))
@@ -1011,6 +1410,22 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     (
         "invalid final CLI safe diagnostics",
         test_cli_invalid_final_prints_only_safe_diagnostics,
+    ),
+    (
+        "required progress repairs at three early stops",
+        test_required_progress_repairs_at_three_early_stops,
+    ),
+    (
+        "invalid CSV blocked and progress accounting",
+        test_invalid_csv_blocked_and_progress_accounting,
+    ),
+    (
+        "progress repair exhaustion preserves acceptance files",
+        test_progress_repair_exhaustion_preserves_acceptance_files,
+    ),
+    (
+        "structured output bypass and safe verifier diagnostics",
+        test_structured_output_bypasses_repair_and_verifier_diagnostics_are_safe,
     ),
     ("upload validation failures", test_upload_validation_failures),
     ("malformed envelope and bounded stops", test_malformed_envelope_and_budgets),

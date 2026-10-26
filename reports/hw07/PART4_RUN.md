@@ -38,6 +38,37 @@ response text or hidden reasoning.
 When native parsing reports an error, diagnostics may also include only its
 exception type, never its message or raw response.
 
+## Required tool progress guard
+
+The runtime user instruction now states five ordered stages: exact sequential
+`TOTAL_ROWS_SQL`, `TARGET_STATS_SQL`, and `WEEKLY_SQL` calls; retrieved policy
+evidence sufficient for all five pricing rules; and calculator observations
+supporting membership cost, pay-per-use cost, and savings. It explicitly says
+that the next action starts with `TOTAL_ROWS_SQL` and that no final answer is
+allowed before all stages are complete.
+
+Progress is derived only from successful completed timeline events. Before a
+required CSV call reaches LangGraph's `ToolNode`, the metered ReAct model
+wrapper requires exactly one model-produced `csv_sql` call with the next exact
+query. An altered, parallel, repeated, or out-of-order CSV proposal is not
+executed. If the model instead attempts a final no-tool answer while a stage is
+missing, the wrapper appends one concise `HumanMessage` naming only the next
+missing stage and invokes the same tool-bound model again. The replacement
+tool call must still originate from the model and is executed normally by the
+unchanged LangGraph v2 graph; the wrapper never synthesizes a tool call or
+calls a tool directly.
+
+Each run permits at most three progress-repair model calls. Every repair is
+included in model-call, token, latency, and wall-budget accounting but is not a
+tool call. Exhaustion stops with `required_tool_progress_exhausted`. The
+separate native JSON-schema structured-output node does not use this repair
+path.
+
+Verifier failures print only ordered completed tool names, counts by tool,
+missing stage names, progress-repair count, model-call count, and elapsed time.
+They do not print model content, reasoning, retrieved page text, SQL results,
+credentials, or other sensitive values.
+
 ## Mac prerequisites
 
 - macOS zsh, Git, Python 3.12, Node/npm, and Ollama.
@@ -141,8 +172,9 @@ recursion limit is 50, with at most 12 actual tool calls and a default
 300-second wall time (hard maximum 600). The default bounded Ollama request
 timeout is 60 seconds and cannot exceed the effective wall budget. Explicit stops
 include `success`, `tool_call_budget_exhausted`,
-`wall_clock_budget_exhausted`, `recursion_limit`, `malformed_tool_envelope`,
-`invalid_final_response`, and `verification_failed`.
+`required_tool_progress_exhausted`, `wall_clock_budget_exhausted`,
+`recursion_limit`, `malformed_tool_envelope`, `invalid_final_response`, and
+`verification_failed`.
 
 Cleanup only generated real-run output when desired:
 

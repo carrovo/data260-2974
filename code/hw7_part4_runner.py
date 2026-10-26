@@ -112,6 +112,7 @@ def print_result(payload: dict) -> None:
         print("SAFE_INPUTS: " + json.dumps(event["inputs"], sort_keys=True))
     print("RESULT: " + json.dumps(payload["result"], ensure_ascii=False, indent=2))
     print(f"TOTAL_TOOL_CALLS: {payload['metrics']['tool_calls']}")
+    print(f"PROGRESS_REPAIRS: {payload['metrics']['progress_repair_count']}")
     print(f"TOTAL_TOKENS: {payload['metrics']['total_tokens']}")
     print(f"LATENCY_MS: {payload['metrics']['latency_ms']}")
     print(f"STOP_REASON: {payload['stop_reason']}")
@@ -250,7 +251,12 @@ def main() -> int:
     except Part4AgentError as exc:
         print("TASK_SUCCESS: false")
         print(f"STOP_REASON: {exc.stop_reason}")
-        print(f"ERROR: {exc}")
+        error = (
+            "Independent Part 4 verification failed"
+            if exc.stop_reason == "verification_failed"
+            else str(exc)
+        )
+        print(f"ERROR: {error}")
         if exc.diagnostics is not None:
             label = (
                 "FINAL_RESPONSE_DIAGNOSTICS"

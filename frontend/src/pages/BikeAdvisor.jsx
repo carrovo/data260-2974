@@ -108,6 +108,10 @@ export default function BikeAdvisor() {
               {analysis.metrics.model_calls} / {analysis.metrics.tool_calls}
             </p>
             <p><strong>Total tokens:</strong> {analysis.metrics.total_tokens}</p>
+            <p>
+              <strong>Progress repairs:</strong>{" "}
+              {analysis.metrics.progress_repair_count}
+            </p>
 
             <h4>Assumptions</h4>
             <ul>

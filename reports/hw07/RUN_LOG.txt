@@ -504,3 +504,47 @@ Checks:
 - JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
 - Ruff, pre-commit, pip check, frontend lint/build (96 modules), zsh syntax,
   `git diff --check`, and count-only secret scan (0 matches): PASS
+
+
+HW7 Part 4 required tool progress guard
+========================================
+Date: 2026-10-26
+
+The latest reported Mac run completed native structured output but the
+independent verifier rejected it because at least one required tool category
+was absent. The safe historical error did not identify which tool was missing,
+so this change does not infer or fabricate a missing call. Raw acceptance data
+remained pending with zero runs, and METRICS.md remained pending.
+
+The fixed LangGraph 1.2.11 / langgraph-prebuilt 1.1.0 implementation keeps
+`create_react_agent(version="v2")`, the three existing StructuredTools, the
+native ChatOllama JSON-schema structured-response node, and the independent
+verifier. Successful timeline events now drive five required stages: the three
+exact ordered CSV queries, sufficient five-rule policy evidence, and calculator
+evidence for both costs and savings.
+
+The existing metered ReAct model wrapper rejects an invalid required CSV call
+before LangGraph executes it. A premature final response receives one concise
+corrective HumanMessage for only the next missing stage. The model must emit
+the corrected tool call, and LangGraph still executes it normally. No tool call
+or observation is synthesized. Repairs are capped at three per run, count
+toward model calls/tokens/wall time, do not count as tools, and never apply to
+the separate structured-output provider call.
+
+Safe verifier diagnostics are limited to ordered completed tool names, counts
+by tool, missing stage names, progress-repair count, model-call count, and
+elapsed time. No raw model content, hidden reasoning, SQL output, complete
+retrieved text, or credentials are logged.
+
+Checks:
+- Part 4 agent offline: 14/14 PASS, including three premature-final repair
+  points, exact CSV order, invalid SQL non-execution, repair accounting,
+  exhaustion, structured-output isolation, verifier diagnostics, and artifact
+  preservation
+- Part 4 data/security: 12/12 PASS; committed evidence verification: PASS
+- Part 2: 18/18 PASS; Part 3: 9/9 PASS; HW5: 10/10 PASS; HW6: 6/6 PASS
+- JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
+- Ruff, pre-commit, pip check, frontend lint/build (96 modules), zsh syntax,
+  `git diff --check`, and count-only secret scan (0 matches): PASS
+- Official pricing network integration: SKIP because the cloud network request
+  timed out; no real qwen3:8b inference was attempted
