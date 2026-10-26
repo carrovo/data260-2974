@@ -440,3 +440,34 @@ Checks:
 - JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
 - Ruff, pre-commit, pip check, frontend lint/build (96 modules), zsh syntax,
   `git diff --check`, and count-only secret scan (0 matches): PASS
+
+
+HW7 Part 4 native Ollama JSON-schema provider compatibility fix
+================================================================
+UTC time: 2026-10-26T06:52:46Z
+
+The reported Mac diagnostics showed an empty normalized assistant response in
+the structured node. Code inspection confirmed that the metered wrapper was
+manually binding `Part4AdvisorResult` as an ordinary tool and never delegated
+to `ChatOllama.with_structured_output`. Raw acceptance data remained
+`pending_real_part4_agent_run` with zero runs and METRICS.md remained pending.
+No failed artifact was present or added, and no real qwen3:8b inference was run
+in the cloud.
+
+The LangGraph `create_react_agent(version="v2")` response-format node now
+delegates to the original provider with `method="json_schema"` and
+`include_raw=True`. The wrapper accepts only a strict parsed Pydantic result,
+a strictly revalidated parsed dict, or—only when parsed is missing—validated
+plain/single-fenced JSON from nonempty raw content. It never reads provider
+`additional_kwargs`. Safe diagnostics may add only the parsing-error type.
+
+Checks:
+- Part 4 agent offline: 9/9 PASS, including provider delegation arguments,
+  parsed model/dict, raw plain/fenced compatibility, empty/malformed failures,
+  exact model/tool/token accounting, structured latency, budgets, independent
+  verifier execution, and failed-run artifact preservation
+- Part 4 data/security: 12/12 PASS; committed evidence verification: PASS
+- Part 2: 18/18 PASS; Part 3: 9/9 PASS; HW5: 10/10 PASS; HW6: 6/6 PASS
+- JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
+- Ruff, pre-commit, pip check, frontend lint/build (96 modules), zsh syntax,
+  `git diff --check`, and count-only secret scan (0 matches): PASS

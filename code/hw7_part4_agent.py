@@ -352,6 +352,7 @@ class AgentBudget:
     fatal_stop_reason: str | None = None
     fatal_message: str | None = None
     final_response_diagnostics: dict[str, Any] | None = None
+    structured_response_latency_ms: float = 0.0
 
     def check_time(self) -> None:
         if time.monotonic() - self.started > MAX_WALL_SECONDS:
@@ -365,6 +366,7 @@ class MeteredChatModel(BaseChatModel):
     """Count calls/tokens while delegating generation to a chat model."""
 
     delegate: Any
+    structured_delegate: Any
     budget: Any
 
     @property
@@ -374,6 +376,7 @@ class MeteredChatModel(BaseChatModel):
     def bind_tools(self, tools: Any, **kwargs: Any) -> "MeteredChatModel":
         return MeteredChatModel(
             delegate=self.delegate.bind_tools(tools, **kwargs),
+            structured_delegate=self.structured_delegate,
             budget=self.budget,
         )
 
@@ -385,27 +388,112 @@ class MeteredChatModel(BaseChatModel):
         **kwargs: Any,
     ) -> Runnable:
         if include_raw or kwargs:
-            raise ValueError("Unsupported structured-output options")
+            raise ValueError("Unsupported LangGraph structured-output options")
         if schema is not Part4AdvisorResult:
             raise ValueError("Unsupported Part 4 structured response schema")
-        bound = self.bind_tools(
-            [schema],
-            tool_choice="any",
-            ls_structured_output_format={
-                "kwargs": {"method": "function_calling"},
-                "schema": schema,
-            },
+        native = self.structured_delegate.with_structured_output(
+            schema,
+            method="json_schema",
+            include_raw=True,
         )
 
-        def parse(message: AIMessage) -> Part4AdvisorResult:
-            result, diagnostics = decode_final_response(
-                message,
-                source="structured_response",
+        def invoke_native(
+            messages: list[BaseMessage],
+            config: Any = None,
+        ) -> Part4AdvisorResult:
+            self.budget.check_time()
+            self.budget.model_calls += 1
+            started = time.monotonic()
+            try:
+                response = native.invoke(messages, config)
+            finally:
+                self.budget.structured_response_latency_ms += (
+                    time.monotonic() - started
+                ) * 1000
+
+            if not isinstance(response, dict):
+                raise Part4AgentError(
+                    "Provider returned an invalid structured-response envelope",
+                    stop_reason="invalid_final_response",
+                    diagnostics=_final_diagnostics(
+                        source="structured_response",
+                        value=response,
+                        classification="missing_response",
+                    ),
+                )
+
+            raw = response.get("raw")
+            parsed = response.get("parsed")
+            parsing_error = response.get("parsing_error")
+            parsing_error_type = (
+                type(parsing_error).__name__ if parsing_error is not None else None
             )
+            if not isinstance(raw, AIMessage):
+                diagnostics = _final_diagnostics(
+                    source="structured_response",
+                    value=raw,
+                    classification="missing_response",
+                )
+                if parsing_error_type:
+                    diagnostics["parsing_error_type"] = parsing_error_type
+                raise Part4AgentError(
+                    "Provider structured response is missing raw AIMessage metadata",
+                    stop_reason="invalid_final_response",
+                    diagnostics=diagnostics,
+                )
+
+            usage = raw.usage_metadata or {}
+            self.budget.input_tokens += int(usage.get("input_tokens", 0))
+            self.budget.output_tokens += int(usage.get("output_tokens", 0))
+
+            if isinstance(parsed, (Part4AdvisorResult, dict)):
+                result, diagnostics = decode_final_response(
+                    parsed,
+                    source="structured_response",
+                )
+            elif parsed is None and isinstance(raw.content, str) and raw.content:
+                try:
+                    result, diagnostics = decode_final_response(
+                        raw.content,
+                        source="assistant_content",
+                    )
+                except Part4AgentError as exc:
+                    if exc.diagnostics is not None and parsing_error_type:
+                        exc.diagnostics["parsing_error_type"] = parsing_error_type
+                    raise
+            elif parsed is None:
+                diagnostics = _final_diagnostics(
+                    source="assistant_content",
+                    value=raw.content,
+                    classification="missing_response",
+                )
+                if parsing_error_type:
+                    diagnostics["parsing_error_type"] = parsing_error_type
+                raise Part4AgentError(
+                    "Agent final response is missing",
+                    stop_reason="invalid_final_response",
+                    diagnostics=diagnostics,
+                )
+            else:
+                diagnostics = _final_diagnostics(
+                    source="structured_response",
+                    value=parsed,
+                    classification="malformed_json",
+                )
+                if parsing_error_type:
+                    diagnostics["parsing_error_type"] = parsing_error_type
+                raise Part4AgentError(
+                    "Provider returned an unsupported parsed response type",
+                    stop_reason="invalid_final_response",
+                    diagnostics=diagnostics,
+                )
+
+            if parsing_error_type:
+                diagnostics["parsing_error_type"] = parsing_error_type
             self.budget.final_response_diagnostics = diagnostics
             return result
 
-        return bound | RunnableLambda(parse)
+        return RunnableLambda(invoke_native)
 
     def _generate(
         self,
@@ -953,7 +1041,11 @@ def run_part4_agent(
         raise Part4AgentError("Pricing URL is not an allowed official URL") from exc
     budget = AgentBudget()
     selected_model = model or create_real_model()
-    metered = MeteredChatModel(delegate=selected_model, budget=budget)
+    metered = MeteredChatModel(
+        delegate=selected_model,
+        structured_delegate=selected_model,
+        budget=budget,
+    )
     tools = build_tools(
         csv_path,
         budget,
@@ -1058,6 +1150,10 @@ def run_part4_agent(
             "output_tokens": budget.output_tokens,
             "total_tokens": budget.input_tokens + budget.output_tokens,
             "latency_ms": latency_ms,
+            "structured_response_latency_ms": round(
+                budget.structured_response_latency_ms,
+                3,
+            ),
         },
         "stop_reason": stop_reason,
         "errors": [],

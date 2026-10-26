@@ -25,6 +25,8 @@ import httpx
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, BaseMessage, ToolMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
+from langchain_core.runnables import Runnable, RunnableLambda
+from pydantic import Field
 
 import hw7_part4_agent as part4_agent
 import hw7_part4_runner as part4_runner
@@ -65,16 +67,57 @@ class ScriptedReActModel(BaseChatModel):
     loop_forever: bool = False
     structured_mode: bool = False
     structured_encoding: str = "native"
+    native_structured_calls: list[dict[str, Any]] = Field(default_factory=list)
 
     @property
     def _llm_type(self) -> str:
         return "scripted-part4-react"
 
     def bind_tools(self, tools: Any, **kwargs: Any) -> "ScriptedReActModel":
-        structured = kwargs.get("tool_choice") == "any" and any(
-            tool is Part4AdvisorResult for tool in tools
+        del tools, kwargs
+        return self.model_copy(update={"structured_mode": False})
+
+    def with_structured_output(
+        self,
+        schema: dict[str, Any] | type,
+        *,
+        method: str = "json_schema",
+        include_raw: bool = False,
+        **kwargs: Any,
+    ) -> Runnable:
+        assert schema is Part4AdvisorResult
+        assert method == "json_schema"
+        assert include_raw is True
+        assert not kwargs
+        self.native_structured_calls.append(
+            {
+                "schema": schema.__name__,
+                "method": method,
+                "include_raw": include_raw,
+            }
         )
-        return self.model_copy(update={"structured_mode": structured})
+
+        def invoke(messages: list[BaseMessage]) -> dict[str, Any]:
+            structured = self.model_copy(update={"structured_mode": True})
+            raw = structured.invoke(messages)
+            parsed: Part4AdvisorResult | dict[str, Any] | None = None
+            parsing_error: Exception | None = None
+            if self.structured_encoding in {"native", "parsed_dict"}:
+                arguments = raw.tool_calls[0]["args"]
+                parsed = (
+                    Part4AdvisorResult.model_validate(arguments)
+                    if self.structured_encoding == "native"
+                    else arguments
+                )
+            else:
+                parsing_error = ValueError("scripted provider parse failure")
+            return {
+                "raw": raw,
+                "parsed": parsed,
+                "parsing_error": parsing_error,
+            }
+
+        return RunnableLambda(invoke)
 
     def _message(
         self, *, content: str = "", calls: list[dict] | None = None
@@ -207,6 +250,10 @@ class ScriptedReActModel(BaseChatModel):
             return self._message(content="```json\n" + json.dumps(final) + "\n```")
         if self.structured_encoding == "prose_wrapped_json":
             return self._message(content="Here is the result:\n" + json.dumps(final))
+        if self.structured_encoding == "empty":
+            return self._message(content="")
+        if self.structured_encoding == "malformed_json":
+            return self._message(content='{"recommendation":')
         return self._message(
             calls=[
                 {
@@ -343,17 +390,18 @@ def test_strict_final_response_decoder() -> None:
 
 
 def test_actual_framework_graph_and_opposite_recommendations() -> None:
+    models = [ScriptedReActModel(), ScriptedReActModel()]
     results = [
         run_part4_agent(
             csv_path=MEMBERSHIP_CSV,
             pricing_url=PRICING_URL,
-            model=ScriptedReActModel(),
+            model=models[0],
             expected_winner="Buy Monthly Membership",
         ),
         run_part4_agent(
             csv_path=PAY_CSV,
             pricing_url=PRICING_URL,
-            model=ScriptedReActModel(),
+            model=models[1],
             expected_winner="Pay Per Ride/Minute",
         ),
     ]
@@ -367,6 +415,7 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         assert result["metrics"]["tool_calls"] == 9
         assert result["metrics"]["model_calls"] == 11
         assert result["metrics"]["total_tokens"] == 165
+        assert result["metrics"]["structured_response_latency_ms"] >= 0
         assert result["final_response_diagnostics"]["source"] == ("structured_response")
         assert result["final_response_diagnostics"]["classification"] == (
             "native_structured"
@@ -384,6 +433,18 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
             assert tool_message["role"] == "tool"
             assert tool_message["tool_call_id"] == item["tool_calls"][0]["id"]
 
+    assert all(
+        model.native_structured_calls
+        == [
+            {
+                "schema": "Part4AdvisorResult",
+                "method": "json_schema",
+                "include_raw": True,
+            }
+        ]
+        for model in models
+    )
+
     compatibility = {
         encoding: run_part4_agent(
             csv_path=MEMBERSHIP_CSV,
@@ -391,7 +452,7 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
             model=ScriptedReActModel(structured_encoding=encoding),
             expected_winner="Buy Monthly Membership",
         )
-        for encoding in ("plain_json", "fenced_json")
+        for encoding in ("parsed_dict", "plain_json", "fenced_json")
     }
     assert (
         compatibility["plain_json"]["final_response_diagnostics"]["classification"]
@@ -400,6 +461,18 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
     assert (
         compatibility["fenced_json"]["final_response_diagnostics"]["classification"]
         == "fenced_json"
+    )
+    assert (
+        compatibility["parsed_dict"]["final_response_diagnostics"]["classification"]
+        == "native_structured"
+    )
+    assert (
+        compatibility["plain_json"]["final_response_diagnostics"]["parsing_error_type"]
+        == "ValueError"
+    )
+    assert (
+        compatibility["fenced_json"]["final_response_diagnostics"]["parsing_error_type"]
+        == "ValueError"
     )
     assert all(
         result["verification"]["passed"] is True for result in compatibility.values()
@@ -417,6 +490,31 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         lambda: verify_agent_result(unsupported_citation, results[0]["timeline"]),
         "verification_failed",
     )
+
+
+def test_native_provider_missing_and_parse_error_fail_closed() -> None:
+    cases = {
+        "empty": "missing_response",
+        "malformed_json": "malformed_json",
+    }
+    for encoding, classification in cases.items():
+        try:
+            run_part4_agent(
+                csv_path=MEMBERSHIP_CSV,
+                pricing_url=PRICING_URL,
+                model=ScriptedReActModel(structured_encoding=encoding),
+                expected_winner="Buy Monthly Membership",
+            )
+        except Part4AgentError as exc:
+            assert exc.stop_reason == "invalid_final_response"
+            assert exc.diagnostics is not None
+            assert exc.diagnostics["classification"] == classification
+            assert exc.diagnostics["source"] == "assistant_content"
+            assert exc.diagnostics["parsing_error_type"] == "ValueError"
+            if encoding == "empty":
+                assert exc.diagnostics["character_count"] == 0
+        else:
+            raise AssertionError("provider failure unexpectedly passed")
 
 
 def test_ollama_timeout_configuration() -> None:
@@ -767,6 +865,10 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     (
         "actual framework graph and opposite recommendations",
         test_actual_framework_graph_and_opposite_recommendations,
+    ),
+    (
+        "native provider missing and parsing errors",
+        test_native_provider_missing_and_parse_error_fail_closed,
     ),
     ("bounded Ollama timeout configuration", test_ollama_timeout_configuration),
     (

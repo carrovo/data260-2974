@@ -53,6 +53,7 @@ class Part4Metrics(Part4StrictModel):
     output_tokens: int
     total_tokens: int
     latency_ms: float
+    structured_response_latency_ms: float
 
 
 class Part4UploadSummary(Part4StrictModel):

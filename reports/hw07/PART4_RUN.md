@@ -8,18 +8,25 @@ sanitized policy snapshot are injected by trusted server code; neither is a
 model argument.
 
 The same framework graph uses its supported `response_format` parameter with
-the strict `Part4AdvisorResult` Pydantic schema. LangGraph performs one final
-structured-response model call after the tool loop. That call is included in
-model-call, token, and total-latency metrics, stays inside the 120-second
-wall-clock budget, and is not counted as a tool call.
+the strict `Part4AdvisorResult` Pydantic schema. For that final node, the
+metered wrapper delegates to the original provider's native
+`ChatOllama.with_structured_output(Part4AdvisorResult,
+method="json_schema", include_raw=True)` runnable. It does not emulate the
+schema as an ordinary domain-tool call. LangGraph performs this one final
+structured-response model call after the tool loop. The raw AIMessage usage
+is counted exactly once in model-call and token metrics; its latency is
+reported in `structured_response_latency_ms` and included in total latency.
+The call stays inside the 120-second wall-clock budget and is not a tool call.
 
 ## Strict final-response compatibility
 
-The preferred result is LangGraph's validated `structured_response`. For
-compatibility with local Ollama output, the decoder also accepts either one
-plain JSON object or exactly one Markdown `json` code block containing one
-JSON object. All three encodings must contain every required field and pass
-the same strict schema and independent cost/evidence verifier.
+The preferred result is the provider's parsed Pydantic model; a parsed dict is
+strictly revalidated with the same schema. Only when native parsing returns
+`parsed=None` may the decoder inspect nonempty `raw.content`, accepting either
+one plain JSON object or exactly one Markdown `json` code block containing one
+JSON object. It never parses `additional_kwargs` or another provider-specific
+object. All accepted forms must contain every required field and pass the same
+independent cost/evidence verifier.
 
 Prose surrounding JSON, multiple objects, malformed JSON, NaN/Infinity,
 missing or extra fields, wrong types, and unsupported recommendation labels
@@ -27,6 +34,8 @@ are rejected. The code never computes or substitutes a missing model answer.
 On an invalid result the CLI prints only safe diagnostics: response source,
 content type, character count, and classification. It never prints the invalid
 response text or hidden reasoning.
+When native parsing reports an error, diagnostics may also include only its
+exception type, never its message or raw response.
 
 ## Mac prerequisites
 
