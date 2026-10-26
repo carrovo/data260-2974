@@ -5,6 +5,7 @@ import csv
 import io
 import json
 import os
+import re
 import sys
 import tempfile
 from contextlib import redirect_stdout
@@ -280,6 +281,7 @@ class ProgressRepairModel(ScriptedReActModel):
     premature_points: list[str] = Field(default_factory=list)
     invalid_first_csv: bool = False
     parallel_second_csv: bool = False
+    premature_between_calculations: bool = False
     always_premature: bool = False
     correction_messages: list[str] = Field(default_factory=list)
 
@@ -335,7 +337,93 @@ class ProgressRepairModel(ScriptedReActModel):
         }.get(len(observations))
         if point in self.premature_points and correction is None:
             return self._message(content=f"premature at {point}")
+        if (
+            self.premature_between_calculations
+            and 6 <= len(observations) < 9
+            and correction is None
+        ):
+            return self._message(content="premature during calculator evidence")
+        if self.premature_between_calculations and correction is not None:
+            expression = re.search(
+                r"<BEGIN_REQUIRED_EXPRESSION>\n(.+?)\n<END_REQUIRED_EXPRESSION>",
+                str(correction),
+                re.DOTALL,
+            )
+            assert expression is not None
+            return self._call(
+                len(observations) + 1,
+                "calculator",
+                {"expression": expression.group(1), "units": "USD"},
+            )
         return super()._generate(messages, stop, run_manager, **kwargs)
+
+
+class RepeatedCalculatorRepairModel(ProgressRepairModel):
+    """Match the Mac failure shape: one irrelevant value, then early stops."""
+
+    def _without_irrelevant_calculator(
+        self, messages: list[BaseMessage]
+    ) -> list[BaseMessage]:
+        filtered: list[BaseMessage] = []
+        for message in messages:
+            if isinstance(message, ToolMessage):
+                envelope = json.loads(str(message.content))
+                expression = envelope.get("data", {}).get("expression")
+                if expression == "1 + 1":
+                    continue
+            filtered.append(message)
+        return filtered
+
+    def _generate(
+        self,
+        messages: list[BaseMessage],
+        stop: list[str] | None = None,
+        run_manager: Any = None,
+        **kwargs: Any,
+    ) -> ChatResult:
+        observations = [
+            message for message in messages if isinstance(message, ToolMessage)
+        ]
+        if self.structured_mode or len(observations) >= 10:
+            return ScriptedReActModel._generate(
+                self,
+                self._without_irrelevant_calculator(messages),
+                stop,
+                run_manager,
+                **kwargs,
+            )
+        if len(observations) < 6:
+            return ScriptedReActModel._generate(
+                self, messages, stop, run_manager, **kwargs
+            )
+
+        correction = (
+            str(messages[-1].content)
+            if isinstance(messages[-1], HumanMessage)
+            and "next missing stage" in str(messages[-1].content)
+            else None
+        )
+        if len(observations) == 6 and correction is None:
+            return self._call(
+                7,
+                "calculator",
+                {"expression": "1 + 1", "units": "USD"},
+            )
+        if correction is None:
+            return self._message(content="premature during calculator evidence")
+
+        self.correction_messages.append(correction)
+        expression = re.search(
+            r"<BEGIN_REQUIRED_EXPRESSION>\n(.+?)\n<END_REQUIRED_EXPRESSION>",
+            correction,
+            re.DOTALL,
+        )
+        assert expression is not None
+        return self._call(
+            len(observations) + 1,
+            "calculator",
+            {"expression": expression.group(1), "units": "USD"},
+        )
 
 
 class InvalidFinalProgressModel(ProgressRepairModel):
@@ -960,6 +1048,64 @@ def test_required_progress_repairs_at_three_early_stops() -> None:
         }
 
 
+def test_stage5_repairs_each_missing_calculation_in_order() -> None:
+    model = ProgressRepairModel(premature_between_calculations=True)
+    result = run_part4_agent(
+        csv_path=MEMBERSHIP_CSV,
+        pricing_url=PRICING_URL,
+        model=model,
+        expected_winner="Buy Monthly Membership",
+    )
+
+    assert result["verification"]["passed"] is True
+    assert result["metrics"]["progress_repair_count"] == 3
+    assert result["metrics"]["model_calls"] == 14
+    assert result["metrics"]["total_tokens"] == 210
+    assert len(model.correction_messages) == 3
+    assert [
+        label
+        for message in model.correction_messages
+        for label in ("membership cost", "pay-per-use cost", "savings")
+        if f"next missing evidence is {label}" in message
+    ] == ["membership cost", "pay-per-use cost", "savings"]
+    assert all(
+        message.count("<BEGIN_REQUIRED_EXPRESSION>") == 1
+        and message.count("<END_REQUIRED_EXPRESSION>") == 1
+        for message in model.correction_messages
+    )
+    calculator_events = [
+        event for event in result["timeline"] if event["tool"] == "calculator"
+    ]
+    assert len(calculator_events) == 3
+    assert all(event["success"] for event in calculator_events)
+
+
+def test_stage5_repairs_after_irrelevant_calculator_observation() -> None:
+    model = RepeatedCalculatorRepairModel()
+    result = run_part4_agent(
+        csv_path=MEMBERSHIP_CSV,
+        pricing_url=PRICING_URL,
+        model=model,
+        expected_winner="Buy Monthly Membership",
+    )
+
+    assert result["verification"]["passed"] is True
+    assert result["metrics"]["progress_repair_count"] == 3
+    assert result["metrics"]["model_calls"] == 15
+    assert result["metrics"]["tool_calls"] == 10
+    calculator_events = [
+        event for event in result["timeline"] if event["tool"] == "calculator"
+    ]
+    assert len(calculator_events) == 4
+    assert calculator_events[0]["inputs"]["expression"] == "1 + 1"
+    assert [
+        label
+        for message in model.correction_messages
+        for label in ("membership cost", "pay-per-use cost", "savings")
+        if f"next missing evidence is {label}" in message
+    ] == ["membership cost", "pay-per-use cost", "savings"]
+
+
 def test_invalid_csv_blocked_and_progress_accounting() -> None:
     invalid = ProgressRepairModel(invalid_first_csv=True)
     repaired = run_part4_agent(
@@ -1032,6 +1178,11 @@ def test_invalid_csv_blocked_and_progress_accounting() -> None:
     assert "next action must start with Stage 1 and TOTAL_ROWS_SQL" in instruction
     assert "sequentially, one per model turn" in instruction
     normalized_instruction = " ".join(instruction.split())
+    assert (
+        "membership cost, pay-per-use cost, and savings, in that order"
+        in normalized_instruction
+    )
+    assert "exactly one calculator call per model turn" in normalized_instruction
     assert (
         "Do not produce a final answer until every stage is complete"
         in normalized_instruction
@@ -1460,6 +1611,14 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     (
         "required progress repairs at three early stops",
         test_required_progress_repairs_at_three_early_stops,
+    ),
+    (
+        "stage 5 repairs each missing calculation in order",
+        test_stage5_repairs_each_missing_calculation_in_order,
+    ),
+    (
+        "stage 5 repairs after an irrelevant calculator observation",
+        test_stage5_repairs_after_irrelevant_calculator_observation,
     ),
     (
         "invalid CSV blocked and progress accounting",

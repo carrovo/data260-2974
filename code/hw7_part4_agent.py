@@ -692,9 +692,9 @@ def _policy_evidence_complete(timeline: list[dict[str, Any]]) -> bool:
     )
 
 
-def _expected_calculator_values(
+def _calculator_evidence_plan(
     timeline: list[dict[str, Any]],
-) -> tuple[Decimal, Decimal, Decimal] | None:
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]] | None:
     stats: dict[str, Any] | None = None
     for event in timeline:
         if event["tool"] != "csv_sql" or not event["success"]:
@@ -714,22 +714,40 @@ def _expected_calculator_values(
     ]
     try:
         rules = extract_pricing_rules(policy_passages)
+        month_pass = Decimal(rules["month_pass"]["amount"])
+        classic_overage = Decimal(str(stats["classic_overage_minutes"]))
+        classic_member_rate = Decimal(
+            rules["classic_member"]["overage_per_minute"]
+        )
+        ebike_minutes = Decimal(str(stats["ebike_minutes"]))
+        ebike_member_rate = Decimal(rules["ebike_member"]["per_minute"])
+        classic_count = Decimal(str(stats["classic_count"]))
+        classic_unlock = Decimal(rules["classic_non_member"]["unlock_fee"])
+        classic_minutes = Decimal(str(stats["classic_minutes"]))
+        classic_rate = Decimal(rules["classic_non_member"]["per_minute"])
+        ebike_count = Decimal(str(stats["ebike_count"]))
+        ebike_unlock = Decimal(rules["ebike_non_member"]["unlock_fee"])
+        ebike_rate = Decimal(rules["ebike_non_member"]["per_minute"])
+        membership_expression = (
+            f"{month_pass:f} + {classic_overage:f} * {classic_member_rate:f} + "
+            f"{ebike_minutes:f} * {ebike_member_rate:f}"
+        )
+        pay_per_use_expression = (
+            f"{classic_count:f} * {classic_unlock:f} + "
+            f"{classic_minutes:f} * {classic_rate:f} + "
+            f"{ebike_count:f} * {ebike_unlock:f} + "
+            f"{ebike_minutes:f} * {ebike_rate:f}"
+        )
         membership = (
-            Decimal(rules["month_pass"]["amount"])
-            + Decimal(str(stats["classic_overage_minutes"]))
-            * Decimal(rules["classic_member"]["overage_per_minute"])
-            + Decimal(str(stats["ebike_minutes"]))
-            * Decimal(rules["ebike_member"]["per_minute"])
+            month_pass
+            + classic_overage * classic_member_rate
+            + ebike_minutes * ebike_member_rate
         )
         pay_per_use = (
-            Decimal(str(stats["classic_count"]))
-            * Decimal(rules["classic_non_member"]["unlock_fee"])
-            + Decimal(str(stats["classic_minutes"]))
-            * Decimal(rules["classic_non_member"]["per_minute"])
-            + Decimal(str(stats["ebike_count"]))
-            * Decimal(rules["ebike_non_member"]["unlock_fee"])
-            + Decimal(str(stats["ebike_minutes"]))
-            * Decimal(rules["ebike_non_member"]["per_minute"])
+            classic_count * classic_unlock
+            + classic_minutes * classic_rate
+            + ebike_count * ebike_unlock
+            + ebike_minutes * ebike_rate
         )
     except (ArithmeticError, KeyError, TypeError, ValueError):
         return None
@@ -737,25 +755,64 @@ def _expected_calculator_values(
     membership = _money(membership)
     pay_per_use = _money(pay_per_use)
     savings = _money(abs(pay_per_use - membership))
-    return membership, pay_per_use, savings
+    savings_expression = (
+        f"{max(membership, pay_per_use):f} - "
+        f"{min(membership, pay_per_use):f}"
+    )
+    return (
+        {
+            "label": "membership cost",
+            "expression": membership_expression,
+            "value": membership,
+        },
+        {
+            "label": "pay-per-use cost",
+            "expression": pay_per_use_expression,
+            "value": pay_per_use,
+        },
+        {
+            "label": "savings",
+            "expression": savings_expression,
+            "value": savings,
+        },
+    )
 
 
-def _calculator_evidence_complete(timeline: list[dict[str, Any]]) -> bool:
-    expected = _expected_calculator_values(timeline)
-    if expected is None:
-        return False
-    values: list[Decimal] = []
+def _missing_calculator_evidence(
+    timeline: list[dict[str, Any]],
+) -> list[dict[str, Any]] | None:
+    plan = _calculator_evidence_plan(timeline)
+    if plan is None:
+        return None
+    observed: list[Decimal] = []
     for event in timeline:
         if event["tool"] != "calculator" or not event["success"]:
             continue
         try:
-            values.append(Decimal(str(event["observation"]["data"]["value"])))
+            observed.append(Decimal(str(event["observation"]["data"]["value"])))
         except (ArithmeticError, KeyError, TypeError, ValueError):
-            return False
-    return len(values) >= 3 and all(
-        any(abs(value - required) <= Decimal("0.01") for value in values)
-        for required in expected
-    )
+            continue
+
+    missing: list[dict[str, Any]] = []
+    for requirement in plan:
+        match = next(
+            (
+                index
+                for index, value in enumerate(observed)
+                if abs(value - requirement["value"]) <= Decimal("0.01")
+            ),
+            None,
+        )
+        if match is None:
+            missing.append(requirement)
+        else:
+            observed.pop(match)
+    return missing
+
+
+def _calculator_evidence_complete(timeline: list[dict[str, Any]]) -> bool:
+    missing = _missing_calculator_evidence(timeline)
+    return missing == []
 
 
 def _required_tool_progress(
@@ -797,7 +854,13 @@ def _required_tool_progress(
     }
 
 
-def _stage_correction(stage: str, *, attempt: int, issue: str) -> str:
+def _stage_correction(
+    stage: str,
+    *,
+    attempt: int,
+    issue: str,
+    calculator_requirement: dict[str, Any] | None = None,
+) -> str:
     stage_labels = {
         "stage_1_total_rows_sql": "Stage 1 (TOTAL_ROWS_SQL)",
         "stage_2_target_stats_sql": "Stage 2 (TARGET_STATS_SQL)",
@@ -830,9 +893,19 @@ def _stage_correction(stage: str, *, attempt: int, issue: str) -> str:
             f"{prefix} Emit exactly one policy_retriever tool call that advances "
             "evidence for all five pricing rules; do not answer yet."
         )
+    if calculator_requirement is None:
+        return (
+            f"{prefix} Emit exactly one calculator tool call that advances evidence "
+            "for membership cost, pay-per-use cost, and savings; do not answer yet."
+        )
     return (
-        f"{prefix} Emit exactly one calculator tool call that advances evidence "
-        "for membership cost, pay-per-use cost, and savings; do not answer yet."
+        f"{prefix} Within Stage 5, the next missing evidence is "
+        f"{calculator_requirement['label']}. Emit exactly one calculator tool "
+        "call and no final text. Set arguments.expression byte-for-byte to the "
+        "expression between these markers and set arguments.units to USD:\n"
+        "<BEGIN_REQUIRED_EXPRESSION>\n"
+        f"{calculator_requirement['expression']}\n"
+        "<END_REQUIRED_EXPRESSION>"
     )
 
 
@@ -882,10 +955,14 @@ def _required_progress_correction(
 
     if next_stage == "stage_5_calculator_evidence":
         if not calls:
+            missing_calculator = _missing_calculator_evidence(budget.timeline)
             return _stage_correction(
                 next_stage,
                 attempt=attempt,
                 issue="The prior response contained no tool call.",
+                calculator_requirement=(
+                    missing_calculator[0] if missing_calculator else None
+                ),
             )
         if any(call.get("name") == "csv_sql" for call in calls):
             return _stage_correction(
@@ -918,7 +995,8 @@ Stage 3: call csv_sql once with WEEKLY_SQL exactly:
 Stage 4: use successful policy_retriever evidence sufficient for all five
 required pricing rules.
 Stage 5: use successful calculator observations supporting membership cost,
-pay-per-use cost, and savings.
+pay-per-use cost, and savings, in that order. Use exactly one calculator call
+per model turn, then wait for its ToolMessage before the next calculation.
 
 Your next action must start with Stage 1 and TOTAL_ROWS_SQL. Make the first
 three csv_sql calls sequentially, one per model turn, so parallel v2 tool

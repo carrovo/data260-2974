@@ -65,6 +65,14 @@ stage it also includes only that stage's exact SQL between explicit markers
 and forbids parallel or additional tool calls. No rejected model content is
 copied into the repair message or logs.
 
+Stage 5 is tracked as three ordered successful observations: membership cost,
+pay-per-use cost, and savings. If qwen attempts to finish between these
+calculations, the correction names the next missing Stage 5 evidence item and
+provides the exact grounded arithmetic expression between explicit markers.
+The model must emit exactly one `calculator` call for that expression; the
+unchanged LangGraph `ToolNode` still executes it. This prevents a deterministic
+temperature-0 model from spending all repairs repeating the same calculation.
+
 Each run permits at most three progress-repair model calls. Every repair is
 included in model-call, token, latency, and wall-budget accounting but is not a
 tool call. Exhaustion stops with `required_tool_progress_exhausted`. The
