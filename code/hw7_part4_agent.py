@@ -139,8 +139,11 @@ Do not reveal hidden reasoning.
 """
 STRUCTURED_RESPONSE_PROMPT = """Return the final bike membership analysis using
 the required structured response schema. Copy only values supported by the
-tool observations. Do not add prose, hidden reasoning, or unsupported claims.
+tool observations and the final grounding packet. Copy packet arrays and
+strings exactly. Do not add prose, hidden reasoning, or unsupported claims.
 """
+FINAL_GROUNDING_BEGIN = "<BEGIN_FINAL_GROUNDING_JSON>"
+FINAL_GROUNDING_END = "<END_FINAL_GROUNDING_JSON>"
 FENCED_JSON_PATTERN = re.compile(
     r"\A\s*```json[ \t]*\r?\n(?P<body>.*?)\r?\n```[ \t]*\s*\Z",
     re.DOTALL,
@@ -467,7 +470,10 @@ class MeteredChatModel(BaseChatModel):
             self.budget.model_calls += 1
             started = time.monotonic()
             try:
-                response = native.invoke(messages, config)
+                grounding = HumanMessage(
+                    content=_structured_grounding_instruction(self.budget.timeline)
+                )
+                response = native.invoke([*messages, grounding], config)
             finally:
                 self.budget.structured_response_latency_ms += (
                     time.monotonic() - started
@@ -1226,6 +1232,115 @@ def _weekly_rows(timeline: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def _money(value: Decimal) -> Decimal:
     return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def _citations_prove_pricing_rules(citations: list[str]) -> bool:
+    if not citations:
+        return False
+    snapshot = _snapshot()
+    try:
+        actual = extract_pricing_rules(
+            [
+                {"text": citation, "source": snapshot["final_url"]}
+                for citation in citations
+            ]
+        )
+    except (KeyError, TypeError, ValueError):
+        return False
+    return all(
+        actual.get(rule_name, {}).get(field) == value
+        for rule_name, rule in snapshot["pricing_rules"].items()
+        for field, value in rule.items()
+        if not field.startswith("evidence")
+    )
+
+
+def _compact_sufficient_citations(citations: list[str]) -> list[str]:
+    unique = list(dict.fromkeys(citations))
+    for citation in sorted(unique, key=len):
+        if _citations_prove_pricing_rules([citation]):
+            return [citation]
+
+    selected = list(unique)
+    for citation in sorted(unique, key=len, reverse=True):
+        candidate = [item for item in selected if item != citation]
+        if _citations_prove_pricing_rules(candidate):
+            selected = candidate
+    return selected
+
+
+def _structured_grounding_payload(
+    timeline: list[dict[str, Any]],
+) -> dict[str, Any]:
+    progress = _required_tool_progress(timeline)
+    if progress["missing_stages"]:
+        raise Part4AgentError(
+            "Structured response started before required tool progress completed",
+            stop_reason="incomplete_agent_result",
+        )
+
+    stats = _one_row(timeline, "target_ride_count")
+    weekly = _weekly_rows(timeline)
+    calculator_plan = _calculator_evidence_plan(timeline)
+    if calculator_plan is None or _missing_calculator_evidence(timeline) != []:
+        raise Part4AgentError(
+            "Grounded calculator evidence is incomplete",
+            stop_reason="verification_failed",
+        )
+    membership, pay_per_use, savings = (
+        requirement["value"] for requirement in calculator_plan
+    )
+    recommendation = (
+        "Buy Monthly Membership"
+        if membership < pay_per_use
+        else "Pay Per Ride/Minute"
+    )
+
+    citations = _compact_sufficient_citations(
+        [
+            passage["text"]
+            for event in timeline
+            if event["tool"] == "policy_retriever" and event["success"]
+            for passage in event["observation"]["data"].get("passages", [])
+        ]
+    )
+    if not _citations_prove_pricing_rules(citations):
+        raise Part4AgentError(
+            "Grounded policy citations are incomplete",
+            stop_reason="verification_failed",
+        )
+
+    payload = {
+        "recommendation": recommendation,
+        "membership_cost": float(membership),
+        "pay_per_use_cost": float(pay_per_use),
+        "dollar_savings": float(savings),
+        "target_ride_count": int(stats["target_ride_count"]),
+        "target_minutes": float(stats["total_minutes"]),
+        "average_target_minutes": float(stats["average_minutes"]),
+        "classic_target_count": int(stats["classic_count"]),
+        "ebike_target_count": int(stats["ebike_count"]),
+        "weekly_table": weekly,
+        "assumptions": [
+            "Only rows marked scenario_target=true are analyzed.",
+            "Pricing uses the retrieved official policy evidence.",
+        ],
+        "official_source_url": _snapshot()["final_url"],
+        "citations": citations,
+    }
+    return Part4AdvisorResult.model_validate(payload).model_dump(mode="json")
+
+
+def _structured_grounding_instruction(timeline: list[dict[str, Any]]) -> str:
+    payload = _structured_grounding_payload(timeline)
+    encoded = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    return (
+        "Use exactly the following verified field values for the native JSON-schema "
+        "response. Copy every scalar, string, weekly_table row, assumption, and "
+        "citation verbatim. Do not calculate, summarize, omit, reorder, or add "
+        "values. Emit only the schema response.\n"
+        f"{FINAL_GROUNDING_BEGIN}\n{encoded}\n{FINAL_GROUNDING_END}"
+    )
 
 
 def verify_agent_result(

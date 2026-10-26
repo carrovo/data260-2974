@@ -77,6 +77,7 @@ class ScriptedReActModel(BaseChatModel):
     structured_mode: bool = False
     structured_encoding: str = "native"
     native_structured_calls: list[dict[str, Any]] = Field(default_factory=list)
+    native_structured_prompts: list[str] = Field(default_factory=list)
 
     @property
     def _llm_type(self) -> str:
@@ -107,6 +108,7 @@ class ScriptedReActModel(BaseChatModel):
         )
 
         def invoke(messages: list[BaseMessage]) -> dict[str, Any]:
+            self.native_structured_prompts.append(str(messages[-1].content))
             structured = self.model_copy(update={"structured_mode": True})
             raw = structured.invoke(messages)
             parsed: Part4AdvisorResult | dict[str, Any] | None = None
@@ -269,6 +271,41 @@ class ScriptedReActModel(BaseChatModel):
                     "name": Part4AdvisorResult.__name__,
                     "args": final,
                     "id": "part4-structured-response",
+                    "type": "tool_call",
+                }
+            ]
+        )
+
+
+class GroundingCopyModel(ScriptedReActModel):
+    """Copy the verified grounding packet through native structured output."""
+
+    def _generate(
+        self,
+        messages: list[BaseMessage],
+        stop: list[str] | None = None,
+        run_manager: Any = None,
+        **kwargs: Any,
+    ) -> ChatResult:
+        if not self.structured_mode:
+            return super()._generate(messages, stop, run_manager, **kwargs)
+
+        grounding = str(messages[-1].content)
+        match = re.search(
+            re.escape(part4_agent.FINAL_GROUNDING_BEGIN)
+            + r"\n(.+?)\n"
+            + re.escape(part4_agent.FINAL_GROUNDING_END),
+            grounding,
+            re.DOTALL,
+        )
+        assert match is not None
+        payload = json.loads(match.group(1))
+        return self._message(
+            calls=[
+                {
+                    "name": Part4AdvisorResult.__name__,
+                    "args": payload,
+                    "id": "part4-grounded-structured-response",
                     "type": "tool_call",
                 }
             ]
@@ -641,6 +678,13 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         ]
         for model in models
     )
+    assert all(
+        len(model.native_structured_prompts) == 1
+        and part4_agent.FINAL_GROUNDING_BEGIN
+        in model.native_structured_prompts[0]
+        and part4_agent.FINAL_GROUNDING_END in model.native_structured_prompts[0]
+        for model in models
+    )
 
     compatibility = {
         encoding: run_part4_agent(
@@ -687,6 +731,30 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         lambda: verify_agent_result(unsupported_citation, results[0]["timeline"]),
         "verification_failed",
     )
+
+
+def test_verified_grounding_packet_drives_native_structured_output() -> None:
+    scenarios = [
+        (MEMBERSHIP_CSV, "Buy Monthly Membership"),
+        (PAY_CSV, "Pay Per Ride/Minute"),
+    ]
+    for csv_path, expected_winner in scenarios:
+        model = GroundingCopyModel()
+        result = run_part4_agent(
+            csv_path=csv_path,
+            pricing_url=PRICING_URL,
+            model=model,
+            expected_winner=expected_winner,
+        )
+        assert result["verification"]["passed"] is True
+        assert result["result"] == part4_agent._structured_grounding_payload(
+            result["timeline"]
+        )
+        assert result["metrics"]["progress_repair_count"] == 0
+        assert result["metrics"]["model_calls"] == 11
+        assert len(model.native_structured_prompts) == 1
+        assert "Copy every scalar" in model.native_structured_prompts[0]
+        assert "hidden reasoning" not in model.native_structured_prompts[0]
 
 
 def test_native_provider_missing_and_parse_error_fail_closed() -> None:
@@ -1590,6 +1658,10 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     (
         "actual framework graph and opposite recommendations",
         test_actual_framework_graph_and_opposite_recommendations,
+    ),
+    (
+        "verified grounding packet drives native structured output",
+        test_verified_grounding_packet_drives_native_structured_output,
     ),
     (
         "native provider missing and parsing errors",

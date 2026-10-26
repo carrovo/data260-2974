@@ -19,6 +19,15 @@ reported in `structured_response_latency_ms` and included in total latency.
 The call stays inside the effective bounded wall-clock budget and is not a
 tool call.
 
+Immediately before that native call, the wrapper derives a compact final-field
+grounding packet only from successful CSV, policy, and calculator timeline
+events. The packet is strictly schema-validated, includes the exact weekly
+rows and scalars, and reduces retrieved policy text to an exact citation set
+that still proves all five pricing rules. It is appended only to the native
+structured-output invocation. The provider must still emit the schema response;
+the code does not substitute an answer, retry that call, or bypass the
+independent verifier.
+
 ## Strict final-response compatibility
 
 The preferred result is the provider's parsed Pydantic model; a parsed dict is

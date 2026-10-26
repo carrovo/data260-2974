@@ -606,3 +606,35 @@ Checks:
   runner help, `git diff --check`, and count-only secret scan (0): PASS
 - Raw acceptance JSON remains `pending_real_part4_agent_run` with zero runs;
   METRICS remains pending, and no failed real-run artifact was added
+
+
+HW7 Part 4 native structured-output grounding follow-up
+========================================================
+Date: 2026-10-26
+
+The next reported Mac run completed all five required tool stages with three
+ordered CSV calls, one sufficient policy retrieval, three calculator calls,
+and zero progress repairs. Native structured output returned a schema-valid
+object, but the unchanged independent verifier rejected at least one final
+field. Safe diagnostics intentionally did not expose the model response or
+identify a field, so this change does not assume which field differed. Raw
+acceptance JSON and METRICS remained pending.
+
+The native structured-output invocation now receives a compact final-field
+grounding packet derived only from successful timeline evidence. It includes
+the verified scalars and weekly rows and an exact minimal citation set that
+still proves all five pricing rules. The packet is schema-validated before the
+provider call. Qwen must still produce the native JSON-schema response; there
+is no structured-output retry, programmatic answer substitution, verifier
+change, or additional model call.
+
+Checks:
+- Part 4 agent offline: 17/17 PASS, including both opposite recommendations
+  through a native structured-output model that copies only the grounding packet
+- Part 4 data/security: 12/12 PASS
+- Part 2: 18/18 PASS; Part 3: 9/9 PASS; HW5: 10/10 PASS; HW6: 6/6 PASS
+- JWT/RBAC: 24/24 PASS; user migration: 5/5 PASS
+- Ruff, pre-commit, pip check, frontend lint/build (96 modules), shell syntax,
+  runner help, `git diff --check`, and count-only secret scan (0): PASS
+- Raw acceptance JSON remains `pending_real_part4_agent_run` with zero runs;
+  METRICS remains pending, and no failed real-run artifact was added
