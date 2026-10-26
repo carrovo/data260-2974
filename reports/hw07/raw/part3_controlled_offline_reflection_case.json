@@ -3,13 +3,13 @@
   "model": "scripted_fake_not_qwen3:8b",
   "real_model_result": false,
   "result": {
-    "run_id": "0864ca34094a4e9da18e2742f9839df3",
+    "run_id": "3fc92893a8f94143b9e08a290b176a83",
     "task_id": "A",
     "prompt": "Search for rental listings using the domain term \"Shared Room\" with limit 1. Then take the id of the first returned result and call listing_details for that exact id. Only after both tool calls, answer with the listing code, title, address, monthly rent, and property manager name. Do not ask me a follow-up question.",
     "attempts": [
       {
         "attempt_number": 1,
-        "run_id": "1cec2656d7af4c73bf5bfdab38db00d2",
+        "run_id": "65cfdd3ed1e944ccb2b8a69f9b96e4a6",
         "verifier": {
           "passed": false,
           "checks": {
@@ -164,7 +164,7 @@
         "input_tokens": 300,
         "output_tokens": 60,
         "total_tokens": 360,
-        "latency_ms": 0.267,
+        "latency_ms": 0.209,
         "agent_stop_reason": "normal_completion",
         "final_answer": "Listing Code: S2974-999999; Monthly Rent: $9999.00; Property Manager: Invented Manager",
         "verifier_false_rejection_audit": {
@@ -176,7 +176,7 @@
       },
       {
         "attempt_number": 2,
-        "run_id": "24574c6d58b145cd9bf894c91aec2719",
+        "run_id": "1ededbfb661a41a68d7628141e433072",
         "verifier": {
           "passed": true,
           "checks": {
@@ -305,7 +305,7 @@
         "input_tokens": 300,
         "output_tokens": 60,
         "total_tokens": 360,
-        "latency_ms": 0.128,
+        "latency_ms": 0.132,
         "agent_stop_reason": "normal_completion",
         "final_answer": "Listing Code: S2974-000004; Title: Shared Room Fixture; Address: 104 Market Street, San Jose, CA; Monthly Rent: $1700.00; Property Manager: Part2 Fixture Manager",
         "verifier_false_rejection_audit": {
@@ -332,7 +332,7 @@
     "input_tokens": 600,
     "output_tokens": 120,
     "total_tokens": 720,
-    "latency_ms": 0.879,
+    "latency_ms": 1.461,
     "stop_reason": "success",
     "budgets": {
       "max_retries": 2,

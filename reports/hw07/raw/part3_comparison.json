@@ -1,5 +1,5 @@
 {
-  "status": "pending_real_model_comparison",
+  "status": "completed_real_model_comparison",
   "model_config": {
     "model": "qwen3:8b",
     "temperature": 0.0,
@@ -8,10 +8,1760 @@
     "num_ctx": 4096,
     "num_predict": 512
   },
-  "original_loop_source": "reports/hw07/raw/part2_reliability.json",
-  "original_loop_run_count": 21,
-  "reflexion_loop_run_count": null,
-  "original_loop": null,
-  "reflexion_loop": null,
-  "note": "Run the real Part 3 comparison mode. Controlled scripted-model results are not used as real qwen3:8b metrics."
+  "original_loop": {
+    "system": "original_loop",
+    "run_count": 21,
+    "task_success_count": 21,
+    "task_success_rate_percent": 100.0,
+    "unsupported_claims": 0,
+    "retry_run_count": 0,
+    "retry_rate_percent": 0.0,
+    "total_tool_calls": 49,
+    "average_tool_calls": 2.333,
+    "total_tokens": 42784,
+    "average_tokens": 2037.333,
+    "average_latency_ms": 13001.236,
+    "verifier_false_rejections": 0,
+    "verifier_false_rejection_candidates": 0
+  },
+  "reflexion_loop": {
+    "system": "reflexion_loop",
+    "run_count": 21,
+    "task_success_count": 21,
+    "task_success_rate_percent": 100.0,
+    "unsupported_claims": 0,
+    "retry_run_count": 0,
+    "retry_rate_percent": 0.0,
+    "total_tool_calls": 49,
+    "average_tool_calls": 2.333,
+    "total_tokens": 42784,
+    "average_tokens": 2037.333,
+    "average_latency_ms": 12964.118,
+    "verifier_false_rejections": 0,
+    "verifier_false_rejection_candidates": 0
+  },
+  "original_run_audit": [
+    {
+      "run_id": "A-01",
+      "task_id": "A",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 2087,
+      "latency_ms": 16736.467,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "detail_matches_first_result": true,
+          "final_listing_code_supported": true,
+          "final_rent_supported": true,
+          "final_manager_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000004"
+            ],
+            "listing_titles": [
+              "Shared Room Fixture"
+            ],
+            "rents": [
+              "1700.00"
+            ],
+            "listing_ids": [
+              4
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner4@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "A-02",
+      "task_id": "A",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 2087,
+      "latency_ms": 8100.917,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "detail_matches_first_result": true,
+          "final_listing_code_supported": true,
+          "final_rent_supported": true,
+          "final_manager_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000004"
+            ],
+            "listing_titles": [
+              "Shared Room Fixture"
+            ],
+            "rents": [
+              "1700.00"
+            ],
+            "listing_ids": [
+              4
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner4@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "A-03",
+      "task_id": "A",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 2087,
+      "latency_ms": 7767.399,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "detail_matches_first_result": true,
+          "final_listing_code_supported": true,
+          "final_rent_supported": true,
+          "final_manager_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000004"
+            ],
+            "listing_titles": [
+              "Shared Room Fixture"
+            ],
+            "rents": [
+              "1700.00"
+            ],
+            "listing_ids": [
+              4
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner4@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "A-04",
+      "task_id": "A",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 2087,
+      "latency_ms": 7843.76,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "detail_matches_first_result": true,
+          "final_listing_code_supported": true,
+          "final_rent_supported": true,
+          "final_manager_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000004"
+            ],
+            "listing_titles": [
+              "Shared Room Fixture"
+            ],
+            "rents": [
+              "1700.00"
+            ],
+            "listing_ids": [
+              4
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner4@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "A-05",
+      "task_id": "A",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 2087,
+      "latency_ms": 8150.973,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "detail_matches_first_result": true,
+          "final_listing_code_supported": true,
+          "final_rent_supported": true,
+          "final_manager_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000004"
+            ],
+            "listing_titles": [
+              "Shared Room Fixture"
+            ],
+            "rents": [
+              "1700.00"
+            ],
+            "listing_ids": [
+              4
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner4@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "A-06",
+      "task_id": "A",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 2087,
+      "latency_ms": 8314.475,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "detail_matches_first_result": true,
+          "final_listing_code_supported": true,
+          "final_rent_supported": true,
+          "final_manager_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000004"
+            ],
+            "listing_titles": [
+              "Shared Room Fixture"
+            ],
+            "rents": [
+              "1700.00"
+            ],
+            "listing_ids": [
+              4
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner4@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "A-07",
+      "task_id": "A",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 2087,
+      "latency_ms": 7969.419,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "detail_matches_first_result": true,
+          "final_listing_code_supported": true,
+          "final_rent_supported": true,
+          "final_manager_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000004"
+            ],
+            "listing_titles": [
+              "Shared Room Fixture"
+            ],
+            "rents": [
+              "1700.00"
+            ],
+            "listing_ids": [
+              4
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner4@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "B-01",
+      "task_id": "B",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 1424,
+      "latency_ms": 9891.594,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "aggregate_parameters": true,
+          "support_search_parameters": true,
+          "support_matches_manager_and_range": true,
+          "final_support_code_supported": true,
+          "final_aggregate_supported": true,
+          "final_support_rent_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "actual_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture"
+            ],
+            "rents": [
+              "1700.00",
+              "1750.00",
+              "1800.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "B-02",
+      "task_id": "B",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 1424,
+      "latency_ms": 9762.143,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "aggregate_parameters": true,
+          "support_search_parameters": true,
+          "support_matches_manager_and_range": true,
+          "final_support_code_supported": true,
+          "final_aggregate_supported": true,
+          "final_support_rent_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "actual_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture"
+            ],
+            "rents": [
+              "1700.00",
+              "1750.00",
+              "1800.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "B-03",
+      "task_id": "B",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 1424,
+      "latency_ms": 9700.857,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "aggregate_parameters": true,
+          "support_search_parameters": true,
+          "support_matches_manager_and_range": true,
+          "final_support_code_supported": true,
+          "final_aggregate_supported": true,
+          "final_support_rent_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "actual_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture"
+            ],
+            "rents": [
+              "1700.00",
+              "1750.00",
+              "1800.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "B-04",
+      "task_id": "B",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 1424,
+      "latency_ms": 9798.609,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "aggregate_parameters": true,
+          "support_search_parameters": true,
+          "support_matches_manager_and_range": true,
+          "final_support_code_supported": true,
+          "final_aggregate_supported": true,
+          "final_support_rent_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "actual_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture"
+            ],
+            "rents": [
+              "1700.00",
+              "1750.00",
+              "1800.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "B-05",
+      "task_id": "B",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 1424,
+      "latency_ms": 10318.035,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "aggregate_parameters": true,
+          "support_search_parameters": true,
+          "support_matches_manager_and_range": true,
+          "final_support_code_supported": true,
+          "final_aggregate_supported": true,
+          "final_support_rent_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "actual_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture"
+            ],
+            "rents": [
+              "1700.00",
+              "1750.00",
+              "1800.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "B-06",
+      "task_id": "B",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 1424,
+      "latency_ms": 10163.193,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "aggregate_parameters": true,
+          "support_search_parameters": true,
+          "support_matches_manager_and_range": true,
+          "final_support_code_supported": true,
+          "final_aggregate_supported": true,
+          "final_support_rent_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "actual_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture"
+            ],
+            "rents": [
+              "1700.00",
+              "1750.00",
+              "1800.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "B-07",
+      "task_id": "B",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 2,
+      "total_tokens": 1424,
+      "latency_ms": 9671.148,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "aggregate_parameters": true,
+          "support_search_parameters": true,
+          "support_matches_manager_and_range": true,
+          "final_support_code_supported": true,
+          "final_aggregate_supported": true,
+          "final_support_rent_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "actual_tool_sequence": [
+            "manager_rent_summary",
+            "search_listings"
+          ],
+          "tool_call_count": 2,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture"
+            ],
+            "rents": [
+              "1700.00",
+              "1750.00",
+              "1800.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "C-01",
+      "task_id": "C",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 3,
+      "total_tokens": 2601,
+      "latency_ms": 18992.813,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "two_distinct_search_results": true,
+          "detail_requests_match_results": true,
+          "final_entities_supported": true,
+          "final_rents_supported": true,
+          "final_manager_supported": true,
+          "final_comparison_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "tool_call_count": 3,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005",
+              "S2974-000009"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture",
+              "Second Apartment Fixture"
+            ],
+            "rents": [
+              "1750.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5,
+              9
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner5@example.com",
+              "owner9@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "C-02",
+      "task_id": "C",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 3,
+      "total_tokens": 2601,
+      "latency_ms": 19637.094,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "two_distinct_search_results": true,
+          "detail_requests_match_results": true,
+          "final_entities_supported": true,
+          "final_rents_supported": true,
+          "final_manager_supported": true,
+          "final_comparison_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "tool_call_count": 3,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005",
+              "S2974-000009"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture",
+              "Second Apartment Fixture"
+            ],
+            "rents": [
+              "1750.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5,
+              9
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner5@example.com",
+              "owner9@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "C-03",
+      "task_id": "C",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 3,
+      "total_tokens": 2601,
+      "latency_ms": 19677.217,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "two_distinct_search_results": true,
+          "detail_requests_match_results": true,
+          "final_entities_supported": true,
+          "final_rents_supported": true,
+          "final_manager_supported": true,
+          "final_comparison_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "tool_call_count": 3,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005",
+              "S2974-000009"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture",
+              "Second Apartment Fixture"
+            ],
+            "rents": [
+              "1750.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5,
+              9
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner5@example.com",
+              "owner9@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "C-04",
+      "task_id": "C",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 3,
+      "total_tokens": 2601,
+      "latency_ms": 19020.164,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "two_distinct_search_results": true,
+          "detail_requests_match_results": true,
+          "final_entities_supported": true,
+          "final_rents_supported": true,
+          "final_manager_supported": true,
+          "final_comparison_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "tool_call_count": 3,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005",
+              "S2974-000009"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture",
+              "Second Apartment Fixture"
+            ],
+            "rents": [
+              "1750.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5,
+              9
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner5@example.com",
+              "owner9@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "C-05",
+      "task_id": "C",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 3,
+      "total_tokens": 2601,
+      "latency_ms": 20662.33,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "two_distinct_search_results": true,
+          "detail_requests_match_results": true,
+          "final_entities_supported": true,
+          "final_rents_supported": true,
+          "final_manager_supported": true,
+          "final_comparison_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "tool_call_count": 3,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005",
+              "S2974-000009"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture",
+              "Second Apartment Fixture"
+            ],
+            "rents": [
+              "1750.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5,
+              9
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner5@example.com",
+              "owner9@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "C-06",
+      "task_id": "C",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 3,
+      "total_tokens": 2601,
+      "latency_ms": 20099.398,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "two_distinct_search_results": true,
+          "detail_requests_match_results": true,
+          "final_entities_supported": true,
+          "final_rents_supported": true,
+          "final_manager_supported": true,
+          "final_comparison_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "tool_call_count": 3,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005",
+              "S2974-000009"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture",
+              "Second Apartment Fixture"
+            ],
+            "rents": [
+              "1750.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5,
+              9
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner5@example.com",
+              "owner9@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "run_id": "C-07",
+      "task_id": "C",
+      "task_success": true,
+      "unsupported_claims": 0,
+      "retry_count": 0,
+      "total_tool_calls": 3,
+      "total_tokens": 2601,
+      "latency_ms": 20747.951,
+      "stop_reason": "success",
+      "verifier": {
+        "passed": true,
+        "checks": {
+          "agent_completed": true,
+          "required_tool_sequence": true,
+          "all_tool_observations_succeeded": true,
+          "search_parameters": true,
+          "two_distinct_search_results": true,
+          "detail_requests_match_results": true,
+          "final_entities_supported": true,
+          "final_rents_supported": true,
+          "final_manager_supported": true,
+          "final_comparison_supported": true,
+          "no_unsupported_claims": true
+        },
+        "failed_checks": [],
+        "unsupported_claim_count": 0,
+        "unsupported_claims": [],
+        "evidence": {
+          "expected_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "actual_tool_sequence": [
+            "search_listings",
+            "listing_details",
+            "listing_details"
+          ],
+          "tool_call_count": 3,
+          "supported_values": {
+            "listing_codes": [
+              "S2974-000005",
+              "S2974-000009"
+            ],
+            "listing_titles": [
+              "First Apartment Fixture",
+              "Second Apartment Fixture"
+            ],
+            "rents": [
+              "1750.00",
+              "1950.00"
+            ],
+            "listing_ids": [
+              5,
+              9
+            ],
+            "manager_ids": [
+              1
+            ],
+            "manager_names": [
+              "Part2 Fixture Manager"
+            ],
+            "emails": [
+              "owner5@example.com",
+              "owner9@example.com",
+              "part2-manager@example.com"
+            ]
+          },
+          "failed_checks": []
+        },
+        "false_rejection_audit": {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      },
+      "verifier_false_rejection_audit": [
+        {
+          "candidate": false,
+          "confirmed_false_rejection": false,
+          "status": "not_applicable",
+          "reason": null
+        }
+      ]
+    }
+  ]
 }

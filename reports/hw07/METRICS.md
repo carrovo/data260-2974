@@ -25,21 +25,15 @@ Configuration: `temperature=0.0`, `seed=2974`, `num_ctx=4096`, `num_predict=512`
 <!-- PART3_METRICS_START -->
 ## Part 3 — Reflexion and Bounded Self-Correction
 
-Status: `pending_real_model_comparison`
-Model: `qwen3:8b`
-Original-loop input: completed Part 2 real-model 21-run dataset
-Reflexion configuration: maximum 2 retries, bounded tool/token/time budgets
+Status: `completed_real_model_comparison`
 
 | Metric | Original loop | Reflexion loop |
 |---|---:|---:|
-| Task success | pending | pending |
-| Unsupported claims | pending | pending |
-| Retry rate | pending | pending |
-| Tool calls | pending | pending |
-| Tokens | pending | pending |
-| Latency (ms) | pending | pending |
-| Verifier false rejections | pending | pending |
-
-The `controlled_offline_reflection_case` validates failed → reflection →
-success behavior but is excluded from this real-model comparison table.
+| Task success (%) | 100.0% | 100.0% |
+| Unsupported claims | 0 | 0 |
+| Retry rate (%) | 0.0% | 0.0% |
+| Average tool calls | 2.333 | 2.333 |
+| Average tokens | 2037.333 | 2037.333 |
+| Latency (ms) | 13001.236 | 12964.118 |
+| Verifier false rejections | 0 | 0 |
 <!-- PART3_METRICS_END -->
