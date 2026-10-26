@@ -41,6 +41,10 @@ MAX_SOURCE_SCAN_ROWS = 100_000
 SCENARIO_ROW_COUNT = 600
 HIGH_TARGET_COUNT = 40
 LOW_TARGET_COUNT = 2
+MEMBERSHIP_MIN_DURATION_SECONDS = Decimal("60")
+MEMBERSHIP_MAX_DURATION_SECONDS = Decimal("2700")
+PAY_PER_USE_MIN_DURATION_SECONDS = Decimal("300")
+PAY_PER_USE_MAX_DURATION_SECONDS = Decimal("900")
 DATA_DIR = PROJECT_ROOT / "reports" / "hw07" / "data" / "part4"
 POLICY_DIR = DATA_DIR / "policy"
 SCENARIO_DIR = DATA_DIR / "scenarios"
@@ -253,6 +257,17 @@ def ride_kind(row: dict[str, str]) -> str:
     return "unknown"
 
 
+def is_classic_bike_source_row(row: dict[str, str]) -> bool:
+    value = _first_present(row, ("rideable_type", "bike_type"))
+
+    if value is None:
+        return False
+
+    normalized = value.strip().lower().replace("-", "_").replace(" ", "_")
+
+    return normalized in {"classic", "classic_bike"}
+
+
 @dataclass(frozen=True)
 class SourceRide:
     source_row_number: int
@@ -429,6 +444,11 @@ def _scenario_rows(
 
     selected.sort(key=lambda ride: ride.source_row_number)
 
+    if len(selected) != SCENARIO_ROW_COUNT:
+        raise Part4DataError(
+            f"scenario must contain exactly {SCENARIO_ROW_COUNT} source rows"
+        )
+
     return [
         (ride, ride.source_row_number in target_numbers)
         for ride in selected
@@ -459,7 +479,43 @@ def _write_scenario_csv(
                 }
             )
 
+    _verify_written_source_facts(path, fieldnames, rows)
+
     return _sha256(path)
+
+
+def _verify_written_source_facts(
+    path: Path,
+    fieldnames: list[str],
+    expected_rows: list[tuple[SourceRide, bool]],
+) -> None:
+    with path.open("r", encoding="utf-8", newline="") as source:
+        reader = csv.DictReader(source)
+        actual_rows = list(reader)
+
+    expected_fields = [*fieldnames, "scenario_target"]
+
+    if reader.fieldnames != expected_fields:
+        raise Part4DataError(
+            "scenario output fields differ from source fields plus "
+            "scenario_target"
+        )
+
+    if len(actual_rows) != len(expected_rows) == SCENARIO_ROW_COUNT:
+        raise Part4DataError(
+            f"scenario output must contain exactly {SCENARIO_ROW_COUNT} rows"
+        )
+
+    for actual, (ride, target) in zip(actual_rows, expected_rows, strict=True):
+        actual_target = actual.pop("scenario_target", None)
+
+        if actual_target != ("true" if target else "false"):
+            raise Part4DataError("scenario_target overlay changed unexpectedly")
+
+        if actual != ride.row:
+            raise Part4DataError(
+                "scenario generation changed one or more source trip facts"
+            )
 
 
 def _scenario_summary(
@@ -497,6 +553,8 @@ def _scenario_summary(
         "csv_sha256": output_sha256,
         "total_rows": len(rows),
         "target_ride_count": len(target_rides),
+        "costed_ride_count": len(target_rides),
+        "target_selection_rule": TARGET_SELECTION_RULES[name],
         "date_range": {
             "start": min(ride.started_at for ride, _ in rows).isoformat(),
             "end": max(ride.started_at for ride, _ in rows).isoformat(),
@@ -509,6 +567,12 @@ def _scenario_summary(
         "target_rows": {
             "classic_count": target_classic,
             "ebike_count": target_ebike,
+            "minimum_duration_seconds": str(
+                min(ride.duration_seconds for ride in target_rides)
+            ),
+            "maximum_duration_seconds": str(
+                max(ride.duration_seconds for ride in target_rides)
+            ),
             "average_duration_minutes": str(
                 average_minutes.quantize(
                     Decimal("0.001"),
@@ -521,6 +585,76 @@ def _scenario_summary(
         "acceptance_costs_usd": costs,
         "expected_winning_option": expected_winner,
     }
+
+
+def select_scenario_targets(
+    rides: list[SourceRide],
+) -> dict[str, list[SourceRide]]:
+    membership_eligible = [
+        ride
+        for ride in rides
+        if ride.kind == "classic"
+        and is_classic_bike_source_row(ride.row)
+        and MEMBERSHIP_MIN_DURATION_SECONDS
+        <= ride.duration_seconds
+        <= MEMBERSHIP_MAX_DURATION_SECONDS
+    ]
+    pay_per_use_eligible = [
+        ride
+        for ride in rides
+        if ride.kind == "classic"
+        and is_classic_bike_source_row(ride.row)
+        and PAY_PER_USE_MIN_DURATION_SECONDS
+        <= ride.duration_seconds
+        <= PAY_PER_USE_MAX_DURATION_SECONDS
+    ]
+
+    if len(membership_eligible) < HIGH_TARGET_COUNT:
+        raise Part4DataError(
+            "source scan found only "
+            f"{len(membership_eligible)} Classic rides between 60 and "
+            f"2700 seconds; {HIGH_TARGET_COUNT} are required"
+        )
+
+    if len(pay_per_use_eligible) < LOW_TARGET_COUNT:
+        raise Part4DataError(
+            "source scan found only "
+            f"{len(pay_per_use_eligible)} Classic rides between 300 and "
+            f"900 seconds; {LOW_TARGET_COUNT} are required"
+        )
+
+    return {
+        "membership_wins": membership_eligible[:HIGH_TARGET_COUNT],
+        "pay_per_use_wins": sorted(
+            pay_per_use_eligible,
+            key=lambda ride: (
+                ride.duration_seconds,
+                ride.source_row_number,
+            ),
+        )[:LOW_TARGET_COUNT],
+    }
+
+
+TARGET_SELECTION_RULES: dict[str, dict[str, Any]] = {
+    "membership_wins": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": int(MEMBERSHIP_MIN_DURATION_SECONDS),
+        "maximum_duration_seconds": int(MEMBERSHIP_MAX_DURATION_SECONDS),
+        "bounds_inclusive": True,
+        "target_count": HIGH_TARGET_COUNT,
+        "selection_order": "first qualifying rows in source archive order",
+    },
+    "pay_per_use_wins": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": int(PAY_PER_USE_MIN_DURATION_SECONDS),
+        "maximum_duration_seconds": int(PAY_PER_USE_MAX_DURATION_SECONDS),
+        "bounds_inclusive": True,
+        "target_count": LOW_TARGET_COUNT,
+        "selection_order": (
+            "shortest duration first; equal-duration ties use source row order"
+        ),
+    },
+}
 
 
 def generate_scenarios(
@@ -539,41 +673,24 @@ def generate_scenarios(
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
     pricing_rules = snapshot["pricing_rules"]
     member, fieldnames, rides, scanned = load_source_rides(archive_path)
-    eligible_classic = [
-        ride
-        for ride in rides
-        if ride.kind == "classic"
-        and ride.duration_seconds <= Decimal("45") * Decimal("60")
-    ]
-
-    if len(eligible_classic) < HIGH_TARGET_COUNT:
-        raise Part4DataError(
-            f"source scan found only {len(eligible_classic)} eligible classic "
-            f"rides; {HIGH_TARGET_COUNT} are required"
-        )
-
-    high_targets = eligible_classic[:HIGH_TARGET_COUNT]
-    low_targets = sorted(
-        eligible_classic,
-        key=lambda ride: (ride.duration_seconds, ride.source_row_number),
-    )[:LOW_TARGET_COUNT]
+    target_sets = select_scenario_targets(rides)
     scenarios = [
         (
             "membership_wins",
-            high_targets,
+            target_sets["membership_wins"],
             "membership",
             (
-                "first 40 valid classic rides of at most 45 minutes in "
-                "source archive order"
+                "first 40 Classic-bike rows between 60 and 2700 seconds "
+                "inclusive, in source archive order"
             ),
         ),
         (
             "pay_per_use_wins",
-            low_targets,
+            target_sets["pay_per_use_wins"],
             "pay_per_use",
             (
-                "two shortest valid classic rides of at most 45 minutes; "
-                "ties use source row order"
+                "two shortest Classic-bike rows between 300 and 900 seconds "
+                "inclusive; equal-duration ties use source row order"
             ),
         ),
     ]
@@ -627,9 +744,18 @@ def generate_scenarios(
             "preserved_fields": fieldnames,
             "added_fields": ["scenario_target"],
             "selection_rules": selection_rules,
+            "target_row_quality_rules": TARGET_SELECTION_RULES,
             "background_rule": (
                 "fill to 600 rows from valid source trips in source order; "
                 "background rows are not included in target-user costs"
+            ),
+            "cost_input_rule": (
+                "include only rows where scenario_target is true; exclude "
+                "all background rows"
+            ),
+            "source_fact_rule": (
+                "preserve every parsed source-field text value; "
+                "add only scenario_target"
             ),
             "scenario_overlay_disclosure": (
                 disclosure
@@ -664,7 +790,8 @@ def verify_outputs(
         csv_path = PROJECT_ROOT / scenario["csv_file"]
 
         with csv_path.open("r", encoding="utf-8", newline="") as source:
-            rows = list(csv.DictReader(source))
+            reader = csv.DictReader(source)
+            rows = list(reader)
 
         target_count = sum(row["scenario_target"] == "true" for row in rows)
         target_rides = [
@@ -678,6 +805,18 @@ def verify_outputs(
             for index, row in enumerate(rows, start=2)
             if row["scenario_target"] == "true"
         ]
+        rule = manifest["transformation"]["target_row_quality_rules"][
+            scenario["scenario"]
+        ]
+        minimum_seconds = Decimal(str(rule["minimum_duration_seconds"]))
+        maximum_seconds = Decimal(str(rule["maximum_duration_seconds"]))
+        target_quality_matches = all(
+            is_classic_bike_source_row(ride.row)
+            and minimum_seconds
+            <= ride.duration_seconds
+            <= maximum_seconds
+            for ride in target_rides
+        )
         costs = calculate_costs(target_rides, pricing_rules)
         winner = min(costs, key=lambda option: Decimal(costs[option]))
         checks.append(
@@ -686,9 +825,21 @@ def verify_outputs(
                 "row_count": len(rows),
                 "target_count": target_count,
                 "hash_matches": _sha256(csv_path) == scenario["csv_sha256"],
-                "row_count_matches": len(rows) == scenario["total_rows"] >= 500,
+                "row_count_matches": len(rows)
+                == scenario["total_rows"]
+                == SCENARIO_ROW_COUNT,
+                "source_fields_unchanged": reader.fieldnames
+                == [
+                    *manifest["transformation"]["preserved_fields"],
+                    "scenario_target",
+                ],
                 "target_count_matches": target_count
-                == scenario["target_ride_count"],
+                == scenario["target_ride_count"]
+                == scenario["costed_ride_count"]
+                == rule["target_count"],
+                "target_quality_matches": target_quality_matches,
+                "target_rule_matches": scenario["target_selection_rule"]
+                == rule,
                 "costs_match": costs == scenario["acceptance_costs_usd"],
                 "winner": winner,
                 "winner_matches": winner
@@ -699,7 +850,10 @@ def verify_outputs(
     if not all(
         check["hash_matches"]
         and check["row_count_matches"]
+        and check["source_fields_unchanged"]
         and check["target_count_matches"]
+        and check["target_quality_matches"]
+        and check["target_rule_matches"]
         and check["costs_match"]
         and check["winner_matches"]
         for check in checks

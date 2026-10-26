@@ -390,13 +390,24 @@ def _write_test_archive(path: Path, rows: int = 650) -> None:
 
     for index in range(rows):
         started = base + timedelta(minutes=index * 3)
-        duration = 120 + index % 1_200
+        if index in {1, 2}:
+            duration = 1
+        elif index in {5, 6}:
+            duration = 300
+        else:
+            duration = 600 + index % 301
         ended = started + timedelta(seconds=duration)
         writer.writerow(
             {
                 "ride_id": f"SYNTHETIC-TEST-{index:05d}",
                 "rideable_type": (
-                    "classic_bike" if index % 4 else "electric_bike"
+                    "docked_bike"
+                    if index == 3
+                    else (
+                        "classic_bike"
+                        if index % 4
+                        else "electric_bike"
+                    )
                 ),
                 "started_at": started.isoformat(sep=" "),
                 "ended_at": ended.isoformat(sep=" "),
@@ -410,13 +421,14 @@ def _write_test_archive(path: Path, rows: int = 650) -> None:
         archive.writestr("test-only-tripdata.csv", buffer.getvalue())
 
 
-def test_snapshot_hash_and_opposite_acceptance_scenarios() -> None:
+def test_snapshot_and_scenario_target_quality() -> None:
     with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
         root = Path(temp)
         html_path = root / "pricing_fixture.html"
         snapshot_path = root / "pricing_snapshot.json"
         archive_path = root / "synthetic-test-only.zip"
         output_dir = root / "scenarios"
+        repeated_output_dir = root / "scenarios-repeat"
         snapshot = capture_policy_snapshot(
             url=PRICING_URL,
             html_path=html_path,
@@ -441,11 +453,77 @@ def test_snapshot_hash_and_opposite_acceptance_scenarios() -> None:
             snapshot_path=snapshot_path,
             output_dir=output_dir,
         )
+        repeated_manifest = generate_scenarios(
+            archive_path=archive_path,
+            archive_metadata=metadata,
+            snapshot_path=snapshot_path,
+            output_dir=repeated_output_dir,
+        )
         verification = verify_outputs(
             snapshot_path=snapshot_path,
             manifest_path=output_dir / "transformation_manifest.json",
         )
         high, low = manifest["scenarios"]
+
+        with zipfile.ZipFile(archive_path) as archive:
+            with archive.open("test-only-tripdata.csv") as binary:
+                source_text = io.TextIOWrapper(binary, encoding="utf-8")
+                source_rows = list(csv.DictReader(source_text))
+
+        source_by_id = {
+            row["ride_id"]: row
+            for row in source_rows
+        }
+        output_rows: dict[str, list[dict[str, str]]] = {}
+
+        for scenario_name in ("membership_wins", "pay_per_use_wins"):
+            with (output_dir / f"{scenario_name}.csv").open(
+                "r",
+                encoding="utf-8",
+                newline="",
+            ) as output:
+                output_rows[scenario_name] = list(csv.DictReader(output))
+
+        high_targets = [
+            row
+            for row in output_rows["membership_wins"]
+            if row["scenario_target"] == "true"
+        ]
+        low_targets = [
+            row
+            for row in output_rows["pay_per_use_wins"]
+            if row["scenario_target"] == "true"
+        ]
+
+        def duration_seconds(row: dict[str, str]) -> int:
+            return int(
+                (
+                    datetime.fromisoformat(row["ended_at"])
+                    - datetime.fromisoformat(row["started_at"])
+                ).total_seconds()
+            )
+
+        expected_high_ids = [
+            row["ride_id"]
+            for row in source_rows
+            if row["rideable_type"] == "classic_bike"
+            and 60 <= duration_seconds(row) <= 2_700
+        ][:40]
+        expected_low_ids = [
+            row["ride_id"]
+            for _, row in sorted(
+                (
+                    (source_index, row)
+                    for source_index, row in enumerate(source_rows)
+                    if row["rideable_type"] == "classic_bike"
+                    and 300 <= duration_seconds(row) <= 900
+                ),
+                key=lambda item: (
+                    duration_seconds(item[1]),
+                    item[0],
+                ),
+            )[:2]
+        ]
 
         assert snapshot["capture_kind"] == "fixed_test_fixture_not_official"
         assert verify_snapshot_hash(snapshot_path) is True
@@ -476,21 +554,97 @@ def test_snapshot_hash_and_opposite_acceptance_scenarios() -> None:
         )
         assert high["total_rows"] == 600
         assert high["target_ride_count"] == 40
+        assert high["costed_ride_count"] == 40
         assert high["expected_winning_option"] == "membership"
+        assert len(high_targets) == 40
+        assert all(
+            row["rideable_type"] == "classic_bike"
+            and 60 <= duration_seconds(row) <= 2_700
+            for row in high_targets
+        )
+        assert [row["ride_id"] for row in high_targets] == expected_high_ids
+        assert {
+            "SYNTHETIC-TEST-00001",
+            "SYNTHETIC-TEST-00002",
+        }.isdisjoint({row["ride_id"] for row in high_targets})
         assert float(high["acceptance_costs_usd"]["membership"]) < float(
             high["acceptance_costs_usd"]["pay_per_use"]
         )
         assert low["total_rows"] == 600
         assert low["target_ride_count"] == 2
+        assert low["costed_ride_count"] == 2
         assert low["expected_winning_option"] == "pay_per_use"
+        assert len(low_targets) == 2
+        assert all(
+            row["rideable_type"] == "classic_bike"
+            and 300 <= duration_seconds(row) <= 900
+            for row in low_targets
+        )
+        assert [row["ride_id"] for row in low_targets] == expected_low_ids == [
+            "SYNTHETIC-TEST-00005",
+            "SYNTHETIC-TEST-00006",
+        ]
         assert float(low["acceptance_costs_usd"]["pay_per_use"]) < float(
             low["acceptance_costs_usd"]["membership"]
         )
+        assert all(
+            len(rows) == 600
+            for rows in output_rows.values()
+        )
+        assert all(
+            {
+                key: value
+                for key, value in row.items()
+                if key != "scenario_target"
+            }
+            == source_by_id[row["ride_id"]]
+            for rows in output_rows.values()
+            for row in rows
+        )
+        assert all(
+            (output_dir / f"{scenario_name}.csv").read_bytes()
+            == (
+                repeated_output_dir / f"{scenario_name}.csv"
+            ).read_bytes()
+            for scenario_name in ("membership_wins", "pay_per_use_wins")
+        )
+        assert [
+            scenario["csv_sha256"]
+            for scenario in manifest["scenarios"]
+        ] == [
+            scenario["csv_sha256"]
+            for scenario in repeated_manifest["scenarios"]
+        ]
         assert verification["snapshot_hash_matches"] is True
         assert all(
-            item["row_count"] >= 500
+            item["row_count"] == 600
+            and item["source_fields_unchanged"]
+            and item["target_quality_matches"]
             for item in verification["scenarios"]
         )
+        assert manifest["transformation"]["target_row_quality_rules"] == {
+            "membership_wins": {
+                "required_ride_kind": "classic_bike",
+                "minimum_duration_seconds": 60,
+                "maximum_duration_seconds": 2700,
+                "bounds_inclusive": True,
+                "target_count": 40,
+                "selection_order": (
+                    "first qualifying rows in source archive order"
+                ),
+            },
+            "pay_per_use_wins": {
+                "required_ride_kind": "classic_bike",
+                "minimum_duration_seconds": 300,
+                "maximum_duration_seconds": 900,
+                "bounds_inclusive": True,
+                "target_count": 2,
+                "selection_order": (
+                    "shortest duration first; equal-duration ties use "
+                    "source row order"
+                ),
+            },
+        }
         assert "TEST-ONLY" in manifest["transformation"][
             "scenario_overlay_disclosure"
         ]
@@ -513,8 +667,8 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     ),
     ("policy failures and schema errors", test_policy_failure_and_schema_errors),
     (
-        "snapshot hash and opposite acceptance scenarios",
-        test_snapshot_hash_and_opposite_acceptance_scenarios,
+        "snapshot, target quality, determinism, and opposite winners",
+        test_snapshot_and_scenario_target_quality,
     ),
 ]
 

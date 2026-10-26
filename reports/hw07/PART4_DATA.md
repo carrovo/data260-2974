@@ -140,19 +140,28 @@ layout fixture; only a successful live capture becomes an official snapshot.
 Each scenario preserves every original source column and adds only
 `scenario_target`:
 
-- `membership_wins`: the first 40 valid classic rides of at most 45 minutes
-  in official archive order are assigned to the target user.
-- `pay_per_use_wins`: the two shortest qualifying classic rides are assigned
-  to the target user, with source-row order breaking ties.
-- Both files are filled to 600 rows with official background trips.
+- `membership_wins`: only official `classic_bike` rows lasting from 60
+  through 2,700 seconds (1–45 minutes, inclusive) qualify. The first 40
+  qualifying rows in official archive order are assigned to the target user.
+- `pay_per_use_wins`: only official `classic_bike` rows lasting from 300
+  through 900 seconds (5–15 minutes, inclusive) qualify. The two shortest
+  qualifying rows are assigned to the target user; equal-duration ties use
+  original source-row order.
+- Both files contain exactly 600 official trip rows. Target rows are retained
+  even when they fall outside the first background rows; remaining positions
+  are filled deterministically from valid trips in archive order.
 - Background rows never contribute to target-user cost.
 - The only synthetic production overlay is the target-user assignment; trip
   facts remain official rows.
 
-The manifest documents these selection rules, source archive/member/hash,
-preserved and added fields, cost assumptions, and each expected winner. The
-expected winner is an acceptance-fixture assertion only; it must not be used
-as an agent answer.
+The manifest records these bounds and selection orders as machine-readable
+`target_row_quality_rules`, in addition to the source archive/member/hash,
+preserved and added fields, cost assumptions, and each expected winner.
+Generation rereads each CSV and fails if a source field changed, if any field
+other than `scenario_target` was added, or if the row count is not exactly
+600. Verification checks the target type, inclusive duration range, target
+count, costed-row count, artifact hash, and winner. The expected winner is an
+acceptance-fixture assertion only; it must not be used as an agent answer.
 
 ## Validation
 
