@@ -319,3 +319,56 @@ Final regression checks at 2026-10-25 17:47:32 PDT:
 - `git diff --check`: exit 0
 - `PRE_COMMIT_HOME=/tmp/data260-pre-commit-cache .venv/bin/pre-commit run
   --all-files`: exit 0; Ruff hook passed
+
+
+HW7 Part 4 Phase 2 framework ReAct advisor
+============================================
+UTC time: 2026-10-26T06:00:55Z
+
+Implementation uses the pinned
+`langgraph.prebuilt.create_react_agent(version="v2")` API with strict
+StructuredTool wrappers. The deterministic scripted model ran through the
+actual framework graph; it did not replace the graph with a handwritten loop.
+No real qwen3:8b inference was run in the cloud.
+
+Command: .venv/bin/python code/test_hw7_part4_agent_offline.py
+Result: exit 0; 4/4 PASS. Covered both opposite recommendations, all three
+tools, assistant/tool ordering and call IDs, structured timeline/result,
+unsupported numbers/citations, upload validation, official URL validation,
+malformed envelopes, tool/wall/recursion bounds, JWT 401 behavior, reader
+access, upload size, and temporary-file cleanup.
+
+Command: .venv/bin/python code/test_hw7_part4_offline.py
+Result: exit 0; 12/12 PASS. Existing Part 4 data, tool, policy, archive,
+scenario, and secret-redaction behavior remained intact.
+
+Command: .venv/bin/python code/hw7_part4_data.py verify
+Result: exit 0; sanitized snapshot hash verified; both official 600-row
+scenario files retained their source fields, target rules, costs, hashes, and
+opposite expected winners.
+
+Offline regression commands and results:
+- code/test_hw7_agent_offline.py: 18/18 PASS
+- code/test_hw7_reflexion_offline.py: 9/9 PASS
+- code/test_hw5_offline.py: 10/10 PASS
+- code/test_hw6_offline.py: 6/6 PASS (its generated HW6 log timestamp was not
+  retained in this Part 4 change)
+- code/test_hw7_auth_rbac.py: 24/24 PASS
+- code/test_hw7_user_migration.py: 5/5 PASS
+
+Static/build checks:
+- `.venv/bin/ruff check .`: exit 0
+- `.venv/bin/python -m pip check`: exit 0; no broken requirements
+- `npm --prefix frontend run lint`: exit 0
+- `npm --prefix frontend run build`: exit 0; Vite built 96 modules (not a
+  browser end-to-end result)
+- bash/zsh syntax checks for existing helpers plus
+  `reports/hw07/part4_agent_mac.zsh`: exit 0
+- `.venv/bin/python code/hw7_part4_runner.py --help`: exit 0
+- `git diff --check`: exit 0
+- count-only Google API-key-shaped pattern scan: 0 matches
+- `PRE_COMMIT_HOME=/tmp/data260-pre-commit-cache .venv/bin/pre-commit run
+  --all-files`: exit 0; Ruff hook passed
+
+Real Part 4 model status: `pending_real_part4_agent_run`. The committed pending
+JSON and METRICS section contain no fake-model measurements.

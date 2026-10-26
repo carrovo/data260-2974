@@ -43,6 +43,7 @@ from routers.auth import (
 from routers.auth import router as auth_router
 from routers.hw6_listings import router as hw6_listings_router
 from routers.hw6_memory import router as hw6_memory_router
+from routers.hw7_part4 import router as hw7_part4_router
 from schemas import (
     ListingCreate,
     ListingOut,
@@ -78,6 +79,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(hw6_listings_router)
 app.include_router(hw6_memory_router)
+app.include_router(hw7_part4_router)
 
 
 @app.on_event("startup")

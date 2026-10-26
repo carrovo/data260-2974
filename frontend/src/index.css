@@ -214,6 +214,70 @@ textarea {
   margin-bottom: 24px;
 }
 
+.main-nav,
+.page-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.main-nav {
+  justify-content: flex-start;
+}
+
+.main-nav a {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.advisor-form {
+  max-width: none;
+  margin-bottom: 24px;
+}
+
+.advisor-result,
+.advisor-panel {
+  margin-top: 20px;
+  padding: 24px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px 20px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #d1d5db;
+  text-align: left;
+}
+
+.tool-timeline li {
+  margin-bottom: 14px;
+}
+
+pre {
+  overflow-x: auto;
+  padding: 10px;
+  background: #f3f4f6;
+}
+
 .checkbox-label {
   display: flex;
   align-items: center;

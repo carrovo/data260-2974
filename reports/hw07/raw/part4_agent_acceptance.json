@@ -1,0 +1,12 @@
+{
+  "status": "pending_real_part4_agent_run",
+  "model_config": {
+    "model": "qwen3:8b",
+    "temperature": 0.0,
+    "seed": 2974,
+    "reasoning": false,
+    "num_ctx": 4096,
+    "num_predict": 1024
+  },
+  "runs": []
+}

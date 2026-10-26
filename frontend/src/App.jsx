@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { resetListings } from "./features/listings/listingsSlice";
 import { useEffect, useState } from "react";
 import {
+  Link,
   Navigate,
   Route,
   Routes,
@@ -20,6 +21,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import CreateRecord from "./pages/CreateRecord";
 import UpdateRecord from "./pages/UpdateRecord";
+import BikeAdvisor from "./pages/BikeAdvisor";
 
 
 function RequireAuth({ user, loading, children }) {
@@ -149,7 +151,23 @@ export default function App() {
         )}
       </header>
 
+      {user && (
+        <nav className="main-nav" aria-label="Application navigation">
+          <Link to="/">Rental Listings</Link>
+          <Link to="/bike-advisor">Bike Membership Advisor</Link>
+        </nav>
+      )}
+
       <Routes>
+        <Route
+          path="/bike-advisor"
+          element={
+            <RequireAuth user={user} loading={authLoading}>
+              <BikeAdvisor />
+            </RequireAuth>
+          }
+        />
+
         <Route
           path="/login"
           element={

@@ -35,6 +35,10 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = getStoredAccessToken();
 
+  if (config.data instanceof FormData) {
+    delete config.headers["Content-Type"];
+  }
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -189,6 +193,20 @@ export async function getFixedListings(pageSize = 10) {
         page_size: pageSize,
       },
     },
+  );
+
+  return response.data;
+}
+
+
+export async function analyzeBikeMembership(csvFile, pricingUrl) {
+  const form = new FormData();
+  form.append("csv_file", csvFile);
+  form.append("pricing_url", pricingUrl);
+
+  const response = await api.post(
+    "/api/hw7/part4/analyze",
+    form,
   );
 
   return response.data;
