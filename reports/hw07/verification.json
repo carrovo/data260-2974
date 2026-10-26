@@ -1,0 +1,98 @@
+{
+  "homework": 7,
+  "student": "Xuanhua Li",
+  "sid4": 2974,
+  "commit_hash": "7e36dbe429916cf3fcfbb47fb8c3a4287b881c41",
+  "branch": "hw7-work",
+  "model": "qwen3:8b",
+  "model_config": {
+    "parts_2_and_3": {
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "reasoning": false,
+      "num_ctx": 4096,
+      "num_predict": 512
+    },
+    "part_4": {
+      "model": "qwen3:8b",
+      "temperature": 0.0,
+      "seed": 2974,
+      "reasoning": false,
+      "num_ctx": 4096,
+      "num_predict": 1024
+    }
+  },
+  "seed": 2974,
+  "verify_seed": 262974,
+  "generated_at": "2026-10-26T21:24:14.782968Z",
+  "scope": "committed Parts 1-6 source, evidence, metrics, documentation, and screenshots; final PDF and tag are checked separately",
+  "checks": [
+    {
+      "name": "part1_required_sources",
+      "passed": true,
+      "detail": "JWT, RBAC, migration, and offline-test sources are present"
+    },
+    {
+      "name": "part1_recorded_tests",
+      "passed": true,
+      "detail": "RUN_LOG records 24/24 RBAC and 5/5 migration checks"
+    },
+    {
+      "name": "part2_real_reliability",
+      "passed": true,
+      "detail": "21/21 runs and 49/49 calls completed with zero recorded failures"
+    },
+    {
+      "name": "part3_real_comparison",
+      "passed": true,
+      "detail": "original and Reflexion loops each completed 21/21 verified runs"
+    },
+    {
+      "name": "part3_controlled_reflection",
+      "passed": true,
+      "detail": "controlled verifier failure recovered with one bounded retry"
+    },
+    {
+      "name": "part4_real_acceptance",
+      "passed": true,
+      "detail": "both opposite-winner scenarios passed independent verification"
+    },
+    {
+      "name": "part5_security_matrix",
+      "passed": true,
+      "detail": "three hostile probes passed after combined prompt and tool defenses"
+    },
+    {
+      "name": "part6_file_tools_and_safety",
+      "passed": true,
+      "detail": "glob-search-read integration and 10/10 command cases passed"
+    },
+    {
+      "name": "required_screenshots",
+      "passed": true,
+      "detail": "21 required screenshots are present"
+    },
+    {
+      "name": "required_documentation",
+      "passed": true,
+      "detail": "AI use, metrics, run log, and Part 2-6 run notes are present"
+    },
+    {
+      "name": "required_evidence_tracked",
+      "passed": true,
+      "detail": "required documentation, raw evidence, and screenshots are tracked"
+    },
+    {
+      "name": "ai_use_four_questions",
+      "passed": true,
+      "detail": "AI_USE.md answers all four required questions"
+    },
+    {
+      "name": "secret_pattern_scan",
+      "passed": true,
+      "detail": "count-only Google API key pattern scan found zero matches"
+    }
+  ],
+  "passed": true
+}
