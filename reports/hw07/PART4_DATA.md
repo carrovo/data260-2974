@@ -17,8 +17,13 @@ The workflow permits only these official sources:
 - Trip archive index:
   `https://s3.amazonaws.com/baywheels-data/index.html`
 - Pinned archive for this workflow:
-  `https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.zip`
+  `https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip`
   (month `202401`)
+
+The pinned archive was verified from macOS as HTTP 200 with content type
+`application/zip`, content length `7550662`, and last-modified value
+`Mon, 05 Feb 2024 15:18:53 GMT`. The similarly named object without `.csv`
+returned HTTP 404 and is intentionally rejected by the validator.
 
 On 2026-10-26, this cloud environment attempted all three supplied source
 URLs. Both normal and escalated network attempts failed before an HTTP
@@ -74,7 +79,7 @@ The following single command:
 ```zsh
 python code/hw7_part4_data.py prepare \
   --month 202401 \
-  --url https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.zip
+  --url https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip
 ```
 
 No raw ZIP is written under `reports/` or intended for Git. The exact archive
@@ -86,10 +91,10 @@ To run each stage separately:
 python code/hw7_part4_data.py capture-policy
 python code/hw7_part4_data.py download-archive \
   --month 202401 \
-  --url https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.zip
+  --url https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip
 python code/hw7_part4_data.py generate-scenarios \
   --month 202401 \
-  --url https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.zip
+  --url https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip
 ```
 
 ## Expected outputs
@@ -170,7 +175,7 @@ select a filesystem path.
 Remove only the uncommitted source archive and its metadata:
 
 ```zsh
-rm -f tmp/hw7-part4/202401-baywheels-tripdata.zip
+rm -f tmp/hw7-part4/202401-baywheels-tripdata.csv.zip
 rm -f tmp/hw7-part4/archive_metadata.json
 rmdir tmp/hw7-part4 2>/dev/null || true
 ```

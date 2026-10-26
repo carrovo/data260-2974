@@ -27,9 +27,12 @@ from hw7_part4_tools import (  # noqa: E402
 )
 
 DEFAULT_ARCHIVE_MONTH = "202401"
+DEFAULT_ARCHIVE_FILENAME = (
+    f"{DEFAULT_ARCHIVE_MONTH}-baywheels-tripdata.csv.zip"
+)
 DEFAULT_ARCHIVE_URL = (
     "https://s3.amazonaws.com/baywheels-data/"
-    f"{DEFAULT_ARCHIVE_MONTH}-baywheels-tripdata.zip"
+    f"{DEFAULT_ARCHIVE_FILENAME}"
 )
 ARCHIVE_INDEX_URL = "https://s3.amazonaws.com/baywheels-data/index.html"
 SYSTEM_DATA_URL = "https://www.lyft.com/bikes/bay-wheels/system-data"
@@ -44,9 +47,7 @@ SCENARIO_DIR = DATA_DIR / "scenarios"
 DEFAULT_HTML_PATH = POLICY_DIR / "pricing_page.html"
 DEFAULT_SNAPSHOT_PATH = POLICY_DIR / "pricing_snapshot.json"
 DEFAULT_CACHE_DIR = PROJECT_ROOT / "tmp" / "hw7-part4"
-DEFAULT_ARCHIVE_PATH = DEFAULT_CACHE_DIR / (
-    f"{DEFAULT_ARCHIVE_MONTH}-baywheels-tripdata.zip"
-)
+DEFAULT_ARCHIVE_PATH = DEFAULT_CACHE_DIR / DEFAULT_ARCHIVE_FILENAME
 DEFAULT_MANIFEST_PATH = SCENARIO_DIR / "transformation_manifest.json"
 DEFAULT_SUMMARY_PATH = SCENARIO_DIR / "scenario_summary.json"
 MONTH_PATTERN = re.compile(r"^\d{6}$")
@@ -75,22 +76,32 @@ def _sha256(path: Path) -> str:
 
 
 def _validate_archive_url(url: str, month: str) -> None:
-    if MONTH_PATTERN.fullmatch(month) is None:
-        raise Part4DataError("month must use YYYYMM")
+    if (
+        MONTH_PATTERN.fullmatch(month) is None
+        or month != DEFAULT_ARCHIVE_MONTH
+    ):
+        raise Part4DataError(
+            f"month must be the pinned value {DEFAULT_ARCHIVE_MONTH}"
+        )
 
     parsed = urlsplit(url)
-    allowed_hosts = {
-        "s3.amazonaws.com",
-        "baywheels-data.s3.amazonaws.com",
+    allowed_locations = {
+        (
+            "s3.amazonaws.com",
+            f"/baywheels-data/{DEFAULT_ARCHIVE_FILENAME}",
+        ),
+        (
+            "baywheels-data.s3.amazonaws.com",
+            f"/{DEFAULT_ARCHIVE_FILENAME}",
+        ),
     }
-    filename = f"{month}-baywheels-tripdata.zip"
 
     if (
         parsed.scheme != "https"
-        or parsed.hostname not in allowed_hosts
-        or not parsed.path.endswith("/" + filename)
+        or (parsed.hostname, parsed.path) not in allowed_locations
         or parsed.username is not None
         or parsed.password is not None
+        or parsed.port not in {None, 443}
         or parsed.query
         or parsed.fragment
     ):
@@ -722,7 +733,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def _archive_path_for_month(month: str) -> Path:
-    return DEFAULT_CACHE_DIR / f"{month}-baywheels-tripdata.zip"
+    if month != DEFAULT_ARCHIVE_MONTH:
+        raise Part4DataError(
+            f"month must be the pinned value {DEFAULT_ARCHIVE_MONTH}"
+        )
+
+    return DEFAULT_ARCHIVE_PATH
 
 
 def main() -> None:

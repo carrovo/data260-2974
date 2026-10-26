@@ -17,6 +17,10 @@ if str(CODE_ROOT) not in sys.path:
     sys.path.insert(0, str(CODE_ROOT))
 
 from hw7_part4_data import (
+    DEFAULT_ARCHIVE_MONTH,
+    DEFAULT_ARCHIVE_URL,
+    Part4DataError,
+    _validate_archive_url,
     generate_scenarios,
     verify_outputs,
 )
@@ -99,6 +103,46 @@ def test_json_schemas_and_strict_validation() -> None:
             pass
         else:
             raise AssertionError(f"validation unexpectedly accepted {name}: {inputs}")
+
+
+def test_pinned_official_archive_url_validation() -> None:
+    corrected_url = (
+        "https://s3.amazonaws.com/baywheels-data/"
+        "202401-baywheels-tripdata.csv.zip"
+    )
+    assert DEFAULT_ARCHIVE_URL == corrected_url
+    _validate_archive_url(corrected_url, DEFAULT_ARCHIVE_MONTH)
+    _validate_archive_url(
+        "https://baywheels-data.s3.amazonaws.com/"
+        "202401-baywheels-tripdata.csv.zip",
+        DEFAULT_ARCHIVE_MONTH,
+    )
+    rejected = [
+        (
+            "https://s3.amazonaws.com/baywheels-data/"
+            "202401-baywheels-tripdata.zip",
+            "202401",
+        ),
+        ("https://example.com/202401-baywheels-tripdata.csv.zip", "202401"),
+        (
+            "https://s3.amazonaws.com/unrelated-bucket/"
+            "202401-baywheels-tripdata.csv.zip",
+            "202401",
+        ),
+        (
+            "https://s3.amazonaws.com/baywheels-data/"
+            "202402-baywheels-tripdata.csv.zip",
+            "202402",
+        ),
+    ]
+
+    for url, month in rejected:
+        try:
+            _validate_archive_url(url, month)
+        except Part4DataError:
+            pass
+        else:
+            raise AssertionError(f"archive validator accepted {url}")
 
 
 def test_csv_sql_success_and_row_limit() -> None:
@@ -359,6 +403,7 @@ def test_snapshot_hash_and_opposite_acceptance_scenarios() -> None:
 
 TESTS: list[tuple[str, Callable[[], None]]] = [
     ("JSON schemas and strict validation", test_json_schemas_and_strict_validation),
+    ("pinned official archive URL", test_pinned_official_archive_url_validation),
     ("csv_sql success and row limit", test_csv_sql_success_and_row_limit),
     ("csv_sql read-only boundary", test_csv_sql_readonly_boundary),
     ("calculator success and failures", test_calculator_success_and_failures),
