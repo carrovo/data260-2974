@@ -121,6 +121,22 @@ The pricing numbers used by the cost calculation are read from the captured
 snapshot's `pricing_rules`; they are not separate untraceable constants.
 Hash verification links each parsed rule back to the saved HTML bytes.
 
+### Live pricing-page structure
+
+The current page separates headings such as `Classic bike prices` and
+`Ebike prices` from short price nodes. Its member wording is
+`45 min free, then $0.17/min` and `Free unlocks + $0.17/min`; the short nodes
+do not themselves contain the words `member` or `Month pass`.
+
+The parser therefore first identifies the smallest exact passage containing
+the `Month pass`, Classic, and Ebike sections. It accepts the two member rate
+nodes only when their exact normalized text also occurs inside that scoped
+container. The snapshot preserves both the container and short rate passages.
+An unrelated global `$0.17/min` passage cannot satisfy this check, and missing
+or contradictory 45-minute Classic evidence stops preparation before the
+archive download. This behavior was built from a clearly labeled TEST-ONLY
+layout fixture; only a successful live capture becomes an official snapshot.
+
 Each scenario preserves every original source column and adds only
 `scenario_target`:
 

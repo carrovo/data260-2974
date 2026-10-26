@@ -6,20 +6,30 @@
   </head>
   <body>
     <main>
-      <h1>Bay Wheels pricing test fixture</h1>
-      <section>
-        <h2>Monthly membership</h2>
-        <p>Month pass: $29/month.</p>
-        <p>
-          Member classic rides: the first 45 minutes are included, then
-          $0.17/min after 45 minutes.
-        </p>
-        <p>Member ebike rate: $0.17/min.</p>
+      <h1>TEST-ONLY observed-layout parser fixture</h1>
+      <section id="month-pass-test-fixture">
+        <h2>Month pass</h2>
+        <p>$29/month</p>
+        <p>$29/month Get a month pass</p>
+        <div>
+          <h3>Classic bike prices</h3>
+          <p>$1.00 to unlock, then $0.19/min</p>
+          <p>30 min free, then $0.19/min</p>
+          <p>45 min free, then $0.17/min</p>
+        </div>
+        <div>
+          <h3>Ebike prices</h3>
+          <p>$1.00 unlock + $0.49/min</p>
+          <p>Free unlocks + $0.49/min</p>
+          <p>Free unlocks + $0.17/min</p>
+        </div>
       </section>
-      <section>
-        <h2>Pay as you go</h2>
-        <p>Classic bike: $1 to unlock, then $0.19/min.</p>
-        <p>Non-member ebike: $1 to unlock, then $0.49/min.</p>
+      <section id="single-rides-test-fixture">
+        <h2>Single rides</h2>
+        <p>
+          $1.00 to unlock $0.19/min for classic bikes. $0.49/minute for
+          ebikes.
+        </p>
       </section>
       <p>
         This is a fixed parser fixture, not a captured official webpage and

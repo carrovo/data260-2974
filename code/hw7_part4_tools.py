@@ -41,6 +41,24 @@ MAX_CALCULATOR_ABS_VALUE = Decimal("1e15")
 CALCULATOR_PATTERN = re.compile(r"^[0-9+\-*/().\s]+$")
 WORD_PATTERN = re.compile(r"[a-z0-9]+")
 MONEY_PATTERN = re.compile(r"\$\s*(\d+(?:\.\d+)?)")
+MONTHLY_RATE_PATTERN = re.compile(
+    r"\$\s*(?P<amount>\d+(?:\.\d+)?)\s*/\s*month",
+    re.IGNORECASE,
+)
+CLASSIC_MEMBER_RATE_PATTERN = re.compile(
+    r"\b(?P<minutes>\d+)\s*"
+    r"(?:min|mins|minute|minutes)\s+"
+    r"(?:are\s+)?(?:free|included)\s*,?\s*"
+    r"then\s*\$\s*(?P<rate>\d+(?:\.\d+)?)\s*/\s*"
+    r"(?:min|minute)",
+    re.IGNORECASE,
+)
+EBIKE_MEMBER_RATE_PATTERN = re.compile(
+    r"\bfree\s+unlocks?\s*\+\s*"
+    r"\$\s*(?P<rate>\d+(?:\.\d+)?)\s*/\s*"
+    r"(?:min|minute)",
+    re.IGNORECASE,
+)
 
 
 class StrictArguments(BaseModel):
@@ -826,12 +844,15 @@ def capture_policy_snapshot(
     page = fetcher(url)
     passages = parse_policy_passages(page.content, source=page.final_url)
     rules = extract_pricing_rules(passages)
-    exact_pricing_passages = list(
-        dict.fromkeys(
-            rule["evidence"]
-            for rule in rules.values()
-        )
-    )
+    exact_pricing_passages: list[str] = []
+
+    for rule in rules.values():
+        for passage in rule.get(
+            "evidence_passages",
+            [rule["evidence"]],
+        ):
+            if passage not in exact_pricing_passages:
+                exact_pricing_passages.append(passage)
     captured_utc = datetime.now(timezone.utc)
     captured_pdt = captured_utc.astimezone(ZoneInfo("America/Los_Angeles"))
     html_hash = hashlib.sha256(page.content).hexdigest()
@@ -876,6 +897,62 @@ def _smallest_passage(
     return min(matches, key=lambda text: (len(text), text))
 
 
+def _normalized_passage(text: str) -> str:
+    return " ".join(text.casefold().split())
+
+
+def _smallest_scoped_passage(
+    passages: list[dict[str, Any]],
+    *,
+    scope: str,
+    predicate: Callable[[str], bool],
+    label: str,
+) -> str:
+    normalized_scope = _normalized_passage(scope)
+    matches = [
+        passage["text"]
+        for passage in passages
+        if predicate(passage["text"])
+        and _normalized_passage(passage["text"]) in normalized_scope
+    ]
+
+    if not matches:
+        raise ValueError(
+            f"pricing page is missing Month pass evidence for {label}"
+        )
+
+    return min(matches, key=lambda text: (len(text), text))
+
+
+def _pattern_values(
+    text: str,
+    pattern: re.Pattern[str],
+    group: str,
+) -> list[Decimal]:
+    return [
+        Decimal(match.group(group))
+        for match in pattern.finditer(text)
+    ]
+
+
+def _require_expected_pattern_value(
+    text: str,
+    *,
+    pattern: re.Pattern[str],
+    group: str,
+    expected: Decimal,
+    label: str,
+) -> Decimal:
+    values = _pattern_values(text, pattern, group)
+
+    if expected not in values:
+        raise ValueError(
+            f"{label} evidence does not contain the required value {expected}"
+        )
+
+    return expected
+
+
 def _money_values(text: str) -> list[Decimal]:
     return [Decimal(value) for value in MONEY_PATTERN.findall(text)]
 
@@ -895,10 +972,21 @@ def _find_amount(
 def extract_pricing_rules(
     passages: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    monthly = _smallest_passage(
+    month_pass_scope = _smallest_passage(
         passages,
-        lambda text: "$29" in text and "month" in text,
-        "monthly membership price",
+        lambda text: (
+            "month pass" in text
+            and "classic bike prices" in text
+            and "ebike prices" in text
+        ),
+        "Month pass pricing context",
+    )
+    monthly = _smallest_scoped_passage(
+        passages,
+        scope=month_pass_scope,
+        predicate=lambda text: Decimal("29")
+        in _pattern_values(text, MONTHLY_RATE_PATTERN, "amount"),
+        label="monthly membership price",
     )
     classic_non_member = _smallest_passage(
         passages,
@@ -910,15 +998,26 @@ def extract_pricing_rules(
         ),
         "classic non-member pricing",
     )
-    classic_member = _smallest_passage(
+    classic_member_scope = _smallest_scoped_passage(
         passages,
-        lambda text: (
-            "classic" in text
-            and "45" in text
-            and "$0.17" in text
-            and any(term in text for term in ("included", "after", "overage"))
+        scope=month_pass_scope,
+        predicate=lambda text: any(
+            "classic bike prices" in text.casefold()
+            and match.group("minutes") == "45"
+            and Decimal(match.group("rate")) == Decimal("0.17")
+            for match in CLASSIC_MEMBER_RATE_PATTERN.finditer(text)
         ),
-        "member classic inclusion and overage",
+        label="member Classic pricing section",
+    )
+    classic_member = _smallest_scoped_passage(
+        passages,
+        scope=classic_member_scope,
+        predicate=lambda text: any(
+            match.group("minutes") == "45"
+            and Decimal(match.group("rate")) == Decimal("0.17")
+            for match in CLASSIC_MEMBER_RATE_PATTERN.finditer(text)
+        ),
+        label="member classic inclusion and overage",
     )
     ebike_non_member = _smallest_passage(
         passages,
@@ -930,21 +1029,54 @@ def extract_pricing_rules(
         ),
         "non-member ebike pricing",
     )
-    ebike_member = _smallest_passage(
+    ebike_member_scope = _smallest_scoped_passage(
         passages,
-        lambda text: (
-            any(term in text for term in ("ebike", "e-bike", "electric bike"))
-            and "$0.17" in text
-            and "member" in text
+        scope=month_pass_scope,
+        predicate=lambda text: (
+            "ebike prices" in text.casefold()
+            and Decimal("0.17")
+            in _pattern_values(text, EBIKE_MEMBER_RATE_PATTERN, "rate")
         ),
-        "member ebike pricing",
+        label="member Ebike pricing section",
+    )
+    ebike_member = _smallest_scoped_passage(
+        passages,
+        scope=ebike_member_scope,
+        predicate=lambda text: Decimal("0.17")
+        in _pattern_values(text, EBIKE_MEMBER_RATE_PATTERN, "rate"),
+        label="member ebike pricing",
+    )
+    scoped_classic_rates = {
+        Decimal(match.group("rate"))
+        for match in CLASSIC_MEMBER_RATE_PATTERN.finditer(
+            classic_member_scope
+        )
+        if match.group("minutes") == "45"
+    }
+
+    if scoped_classic_rates != {Decimal("0.17")}:
+        formatted = ", ".join(
+            str(value)
+            for value in sorted(scoped_classic_rates)
+        ) or "none"
+        raise ValueError(
+            "contradictory member classic evidence in Month pass context: "
+            f"45-minute rates were {formatted}"
+        )
+
+    included_minutes = next(
+        int(match.group("minutes"))
+        for match in CLASSIC_MEMBER_RATE_PATTERN.finditer(classic_member)
+        if Decimal(match.group("rate")) == Decimal("0.17")
     )
 
     return {
         "month_pass": {
             "amount": str(
-                _find_amount(
-                    _money_values(monthly),
+                _require_expected_pattern_value(
+                    monthly,
+                    pattern=MONTHLY_RATE_PATTERN,
+                    group="amount",
                     expected=Decimal("29"),
                     label="month pass",
                 )
@@ -970,15 +1102,23 @@ def extract_pricing_rules(
             "evidence": classic_non_member,
         },
         "classic_member": {
-            "included_minutes": 45,
+            "included_minutes": included_minutes,
             "overage_per_minute": str(
-                _find_amount(
-                    _money_values(classic_member),
+                _require_expected_pattern_value(
+                    classic_member,
+                    pattern=CLASSIC_MEMBER_RATE_PATTERN,
+                    group="rate",
                     expected=Decimal("0.17"),
                     label="classic member overage",
                 )
             ),
             "evidence": classic_member,
+            "evidence_passages": [
+                month_pass_scope,
+                classic_member_scope,
+                classic_member,
+            ],
+            "evidence_scope": "Month pass",
         },
         "ebike_non_member": {
             "unlock_fee": str(
@@ -998,14 +1138,23 @@ def extract_pricing_rules(
             "evidence": ebike_non_member,
         },
         "ebike_member": {
+            "unlock_fee": "0",
             "per_minute": str(
-                _find_amount(
-                    _money_values(ebike_member),
+                _require_expected_pattern_value(
+                    ebike_member,
+                    pattern=EBIKE_MEMBER_RATE_PATTERN,
+                    group="rate",
                     expected=Decimal("0.17"),
                     label="ebike member rate",
                 )
             ),
             "evidence": ebike_member,
+            "evidence_passages": [
+                month_pass_scope,
+                ebike_member_scope,
+                ebike_member,
+            ],
+            "evidence_scope": "Month pass",
         },
     }
 

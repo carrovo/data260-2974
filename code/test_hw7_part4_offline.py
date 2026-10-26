@@ -234,6 +234,7 @@ def test_calculator_success_and_failures() -> None:
 def test_policy_fixture_parser_and_retriever() -> None:
     html = FIXTURE_HTML.read_bytes()
     passages = parse_policy_passages(html, source=PRICING_FINAL_URL)
+    passage_texts = {passage["text"] for passage in passages}
     rules = extract_pricing_rules(passages)
     result = policy_retriever(
         {
@@ -245,15 +246,30 @@ def test_policy_fixture_parser_and_retriever() -> None:
     )
 
     assert rules["month_pass"]["amount"] == "29"
-    assert rules["classic_non_member"] == {
-        "unlock_fee": "1",
-        "per_minute": "0.19",
-        "evidence": "Classic bike: $1 to unlock, then $0.19/min.",
-    }
+    assert rules["classic_non_member"]["unlock_fee"] == "1"
+    assert rules["classic_non_member"]["per_minute"] == "0.19"
     assert rules["classic_member"]["included_minutes"] == 45
     assert rules["classic_member"]["overage_per_minute"] == "0.17"
+    assert rules["classic_member"]["evidence"] == (
+        "45 min free, then $0.17/min"
+    )
+    assert rules["classic_member"]["evidence_scope"] == "Month pass"
+    assert "Month pass" in rules["classic_member"]["evidence_passages"][0]
     assert rules["ebike_non_member"]["per_minute"] == "0.49"
+    assert rules["ebike_member"]["unlock_fee"] == "0"
     assert rules["ebike_member"]["per_minute"] == "0.17"
+    assert rules["ebike_member"]["evidence"] == (
+        "Free unlocks + $0.17/min"
+    )
+    assert rules["ebike_member"]["evidence_scope"] == "Month pass"
+    assert {
+        "Month pass",
+        "$29/month",
+        "Classic bike prices",
+        "45 min free, then $0.17/min",
+        "Ebike prices",
+        "Free unlocks + $0.17/min",
+    }.issubset(passage_texts)
     assert result["success"] is True
     assert result["source"] == PRICING_FINAL_URL
     assert result["data"]["passages"][0]["score"] > 0
@@ -261,9 +277,9 @@ def test_policy_fixture_parser_and_retriever() -> None:
 
     retrieval_checks = {
         "classic single unlock per minute": "$0.19/min",
-        "classic member 45 minute inclusion overage": "45 minutes",
+        "classic member 45 minute inclusion overage": "45 min free",
         "non-member ebike unlock rate": "$0.49/min",
-        "member ebike rate": "Member ebike rate: $0.17/min",
+        "member ebike rate": "Free unlocks + $0.17/min",
     }
 
     for query, expected_text in retrieval_checks.items():
@@ -276,6 +292,66 @@ def test_policy_fixture_parser_and_retriever() -> None:
             for passage in retrieved["data"]["passages"]
         )
         assert expected_text in returned_text, query
+
+
+def _policy_passages(*texts: str) -> list[dict[str, str]]:
+    return [
+        {"text": text, "source": PRICING_FINAL_URL}
+        for text in texts
+    ]
+
+
+def _assert_pricing_rules_fail(
+    passages: list[dict[str, str]],
+    expected_error: str,
+) -> None:
+    try:
+        extract_pricing_rules(passages)
+    except ValueError as exc:
+        assert expected_error in str(exc)
+    else:
+        raise AssertionError("pricing rules unexpectedly accepted invalid evidence")
+
+
+def test_member_rates_require_month_pass_scope() -> None:
+    scope_without_member_rates = (
+        "Month pass $29/month Classic bike prices "
+        "$1.00 to unlock, then $0.19/min Ebike prices "
+        "$1.00 unlock + $0.49/min"
+    )
+    passages = _policy_passages(
+        "$29/month",
+        scope_without_member_rates,
+        "45 min free, then $0.17/min",
+        "Free unlocks + $0.17/min",
+    )
+
+    _assert_pricing_rules_fail(passages, "Month pass evidence")
+
+
+def test_missing_and_contradictory_member_evidence_fails_closed() -> None:
+    missing_ebike = (
+        "Month pass $29/month Classic bike prices "
+        "$1.00 to unlock, then $0.19/min "
+        "45 min free, then $0.17/min Ebike prices "
+        "$1.00 unlock + $0.49/min"
+    )
+    contradictory_classic = (
+        "Month pass $29/month Classic bike prices "
+        "$1.00 to unlock, then $0.19/min "
+        "45 min free, then $0.17/min "
+        "45 min free, then $0.25/min Ebike prices "
+        "$1.00 unlock + $0.49/min Free unlocks + $0.17/min"
+    )
+
+    _assert_pricing_rules_fail(
+        _policy_passages(missing_ebike),
+        "member Ebike pricing section",
+    )
+    _assert_pricing_rules_fail(
+        _policy_passages(contradictory_classic),
+        "contradictory member classic evidence",
+    )
 
 
 def test_policy_failure_and_schema_errors() -> None:
@@ -376,6 +452,28 @@ def test_snapshot_hash_and_opposite_acceptance_scenarios() -> None:
         assert snapshot["html_sha256"] == hashlib.sha256(
             FIXTURE_HTML.read_bytes()
         ).hexdigest()
+        assert "45 min free, then $0.17/min" in snapshot[
+            "exact_pricing_passages"
+        ]
+        assert "Free unlocks + $0.17/min" in snapshot[
+            "exact_pricing_passages"
+        ]
+        assert any(
+            "Month pass" in passage
+            and "Classic bike prices" in passage
+            and "Ebike prices" in passage
+            for passage in snapshot["exact_pricing_passages"]
+        )
+        assert any(
+            passage.startswith("Classic bike prices")
+            and "45 min free, then $0.17/min" in passage
+            for passage in snapshot["exact_pricing_passages"]
+        )
+        assert any(
+            passage.startswith("Ebike prices")
+            and "Free unlocks + $0.17/min" in passage
+            for passage in snapshot["exact_pricing_passages"]
+        )
         assert high["total_rows"] == 600
         assert high["target_ride_count"] == 40
         assert high["expected_winning_option"] == "membership"
@@ -408,6 +506,11 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     ("csv_sql read-only boundary", test_csv_sql_readonly_boundary),
     ("calculator success and failures", test_calculator_success_and_failures),
     ("policy fixture parser and retriever", test_policy_fixture_parser_and_retriever),
+    ("member pricing requires Month pass scope", test_member_rates_require_month_pass_scope),
+    (
+        "missing and contradictory member evidence",
+        test_missing_and_contradictory_member_evidence_fails_closed,
+    ),
     ("policy failures and schema errors", test_policy_failure_and_schema_errors),
     (
         "snapshot hash and opposite acceptance scenarios",
