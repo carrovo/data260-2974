@@ -737,6 +737,11 @@ def generate_scenarios(
             "file": str(snapshot_path.relative_to(PROJECT_ROOT)),
             "final_url": snapshot["final_url"],
             "html_sha256": snapshot["html_sha256"],
+            "sanitized_html_sha256": snapshot["sanitized_html_sha256"],
+            "original_response_sha256": snapshot[
+                "original_response_sha256"
+            ],
+            "redaction_metadata": snapshot["redaction_metadata"],
             "pricing_rules": pricing_rules,
         },
         "transformation": {
@@ -782,7 +787,25 @@ def verify_outputs(
     if not verify_snapshot_hash(snapshot_path):
         raise Part4DataError("pricing snapshot hash verification failed")
 
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_policy = manifest["policy_snapshot"]
+
+    if any(
+        manifest_policy.get(field) != snapshot.get(field)
+        for field in (
+            "final_url",
+            "html_sha256",
+            "sanitized_html_sha256",
+            "original_response_sha256",
+            "redaction_metadata",
+            "pricing_rules",
+        )
+    ):
+        raise Part4DataError(
+            "manifest policy metadata does not match the verified snapshot"
+        )
+
     pricing_rules = manifest["policy_snapshot"]["pricing_rules"]
     checks = []
 
@@ -908,7 +931,8 @@ def main() -> None:
             "POLICY_CAPTURED "
             f"final_url={snapshot['final_url']} "
             f"bytes={snapshot['html_bytes']} "
-            f"sha256={snapshot['html_sha256']}"
+            f"sanitized_sha256={snapshot['html_sha256']} "
+            f"redactions={snapshot['redaction_metadata']['count']}"
         )
 
         if args.command == "capture-policy":

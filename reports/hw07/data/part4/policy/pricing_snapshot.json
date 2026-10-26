@@ -1,0 +1,69 @@
+{
+  "capture_kind": "official_network_capture",
+  "requested_url": "https://www.lyft.com/bikes/bay-wheels/pricing",
+  "final_url": "https://lyftbikes.com/pricing",
+  "http_status": 200,
+  "captured_at_utc": "2026-10-26T01:52:18.925805Z",
+  "captured_at_pdt": "2026-10-25T18:52:18.925805-07:00",
+  "html_bytes": 252025,
+  "html_sha256": "d6a5efb2dae855f7dbe910a165404fbf3ba2832c597ae2e20cadb49eed6a60b4",
+  "html_file": "pricing_page.html",
+  "exact_pricing_passages": [
+    "$29/month",
+    "Great for one-way trips. Just download the app and you’re ready to roll. $1.00 to unlock $0.19/min for classic bikes. $0.49/minute for ebikes.",
+    "$29/month Get a month pass Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min Bike Angels Rideshare benefits",
+    "Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min",
+    "45 min free, then $0.17/min",
+    "Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min",
+    "Free unlocks + $0.17/min"
+  ],
+  "pricing_rules": {
+    "month_pass": {
+      "amount": "29",
+      "billing_period": "month",
+      "evidence": "$29/month"
+    },
+    "classic_non_member": {
+      "unlock_fee": "1",
+      "per_minute": "0.19",
+      "evidence": "Great for one-way trips. Just download the app and you’re ready to roll. $1.00 to unlock $0.19/min for classic bikes. $0.49/minute for ebikes."
+    },
+    "classic_member": {
+      "included_minutes": 45,
+      "overage_per_minute": "0.17",
+      "evidence": "45 min free, then $0.17/min",
+      "evidence_passages": [
+        "$29/month Get a month pass Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min Bike Angels Rideshare benefits",
+        "Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min",
+        "45 min free, then $0.17/min"
+      ],
+      "evidence_scope": "Month pass"
+    },
+    "ebike_non_member": {
+      "unlock_fee": "1",
+      "per_minute": "0.49",
+      "evidence": "Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min"
+    },
+    "ebike_member": {
+      "unlock_fee": "0",
+      "per_minute": "0.17",
+      "evidence": "Free unlocks + $0.17/min",
+      "evidence_passages": [
+        "$29/month Get a month pass Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min Bike Angels Rideshare benefits",
+        "Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min",
+        "Free unlocks + $0.17/min"
+      ],
+      "evidence_scope": "Month pass"
+    }
+  },
+  "original_response_bytes": 252039,
+  "original_response_sha256": "2ff0f721defacdca5f433a465e1970f7eb99ec27a0a0236f6a8a0df087fff414",
+  "sanitized_html_sha256": "d6a5efb2dae855f7dbe910a165404fbf3ba2832c597ae2e20cadb49eed6a60b4",
+  "redaction_metadata": {
+    "type": "google_api_key_pattern_v1",
+    "replacement": "[REDACTED_GOOGLE_API_KEY]",
+    "count": 1,
+    "raw_response_persistence": "processed_in_memory_not_persisted",
+    "raw_response_bytes_persisted": false
+  }
+}

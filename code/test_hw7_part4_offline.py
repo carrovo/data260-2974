@@ -3,6 +3,7 @@
 import csv
 import hashlib
 import io
+import json
 import sys
 import tempfile
 import zipfile
@@ -25,18 +26,23 @@ from hw7_part4_data import (
     verify_outputs,
 )
 from hw7_part4_tools import (
+    GOOGLE_API_KEY_REDACTION_TYPE,
+    GOOGLE_API_KEY_REPLACEMENT,
     PART4_TOOL_SCHEMAS,
     PRICING_FINAL_URL,
     PRICING_URL,
     FetchedPage,
+    assert_no_google_api_key_patterns,
     calculator,
     capture_policy_snapshot,
     csv_sql,
     extract_pricing_rules,
     parse_policy_passages,
     policy_retriever,
+    sanitize_official_html,
     validate_part4_inputs,
     verify_snapshot_hash,
+    write_sanitized_official_html,
 )
 
 FIXTURE_HTML = CODE_ROOT / "fixtures" / "hw7_part4" / "pricing_fixture.html"
@@ -50,6 +56,10 @@ def _fixture_page(_url: str) -> FetchedPage:
         final_url=PRICING_FINAL_URL,
         status_code=200,
     )
+
+
+def _synthetic_google_key(fill: str) -> bytes:
+    return ("A" + "Iza" + fill * 35).encode("ascii")
 
 
 def _write_uploaded_csv(path: Path, rows: int = 150) -> None:
@@ -373,6 +383,103 @@ def test_policy_failure_and_schema_errors() -> None:
     assert "unknown field" in extra["error"]
 
 
+def test_google_key_redaction_zero_one_multiple_and_fail_closed() -> None:
+    zero_input = b"<html><body>no credential pattern</body></html>"
+    one_key = _synthetic_google_key("A")
+    second_key = _synthetic_google_key("b")
+    one_input = b"before " + one_key + b" after"
+    multiple_input = one_key + b" separator " + second_key
+
+    zero_sanitized, zero_count = sanitize_official_html(zero_input)
+    one_sanitized, one_count = sanitize_official_html(one_input)
+    multiple_sanitized, multiple_count = sanitize_official_html(
+        multiple_input
+    )
+    repeated_sanitized, repeated_count = sanitize_official_html(
+        multiple_input
+    )
+
+    assert zero_sanitized == zero_input
+    assert zero_count == 0
+    assert one_count == 1
+    assert one_sanitized.count(GOOGLE_API_KEY_REPLACEMENT) == 1
+    assert multiple_count == repeated_count == 2
+    assert multiple_sanitized == repeated_sanitized
+    assert multiple_sanitized.count(GOOGLE_API_KEY_REPLACEMENT) == 2
+    assert_no_google_api_key_patterns(one_sanitized)
+    assert_no_google_api_key_patterns(multiple_sanitized)
+
+    with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
+        contaminated_path = Path(temp) / "post-write-scan.html"
+
+        try:
+            write_sanitized_official_html(contaminated_path, one_input)
+        except ValueError as exc:
+            assert "prohibited credential pattern" in str(exc)
+        else:
+            raise AssertionError("post-write credential scan did not fail")
+
+        assert not contaminated_path.exists()
+
+
+def test_sanitized_capture_hashes_and_pricing_evidence() -> None:
+    raw_html = FIXTURE_HTML.read_bytes().replace(
+        b"</body>",
+        b"<script>" + _synthetic_google_key("C") + b"</script></body>",
+    )
+
+    def sensitive_fixture_page(_url: str) -> FetchedPage:
+        return FetchedPage(
+            content=raw_html,
+            final_url=PRICING_FINAL_URL,
+            status_code=200,
+        )
+
+    with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
+        root = Path(temp)
+        html_path = root / "pricing_page.html"
+        snapshot_path = root / "pricing_snapshot.json"
+        snapshot = capture_policy_snapshot(
+            url=PRICING_URL,
+            html_path=html_path,
+            snapshot_path=snapshot_path,
+            fetcher=sensitive_fixture_page,
+            capture_kind="fixed_test_fixture_not_official",
+        )
+        sanitized_html = html_path.read_bytes()
+        original_hash = hashlib.sha256(raw_html).hexdigest()
+        sanitized_hash = hashlib.sha256(sanitized_html).hexdigest()
+
+        assert snapshot["original_response_sha256"] == original_hash
+        assert snapshot["sanitized_html_sha256"] == sanitized_hash
+        assert snapshot["html_sha256"] == sanitized_hash
+        assert original_hash != sanitized_hash
+        assert snapshot["redaction_metadata"] == {
+            "type": GOOGLE_API_KEY_REDACTION_TYPE,
+            "replacement": GOOGLE_API_KEY_REPLACEMENT.decode("ascii"),
+            "count": 1,
+            "raw_response_persistence": (
+                "processed_in_memory_not_persisted"
+            ),
+            "raw_response_bytes_persisted": False,
+        }
+        assert GOOGLE_API_KEY_REPLACEMENT in sanitized_html
+        assert_no_google_api_key_patterns(sanitized_html)
+        assert verify_snapshot_hash(snapshot_path) is True
+        assert snapshot["pricing_rules"]["month_pass"]["amount"] == "29"
+        assert snapshot["pricing_rules"]["classic_member"][
+            "overage_per_minute"
+        ] == "0.17"
+
+        tampered = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        tampered["html_sha256"] = original_hash
+        snapshot_path.write_text(
+            json.dumps(tampered, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        assert verify_snapshot_hash(snapshot_path) is False
+
+
 def _write_test_archive(path: Path, rows: int = 650) -> None:
     buffer = io.StringIO(newline="")
     fieldnames = [
@@ -530,6 +637,13 @@ def test_snapshot_and_scenario_target_quality() -> None:
         assert snapshot["html_sha256"] == hashlib.sha256(
             FIXTURE_HTML.read_bytes()
         ).hexdigest()
+        assert snapshot["original_response_sha256"] == snapshot[
+            "sanitized_html_sha256"
+        ]
+        assert snapshot["redaction_metadata"]["count"] == 0
+        assert snapshot["redaction_metadata"][
+            "raw_response_bytes_persisted"
+        ] is False
         assert "45 min free, then $0.17/min" in snapshot[
             "exact_pricing_passages"
         ]
@@ -666,6 +780,14 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
         test_missing_and_contradictory_member_evidence_fails_closed,
     ),
     ("policy failures and schema errors", test_policy_failure_and_schema_errors),
+    (
+        "Google key redaction and post-write failure",
+        test_google_key_redaction_zero_one_multiple_and_fail_closed,
+    ),
+    (
+        "sanitized capture hashes and pricing evidence",
+        test_sanitized_capture_hashes_and_pricing_evidence,
+    ),
     (
         "snapshot, target quality, determinism, and opposite winners",
         test_snapshot_and_scenario_target_quality,

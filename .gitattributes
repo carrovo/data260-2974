@@ -1,2 +1,2 @@
-# Preserve exact official capture bytes for SHA-256 reproducibility.
+# Preserve exact sanitized capture bytes for SHA-256 reproducibility.
 reports/hw07/data/part4/policy/pricing_page.html binary

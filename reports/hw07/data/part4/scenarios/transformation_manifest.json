@@ -1,0 +1,194 @@
+{
+  "source": {
+    "data_classification": "official_public_archive",
+    "url": "https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip",
+    "final_url": "https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip",
+    "month": "202401",
+    "bytes": 7550662,
+    "sha256": "06731689311c4b200731f1d79d8adb01f3f86919bc22b228c2c3b1a3468cc793",
+    "local_file": "tmp/hw7-part4/202401-baywheels-tripdata.csv.zip",
+    "archive_member": "202401-baywheels-tripdata.csv",
+    "rows_scanned": 100001
+  },
+  "policy_snapshot": {
+    "file": "reports/hw07/data/part4/policy/pricing_snapshot.json",
+    "final_url": "https://lyftbikes.com/pricing",
+    "html_sha256": "d6a5efb2dae855f7dbe910a165404fbf3ba2832c597ae2e20cadb49eed6a60b4",
+    "pricing_rules": {
+      "month_pass": {
+        "amount": "29",
+        "billing_period": "month",
+        "evidence": "$29/month"
+      },
+      "classic_non_member": {
+        "unlock_fee": "1",
+        "per_minute": "0.19",
+        "evidence": "Great for one-way trips. Just download the app and you’re ready to roll. $1.00 to unlock $0.19/min for classic bikes. $0.49/minute for ebikes."
+      },
+      "classic_member": {
+        "included_minutes": 45,
+        "overage_per_minute": "0.17",
+        "evidence": "45 min free, then $0.17/min",
+        "evidence_passages": [
+          "$29/month Get a month pass Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min Bike Angels Rideshare benefits",
+          "Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min",
+          "45 min free, then $0.17/min"
+        ],
+        "evidence_scope": "Month pass"
+      },
+      "ebike_non_member": {
+        "unlock_fee": "1",
+        "per_minute": "0.49",
+        "evidence": "Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min"
+      },
+      "ebike_member": {
+        "unlock_fee": "0",
+        "per_minute": "0.17",
+        "evidence": "Free unlocks + $0.17/min",
+        "evidence_passages": [
+          "$29/month Get a month pass Classic bike prices $1.00 to unlock, then $0.19/min 30 min free, then $0.19/min 45 min free, then $0.17/min 45 min free, then $0.17/min 45 min free, then $0.17/min Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min Bike Angels Rideshare benefits",
+          "Ebike prices $1.00 unlock + $0.49/min Free unlocks + $0.49/min Free unlocks + $0.17/min Free unlocks + $0.17/min Free unlocks + $0.17/min",
+          "Free unlocks + $0.17/min"
+        ],
+        "evidence_scope": "Month pass"
+      }
+    },
+    "sanitized_html_sha256": "d6a5efb2dae855f7dbe910a165404fbf3ba2832c597ae2e20cadb49eed6a60b4",
+    "original_response_sha256": "2ff0f721defacdca5f433a465e1970f7eb99ec27a0a0236f6a8a0df087fff414",
+    "redaction_metadata": {
+      "type": "google_api_key_pattern_v1",
+      "replacement": "[REDACTED_GOOGLE_API_KEY]",
+      "count": 1,
+      "raw_response_persistence": "processed_in_memory_not_persisted",
+      "raw_response_bytes_persisted": false
+    }
+  },
+  "transformation": {
+    "output_rows_per_scenario": 600,
+    "preserved_fields": [
+      "ride_id",
+      "rideable_type",
+      "started_at",
+      "ended_at",
+      "start_station_name",
+      "start_station_id",
+      "end_station_name",
+      "end_station_id",
+      "start_lat",
+      "start_lng",
+      "end_lat",
+      "end_lng",
+      "member_casual"
+    ],
+    "added_fields": [
+      "scenario_target"
+    ],
+    "selection_rules": {
+      "membership_wins": "first 40 Classic-bike rows between 60 and 2700 seconds inclusive, in source archive order",
+      "pay_per_use_wins": "two shortest Classic-bike rows between 300 and 900 seconds inclusive; equal-duration ties use source row order"
+    },
+    "target_row_quality_rules": {
+      "membership_wins": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": 60,
+        "maximum_duration_seconds": 2700,
+        "bounds_inclusive": true,
+        "target_count": 40,
+        "selection_order": "first qualifying rows in source archive order"
+      },
+      "pay_per_use_wins": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": 300,
+        "maximum_duration_seconds": 900,
+        "bounds_inclusive": true,
+        "target_count": 2,
+        "selection_order": "shortest duration first; equal-duration ties use source row order"
+      }
+    },
+    "background_rule": "fill to 600 rows from valid source trips in source order; background rows are not included in target-user costs",
+    "cost_input_rule": "include only rows where scenario_target is true; exclude all background rows",
+    "source_fact_rule": "preserve every parsed source-field text value; add only scenario_target",
+    "scenario_overlay_disclosure": "All trip rows come from the official archive. Only the scenario_target assignment is synthetic.",
+    "cost_assumptions": "Use exact elapsed minutes without rounding each ride; apply unlock and per-minute rates from the captured pricing passages; round only final scenario totals to cents."
+  },
+  "scenarios": [
+    {
+      "scenario": "membership_wins",
+      "csv_file": "reports/hw07/data/part4/scenarios/membership_wins.csv",
+      "csv_sha256": "26744145375c3b55c4efca243c90ad67754d5fbaaa3f2b1085bf4ea864a453b3",
+      "total_rows": 600,
+      "target_ride_count": 40,
+      "costed_ride_count": 40,
+      "target_selection_rule": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": 60,
+        "maximum_duration_seconds": 2700,
+        "bounds_inclusive": true,
+        "target_count": 40,
+        "selection_order": "first qualifying rows in source archive order"
+      },
+      "date_range": {
+        "start": "2024-01-01T00:44:46",
+        "end": "2024-01-31T09:46:00"
+      },
+      "all_rows": {
+        "classic_count": 171,
+        "ebike_count": 429,
+        "unknown_count": 0
+      },
+      "target_rows": {
+        "classic_count": 40,
+        "ebike_count": 0,
+        "minimum_duration_seconds": "68.0",
+        "maximum_duration_seconds": "2365.0",
+        "average_duration_minutes": "10.457"
+      },
+      "source_archive": "https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip",
+      "source_sha256": "06731689311c4b200731f1d79d8adb01f3f86919bc22b228c2c3b1a3468cc793",
+      "acceptance_costs_usd": {
+        "membership": "29.00",
+        "pay_per_use": "119.47"
+      },
+      "expected_winning_option": "membership"
+    },
+    {
+      "scenario": "pay_per_use_wins",
+      "csv_file": "reports/hw07/data/part4/scenarios/pay_per_use_wins.csv",
+      "csv_sha256": "b3f4366bdcdee027a3e9e61f9834c91588e34ce222386789b20118f1284171f1",
+      "total_rows": 600,
+      "target_ride_count": 2,
+      "costed_ride_count": 2,
+      "target_selection_rule": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": 300,
+        "maximum_duration_seconds": 900,
+        "bounds_inclusive": true,
+        "target_count": 2,
+        "selection_order": "shortest duration first; equal-duration ties use source row order"
+      },
+      "date_range": {
+        "start": "2024-01-01T00:44:46",
+        "end": "2024-01-31T09:46:00"
+      },
+      "all_rows": {
+        "classic_count": 172,
+        "ebike_count": 428,
+        "unknown_count": 0
+      },
+      "target_rows": {
+        "classic_count": 2,
+        "ebike_count": 0,
+        "minimum_duration_seconds": "300.0",
+        "maximum_duration_seconds": "300.0",
+        "average_duration_minutes": "5.000"
+      },
+      "source_archive": "https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip",
+      "source_sha256": "06731689311c4b200731f1d79d8adb01f3f86919bc22b228c2c3b1a3468cc793",
+      "acceptance_costs_usd": {
+        "membership": "29.00",
+        "pay_per_use": "3.90"
+      },
+      "expected_winning_option": "pay_per_use"
+    }
+  ]
+}

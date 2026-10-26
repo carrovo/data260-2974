@@ -69,8 +69,9 @@ source .venv/bin/activate
 The following single command:
 
 1. captures the official pricing page with a timeout and 3 MB limit;
-2. saves its requested/final URL, UTC and PDT capture times, exact parsed
-   passages, raw HTML size, and SHA-256;
+2. extracts exact pricing passages from the in-memory official response,
+   redacts prohibited credential-shaped values, and persists only sanitized
+   HTML;
 3. downloads the pinned January 2024 archive to the ignored `tmp/` area;
 4. records archive URL, month, byte count, and SHA-256;
 5. creates two 600-row scenario CSV files with LF endings; and
@@ -120,6 +121,29 @@ scenario generation is allowed:
 The pricing numbers used by the cost calculation are read from the captured
 snapshot's `pricing_rules`; they are not separate untraceable constants.
 Hash verification links each parsed rule back to the saved HTML bytes.
+
+### Security-preserving HTML capture
+
+Raw HTTP response bytes are processed only in memory and are never persisted.
+Before `pricing_page.html` is written, every Google API-key-shaped byte
+sequence is deterministically replaced with `[REDACTED_GOOGLE_API_KEY]`.
+The saved file is scanned again after writing; capture fails closed and
+removes the output if any prohibited pattern remains.
+
+`pricing_snapshot.json` records two distinct hashes:
+
+- `original_response_sha256`: the SHA-256 of the original in-memory HTTP
+  response, retained solely as provenance metadata;
+- `sanitized_html_sha256` and the backward-compatible `html_sha256`: the
+  SHA-256 of the committed sanitized `pricing_page.html` bytes.
+
+The snapshot also records the deterministic redaction type, replacement,
+redaction count, and an explicit statement that raw response bytes were not
+persisted. Verification checks the sanitized hash, metadata, replacement
+count, absence of prohibited patterns, and re-extracts the required pricing
+rules from the sanitized HTML. The transformation manifest carries the same
+policy hashes and redaction metadata so scenario verification fails if the
+two evidence files disagree.
 
 ### Live pricing-page structure
 

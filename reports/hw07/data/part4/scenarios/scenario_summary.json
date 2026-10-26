@@ -1,0 +1,82 @@
+{
+  "scenarios": [
+    {
+      "scenario": "membership_wins",
+      "csv_file": "reports/hw07/data/part4/scenarios/membership_wins.csv",
+      "csv_sha256": "26744145375c3b55c4efca243c90ad67754d5fbaaa3f2b1085bf4ea864a453b3",
+      "total_rows": 600,
+      "target_ride_count": 40,
+      "costed_ride_count": 40,
+      "target_selection_rule": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": 60,
+        "maximum_duration_seconds": 2700,
+        "bounds_inclusive": true,
+        "target_count": 40,
+        "selection_order": "first qualifying rows in source archive order"
+      },
+      "date_range": {
+        "start": "2024-01-01T00:44:46",
+        "end": "2024-01-31T09:46:00"
+      },
+      "all_rows": {
+        "classic_count": 171,
+        "ebike_count": 429,
+        "unknown_count": 0
+      },
+      "target_rows": {
+        "classic_count": 40,
+        "ebike_count": 0,
+        "minimum_duration_seconds": "68.0",
+        "maximum_duration_seconds": "2365.0",
+        "average_duration_minutes": "10.457"
+      },
+      "source_archive": "https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip",
+      "source_sha256": "06731689311c4b200731f1d79d8adb01f3f86919bc22b228c2c3b1a3468cc793",
+      "acceptance_costs_usd": {
+        "membership": "29.00",
+        "pay_per_use": "119.47"
+      },
+      "expected_winning_option": "membership"
+    },
+    {
+      "scenario": "pay_per_use_wins",
+      "csv_file": "reports/hw07/data/part4/scenarios/pay_per_use_wins.csv",
+      "csv_sha256": "b3f4366bdcdee027a3e9e61f9834c91588e34ce222386789b20118f1284171f1",
+      "total_rows": 600,
+      "target_ride_count": 2,
+      "costed_ride_count": 2,
+      "target_selection_rule": {
+        "required_ride_kind": "classic_bike",
+        "minimum_duration_seconds": 300,
+        "maximum_duration_seconds": 900,
+        "bounds_inclusive": true,
+        "target_count": 2,
+        "selection_order": "shortest duration first; equal-duration ties use source row order"
+      },
+      "date_range": {
+        "start": "2024-01-01T00:44:46",
+        "end": "2024-01-31T09:46:00"
+      },
+      "all_rows": {
+        "classic_count": 172,
+        "ebike_count": 428,
+        "unknown_count": 0
+      },
+      "target_rows": {
+        "classic_count": 2,
+        "ebike_count": 0,
+        "minimum_duration_seconds": "300.0",
+        "maximum_duration_seconds": "300.0",
+        "average_duration_minutes": "5.000"
+      },
+      "source_archive": "https://s3.amazonaws.com/baywheels-data/202401-baywheels-tripdata.csv.zip",
+      "source_sha256": "06731689311c4b200731f1d79d8adb01f3f86919bc22b228c2c3b1a3468cc793",
+      "acceptance_costs_usd": {
+        "membership": "29.00",
+        "pay_per_use": "3.90"
+      },
+      "expected_winning_option": "pay_per_use"
+    }
+  ]
+}

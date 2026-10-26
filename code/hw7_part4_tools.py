@@ -59,6 +59,12 @@ EBIKE_MEMBER_RATE_PATTERN = re.compile(
     r"(?:min|minute)",
     re.IGNORECASE,
 )
+GOOGLE_API_KEY_PATTERN = re.compile(
+    b"A" + b"Iza" + rb"[0-9A-Za-z_-]{35}"
+)
+GOOGLE_API_KEY_REPLACEMENT = b"[REDACTED_GOOGLE_API_KEY]"
+GOOGLE_API_KEY_REDACTION_TYPE = "google_api_key_pattern_v1"
+RAW_RESPONSE_PERSISTENCE = "processed_in_memory_not_persisted"
 
 
 class StrictArguments(BaseModel):
@@ -228,6 +234,43 @@ def _failure(error: str, *, source: str | None = None) -> dict[str, Any]:
         result["source"] = source
 
     return result
+
+
+def count_google_api_key_patterns(content: bytes) -> int:
+    return len(GOOGLE_API_KEY_PATTERN.findall(content))
+
+
+def assert_no_google_api_key_patterns(content: bytes) -> None:
+    if GOOGLE_API_KEY_PATTERN.search(content) is not None:
+        raise ValueError(
+            "captured HTML still contains a prohibited credential pattern"
+        )
+
+
+def sanitize_official_html(content: bytes) -> tuple[bytes, int]:
+    sanitized, redaction_count = GOOGLE_API_KEY_PATTERN.subn(
+        GOOGLE_API_KEY_REPLACEMENT,
+        content,
+    )
+    assert_no_google_api_key_patterns(sanitized)
+
+    return sanitized, redaction_count
+
+
+def write_sanitized_official_html(path: Path, content: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(content)
+
+    try:
+        saved = path.read_bytes()
+        assert_no_google_api_key_patterns(saved)
+    except Exception:
+        path.unlink(missing_ok=True)
+        raise
+
+    if saved != content:
+        path.unlink(missing_ok=True)
+        raise ValueError("saved sanitized HTML bytes changed unexpectedly")
 
 
 def _validate_policy_url(url: str) -> None:
@@ -844,6 +887,9 @@ def capture_policy_snapshot(
     page = fetcher(url)
     passages = parse_policy_passages(page.content, source=page.final_url)
     rules = extract_pricing_rules(passages)
+    original_response_sha256 = hashlib.sha256(page.content).hexdigest()
+    sanitized_html, redaction_count = sanitize_official_html(page.content)
+    sanitized_html_sha256 = hashlib.sha256(sanitized_html).hexdigest()
     exact_pricing_passages: list[str] = []
 
     for rule in rules.values():
@@ -855,7 +901,6 @@ def capture_policy_snapshot(
                 exact_pricing_passages.append(passage)
     captured_utc = datetime.now(timezone.utc)
     captured_pdt = captured_utc.astimezone(ZoneInfo("America/Los_Angeles"))
-    html_hash = hashlib.sha256(page.content).hexdigest()
     payload = {
         "capture_kind": capture_kind,
         "requested_url": url,
@@ -863,15 +908,24 @@ def capture_policy_snapshot(
         "http_status": page.status_code,
         "captured_at_utc": captured_utc.isoformat().replace("+00:00", "Z"),
         "captured_at_pdt": captured_pdt.isoformat(),
-        "html_bytes": len(page.content),
-        "html_sha256": html_hash,
+        "original_response_bytes": len(page.content),
+        "html_bytes": len(sanitized_html),
+        "original_response_sha256": original_response_sha256,
+        "sanitized_html_sha256": sanitized_html_sha256,
+        "html_sha256": sanitized_html_sha256,
         "html_file": html_path.name,
+        "redaction_metadata": {
+            "type": GOOGLE_API_KEY_REDACTION_TYPE,
+            "replacement": GOOGLE_API_KEY_REPLACEMENT.decode("ascii"),
+            "count": redaction_count,
+            "raw_response_persistence": RAW_RESPONSE_PERSISTENCE,
+            "raw_response_bytes_persisted": False,
+        },
         "exact_pricing_passages": exact_pricing_passages,
         "pricing_rules": rules,
     }
-    html_path.parent.mkdir(parents=True, exist_ok=True)
     snapshot_path.parent.mkdir(parents=True, exist_ok=True)
-    html_path.write_bytes(page.content)
+    write_sanitized_official_html(html_path, sanitized_html)
     snapshot_path.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
@@ -1160,9 +1214,48 @@ def extract_pricing_rules(
 
 
 def verify_snapshot_hash(snapshot_path: Path) -> bool:
-    payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
-    html_path = snapshot_path.parent / payload["html_file"]
+    try:
+        payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        html_path = snapshot_path.parent / payload["html_file"]
+        sanitized_html = html_path.read_bytes()
+        assert_no_google_api_key_patterns(sanitized_html)
+        sanitized_hash = hashlib.sha256(sanitized_html).hexdigest()
+        metadata = payload["redaction_metadata"]
+        redaction_count = metadata["count"]
+        original_hash = payload["original_response_sha256"]
 
-    return hashlib.sha256(html_path.read_bytes()).hexdigest() == payload[
-        "html_sha256"
-    ]
+        if (
+            payload["html_sha256"] != sanitized_hash
+            or payload["sanitized_html_sha256"] != sanitized_hash
+            or payload["html_bytes"] != len(sanitized_html)
+            or metadata["type"] != GOOGLE_API_KEY_REDACTION_TYPE
+            or metadata["replacement"]
+            != GOOGLE_API_KEY_REPLACEMENT.decode("ascii")
+            or not isinstance(redaction_count, int)
+            or isinstance(redaction_count, bool)
+            or redaction_count < 0
+            or metadata["raw_response_persistence"]
+            != RAW_RESPONSE_PERSISTENCE
+            or metadata["raw_response_bytes_persisted"] is not False
+            or sanitized_html.count(GOOGLE_API_KEY_REPLACEMENT)
+            != redaction_count
+            or not re.fullmatch(r"[0-9a-f]{64}", original_hash)
+            or (
+                redaction_count == 0
+                and original_hash != sanitized_hash
+            )
+            or (
+                redaction_count > 0
+                and original_hash == sanitized_hash
+            )
+        ):
+            return False
+
+        passages = parse_policy_passages(
+            sanitized_html,
+            source=payload["final_url"],
+        )
+
+        return extract_pricing_rules(passages) == payload["pricing_rules"]
+    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+        return False
