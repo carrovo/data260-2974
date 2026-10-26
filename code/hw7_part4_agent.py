@@ -11,6 +11,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from typing import Any, Callable
 
+import httpx
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
@@ -40,6 +41,8 @@ MIN_UPLOAD_ROWS = 500
 MAX_UPLOAD_ROWS = 250_000
 MAX_TOOL_CALLS = 12
 MAX_WALL_SECONDS = 120.0
+DEFAULT_OLLAMA_TIMEOUT_SECONDS = 60.0
+OLLAMA_TIMEOUT_ENV = "HW7_PART4_OLLAMA_TIMEOUT_SECONDS"
 RECURSION_LIMIT = 50
 MODEL_CONFIG = {
     "model": "qwen3:8b",
@@ -191,13 +194,31 @@ class MeteredChatModel(BaseChatModel):
         return ChatResult(generations=[ChatGeneration(message=response)])
 
 
+def ollama_timeout_seconds() -> float:
+    """Return one finite, positive request timeout bounded by wall time."""
+
+    raw_value = os.getenv(
+        OLLAMA_TIMEOUT_ENV,
+        str(DEFAULT_OLLAMA_TIMEOUT_SECONDS),
+    )
+    try:
+        timeout = float(raw_value)
+    except (TypeError, ValueError) as exc:
+        raise Part4AgentError(
+            f"{OLLAMA_TIMEOUT_ENV} must be a finite positive number"
+        ) from exc
+    if not math.isfinite(timeout) or timeout <= 0:
+        raise Part4AgentError(f"{OLLAMA_TIMEOUT_ENV} must be a finite positive number")
+    return min(timeout, MAX_WALL_SECONDS)
+
+
 def create_real_model() -> BaseChatModel:
     """Create the fixed local Ollama model; this does not invoke it."""
 
     return ChatOllama(
         **MODEL_CONFIG,
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-        sync_client_kwargs={"timeout": 20.0},
+        sync_client_kwargs={"timeout": ollama_timeout_seconds()},
     )
 
 
@@ -768,6 +789,11 @@ def run_part4_agent(
         ) from exc
     except Part4AgentError:
         raise
+    except httpx.TimeoutException as exc:
+        raise Part4AgentError(
+            "Ollama model request timed out within the 120-second agent budget",
+            stop_reason="wall_clock_budget_exhausted",
+        ) from exc
     except Exception as exc:
         reason = getattr(exc, "stop_reason", "agent_error")
         raise Part4AgentError(

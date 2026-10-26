@@ -7,6 +7,7 @@ import json
 import os
 import sys
 import tempfile
+from contextlib import redirect_stdout
 from pathlib import Path
 from typing import Any, Callable
 
@@ -26,15 +27,19 @@ from langchain_core.messages import AIMessage, BaseMessage, ToolMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
 
 import hw7_part4_agent as part4_agent
+import hw7_part4_runner as part4_runner
 from auth_service import hash_password
 from database import Base, SessionLocal, db_session_basede26
 from hw7_part4_agent import (
     MAX_UPLOAD_BYTES,
+    OLLAMA_TIMEOUT_ENV,
     POLICY_SNAPSHOT_PATH,
     TARGET_STATS_SQL,
     TOTAL_ROWS_SQL,
     WEEKLY_SQL,
     Part4AgentError,
+    create_real_model,
+    ollama_timeout_seconds,
     run_part4_agent,
     validate_uploaded_csv,
     verify_agent_result,
@@ -190,6 +195,20 @@ class ScriptedReActModel(BaseChatModel):
         return self._message(content=json.dumps(final))
 
 
+class TimeoutReActModel(ScriptedReActModel):
+    """Simulate Ollama's bounded HTTP timeout without using the network."""
+
+    def _generate(
+        self,
+        messages: list[BaseMessage],
+        stop: list[str] | None = None,
+        run_manager: Any = None,
+        **kwargs: Any,
+    ) -> ChatResult:
+        del messages, stop, run_manager, kwargs
+        raise httpx.ReadTimeout("simulated offline timeout")
+
+
 def _expect_error(function: Callable[[], Any], stop_reason: str | None = None) -> None:
     try:
         function()
@@ -261,6 +280,123 @@ def test_actual_framework_graph_and_opposite_recommendations() -> None:
         lambda: verify_agent_result(unsupported_citation, results[0]["timeline"]),
         "verification_failed",
     )
+
+
+def test_ollama_timeout_configuration() -> None:
+    previous = os.environ.pop(OLLAMA_TIMEOUT_ENV, None)
+    try:
+        assert ollama_timeout_seconds() == 60.0
+        assert create_real_model().sync_client_kwargs["timeout"] == 60.0
+
+        os.environ[OLLAMA_TIMEOUT_ENV] = "75.5"
+        assert ollama_timeout_seconds() == 75.5
+        assert create_real_model().sync_client_kwargs["timeout"] == 75.5
+
+        for value in ("", "not-a-number", "0", "-1", "nan", "inf", "-inf"):
+            os.environ[OLLAMA_TIMEOUT_ENV] = value
+            _expect_error(ollama_timeout_seconds, "validation_error")
+
+        for value in ("120", "120.01", "999999"):
+            os.environ[OLLAMA_TIMEOUT_ENV] = value
+            assert ollama_timeout_seconds() == 120.0
+    finally:
+        if previous is None:
+            os.environ.pop(OLLAMA_TIMEOUT_ENV, None)
+        else:
+            os.environ[OLLAMA_TIMEOUT_ENV] = previous
+
+
+def test_controlled_cli_timeout_preserves_pending_artifacts() -> None:
+    with tempfile.TemporaryDirectory(dir=TEST_TMP_ROOT) as temp:
+        root = Path(temp)
+        raw_path = root / "part4_agent_acceptance.json"
+        metrics_path = root / "METRICS.md"
+        pending = {
+            "status": "pending_real_part4_agent_run",
+            "model_config": part4_agent.MODEL_CONFIG,
+            "runs": [],
+        }
+        raw_path.write_text(json.dumps(pending) + "\n", encoding="utf-8")
+        metrics_path.write_text(
+            "before\n<!-- PART4_AGENT_METRICS_START -->\n"
+            "pending\n<!-- PART4_AGENT_METRICS_END -->\nafter\n",
+            encoding="utf-8",
+        )
+        raw_before = raw_path.read_bytes()
+        metrics_before = metrics_path.read_bytes()
+        original_analyze = part4_runner.analyze
+        original_raw = part4_runner.RAW_OUTPUT
+        original_metrics = part4_runner.METRICS_PATH
+        original_argv = sys.argv
+
+        def timed_analyze(
+            csv_path: Path,
+            url: str,
+            expected: str | None = None,
+        ) -> dict:
+            return run_part4_agent(
+                csv_path=csv_path,
+                pricing_url=url,
+                model=TimeoutReActModel(),
+                expected_winner=expected,
+            )
+
+        try:
+            part4_runner.analyze = timed_analyze
+            part4_runner.RAW_OUTPUT = raw_path
+            part4_runner.METRICS_PATH = metrics_path
+            sys.argv = [
+                "hw7_part4_runner.py",
+                "acceptance",
+                "--scenario",
+                "membership_wins",
+            ]
+            output = io.StringIO()
+            with redirect_stdout(output):
+                exit_code = part4_runner.main()
+            pending_unchanged = (
+                raw_path.read_bytes() == raw_before
+                and metrics_path.read_bytes() == metrics_before
+            )
+
+            completed = {
+                "status": "completed_real_part4_agent_run",
+                "model_config": part4_agent.MODEL_CONFIG,
+                "runs": [
+                    {"scenario": "membership_wins"},
+                    {"scenario": "pay_per_use_wins"},
+                ],
+            }
+            raw_path.write_text(json.dumps(completed) + "\n", encoding="utf-8")
+            metrics_path.write_text("verified real metrics\n", encoding="utf-8")
+            completed_raw_before = raw_path.read_bytes()
+            completed_metrics_before = metrics_path.read_bytes()
+            completed_output = io.StringIO()
+            with redirect_stdout(completed_output):
+                completed_exit_code = part4_runner.main()
+            completed_unchanged = (
+                raw_path.read_bytes() == completed_raw_before
+                and metrics_path.read_bytes() == completed_metrics_before
+            )
+        finally:
+            part4_runner.analyze = original_analyze
+            part4_runner.RAW_OUTPUT = original_raw
+            part4_runner.METRICS_PATH = original_metrics
+            sys.argv = original_argv
+
+        terminal = output.getvalue()
+        assert exit_code != 0
+        assert "TASK_SUCCESS: false" in terminal
+        assert "STOP_REASON: wall_clock_budget_exhausted" in terminal
+        assert "ERROR: Ollama model request timed out" in terminal
+        assert "Traceback" not in terminal
+        assert pending_unchanged
+        assert completed_exit_code != 0
+        assert "TASK_SUCCESS: false" in completed_output.getvalue()
+        assert completed_unchanged
+        assert json.loads(raw_path.read_text(encoding="utf-8"))["status"] == (
+            "completed_real_part4_agent_run"
+        )
 
 
 def test_upload_validation_failures() -> None:
@@ -439,6 +575,11 @@ TESTS: list[tuple[str, Callable[[], None]]] = [
     (
         "actual framework graph and opposite recommendations",
         test_actual_framework_graph_and_opposite_recommendations,
+    ),
+    ("bounded Ollama timeout configuration", test_ollama_timeout_configuration),
+    (
+        "controlled CLI timeout preserves pending artifacts",
+        test_controlled_cli_timeout_preserves_pending_artifacts,
     ),
     ("upload validation failures", test_upload_validation_failures),
     ("malformed envelope and bounded stops", test_malformed_envelope_and_budgets),

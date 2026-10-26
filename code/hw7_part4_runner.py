@@ -7,7 +7,10 @@ from urllib.request import urlopen
 
 from hw7_part4_agent import (
     MODEL_CONFIG,
+    OLLAMA_TIMEOUT_ENV,
     POLICY_SNAPSHOT_PATH,
+    Part4AgentError,
+    ollama_timeout_seconds,
     run_part4_agent,
     validate_uploaded_csv,
 )
@@ -55,9 +58,17 @@ def preflight() -> bool:
     except Part4DataError as exc:
         print(f"FIXTURE_ERROR: {exc}")
         fixture_verified = False
+    try:
+        request_timeout = ollama_timeout_seconds()
+        timeout_valid = True
+    except Part4AgentError as exc:
+        print(f"TIMEOUT_CONFIG_ERROR: {exc}")
+        request_timeout = None
+        timeout_valid = False
     checks: dict[str, bool] = {
         "sanitized_policy_snapshot": verify_snapshot_hash(POLICY_SNAPSHOT_PATH),
         "signed_fixture_manifest": fixture_verified,
+        "bounded_ollama_request_timeout": timeout_valid,
         "membership_scenario": validate_uploaded_csv(
             SCENARIO_DIR / "membership_wins.csv"
         )["rows"]
@@ -78,6 +89,11 @@ def preflight() -> bool:
         checks["ollama"] = False
         checks["qwen3:8b"] = False
     print("MODEL_CONFIG: " + json.dumps(MODEL_CONFIG, sort_keys=True))
+    if request_timeout is not None:
+        print(
+            f"{OLLAMA_TIMEOUT_ENV}: {request_timeout:g} "
+            "(overall agent budget: 120 seconds)"
+        )
     for name, passed in checks.items():
         print(f"{'PASS' if passed else 'FAIL'} | {name}")
     print(f"READY: {str(all(checks.values())).lower()}")
@@ -219,16 +235,22 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> None:
+def main() -> int:
     args = parse_args()
-    if args.command == "preflight":
-        if not preflight():
-            raise SystemExit(1)
-    elif args.command == "analyze":
-        analyze(args.csv, args.url)
-    else:
-        acceptance(args.scenario)
+    try:
+        if args.command == "preflight":
+            return 0 if preflight() else 1
+        if args.command == "analyze":
+            analyze(args.csv, args.url)
+        else:
+            acceptance(args.scenario)
+    except Part4AgentError as exc:
+        print("TASK_SUCCESS: false")
+        print(f"STOP_REASON: {exc.stop_reason}")
+        print(f"ERROR: {exc}")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

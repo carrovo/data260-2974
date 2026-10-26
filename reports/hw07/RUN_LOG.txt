@@ -372,3 +372,38 @@ Static/build checks:
 
 Real Part 4 model status: `pending_real_part4_agent_run`. The committed pending
 JSON and METRICS section contain no fake-model measurements.
+
+
+HW7 Part 4 bounded Ollama timeout reliability fix
+==================================================
+UTC time: 2026-10-26T06:24:05Z
+
+The failed Mac run was reported to stop in an Ollama streaming request before
+producing a successful result. Repository inspection confirmed that
+`part4_agent_acceptance.json` remained `pending_real_part4_agent_run` with zero
+runs and METRICS.md remained pending. No failed real-run artifact was present.
+No real qwen3:8b inference was run in the cloud.
+
+Behavior change:
+- default Ollama per-request timeout: 20 seconds -> 60 seconds
+- optional non-secret override: `HW7_PART4_OLLAMA_TIMEOUT_SECONDS`
+- finite positive values are accepted; values above 120 are capped at 120
+- zero, negative, non-numeric, NaN, and infinite values fail closed
+- overall agent wall-clock budget remains 120 seconds
+- HTTP model timeouts map to `wall_clock_budget_exhausted`; the CLI exits
+  nonzero with a concise summary and no normal-timeout traceback
+- a failed acceptance does not write pending, partial, or completed raw data
+  or metrics
+
+Checks:
+- Part 4 agent offline: 6/6 PASS, including timeout configuration, simulated
+  `httpx.ReadTimeout`, nonzero controlled CLI exit, artifact preservation, and
+  unchanged framework success paths
+- Part 4 data/security: 12/12 PASS
+- Part 4 committed evidence verification: PASS for snapshot and both scenarios
+- JWT/RBAC regression: 24/24 PASS
+- `.venv/bin/ruff check .`: PASS
+- `.venv/bin/python -m pip check`: PASS
+- frontend lint/build: PASS; 96 modules built (not browser E2E)
+- zsh helper syntax and `git diff --check`: PASS
+- pre-commit Ruff hook: PASS

@@ -34,6 +34,18 @@ preflight first:
 reports/hw07/part4_agent_mac.zsh preflight
 ```
 
+The Ollama request timeout defaults to 60 seconds. It is configurable with the
+non-secret `HW7_PART4_OLLAMA_TIMEOUT_SECONDS` environment variable when a
+slower Mac needs a different bounded value:
+
+```zsh
+export HW7_PART4_OLLAMA_TIMEOUT_SECONDS=90
+```
+
+The value must be finite and positive. Values above 120 are capped at 120;
+zero, negative, non-numeric, NaN, and infinite values are rejected. This does
+not change the separate 120-second overall agent wall-clock budget.
+
 Run the two real acceptance scenarios separately for readable screenshots:
 
 ```zsh
@@ -44,6 +56,11 @@ reports/hw07/part4_agent_mac.zsh pay_per_use_wins
 Separate acceptance commands merge by scenario, so the second run preserves
 the first run and changes the pending metrics section to completed only after
 both verified scenarios exist.
+
+A controlled model request timeout exits nonzero and prints `TASK_SUCCESS:
+false`, `STOP_REASON: wall_clock_budget_exhausted`, and a short error without a
+Python traceback. A failed run does not overwrite pending, partial, or already
+completed raw results and metrics.
 
 The acceptance fixture's expected winner is passed only to the deterministic
 post-run verifier. It is never included in model messages. Completed real-model
@@ -78,7 +95,8 @@ JWT, raw HTML, secret, or hidden reasoning.
 The model configuration is `qwen3:8b`, temperature `0.0`, seed `2974`,
 reasoning disabled, `num_ctx=4096`, and `num_predict=1024`. The framework
 recursion limit is 50, with at most 12 actual tool calls and 120 seconds wall
-time. Explicit stops include `success`, `tool_call_budget_exhausted`,
+time. The default bounded Ollama request timeout is 60 seconds. Explicit stops
+include `success`, `tool_call_budget_exhausted`,
 `wall_clock_budget_exhausted`, `recursion_limit`, `malformed_tool_envelope`,
 `invalid_final_response`, and `verification_failed`.
 
