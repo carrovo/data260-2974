@@ -12,9 +12,10 @@ from hw8_config import (
     RESPONSE_TOPIC,
     WORKER_GROUP_ID,
 )
-from hw8_messages import process_request
+from hw8_messages import process_request_idempotently
 
 entities: dict[str, dict[str, Any]] = {}
+processed_requests: dict[str, dict[str, Any]] = {}
 
 
 def log_json(label: str, value: object) -> None:
@@ -61,7 +62,18 @@ async def run_worker() -> None:
             )
             log_json("[WORKER] REQUEST", request)
 
-            response = process_request(request, entities)
+            response = process_request_idempotently(
+                request,
+                entities,
+                processed_requests,
+            )
+            if response.get("idempotent_replay") is True:
+                print(
+                    "[WORKER] IDEMPOTENT REPLAY "
+                    f"correlation_id={correlation_id} "
+                    f"entity_count={len(entities)}",
+                    flush=True,
+                )
             print(
                 f"[WORKER] PROCESSED operation={operation} "
                 f"correlation_id={correlation_id}",

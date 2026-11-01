@@ -1,5 +1,6 @@
 """Pure validation and domain logic for HW8 Kafka listing messages."""
 
+import json
 from collections.abc import Callable, MutableMapping
 from typing import Any
 from uuid import uuid4
@@ -21,6 +22,8 @@ REQUIRED_LISTING_FIELDS = (
     "propertyType",
     "monthlyRent",
 )
+
+IdempotencyCache = MutableMapping[str, dict[str, Any]]
 
 
 def error_response(correlation_id: object, error: str) -> dict[str, Any]:
@@ -154,3 +157,58 @@ def process_request(
         }
 
     return error_response(correlation_id, "Unknown operation")
+
+
+def request_fingerprint(request: dict[str, Any]) -> str:
+    """Serialize side-effect-relevant request fields deterministically."""
+
+    relevant = {
+        "reply_to": request.get("reply_to"),
+        "operation": request.get("operation"),
+        "data": request.get("data"),
+    }
+    return json.dumps(
+        relevant,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    )
+
+
+def process_request_idempotently(
+    request: object,
+    entities: MutableMapping[str, dict[str, Any]],
+    cache: IdempotencyCache,
+    id_factory: Callable[[], str] | None = None,
+) -> dict[str, Any]:
+    """Return a cached response for an exact correlation-ID replay."""
+
+    if not isinstance(request, dict):
+        return process_request(request, entities, id_factory=id_factory)
+
+    correlation_id = request.get("correlation_id")
+    if not isinstance(correlation_id, str) or not correlation_id.strip():
+        return process_request(request, entities, id_factory=id_factory)
+
+    fingerprint = request_fingerprint(request)
+    cached = cache.get(correlation_id)
+    if cached is not None:
+        if cached["fingerprint"] != fingerprint:
+            return error_response(
+                correlation_id,
+                "correlation_id reused with different request",
+            )
+        replay_response = dict(cached["response"])
+        replay_response["idempotent_replay"] = True
+        return replay_response
+
+    response = process_request(
+        request,
+        entities,
+        id_factory=id_factory,
+    )
+    cache[correlation_id] = {
+        "fingerprint": fingerprint,
+        "response": dict(response),
+    }
+    return response

@@ -1,0 +1,23 @@
+{
+  "correlation_id": "807ddbd6-e574-48dd-8395-872307fa2566",
+  "extra_side_effect": false,
+  "first_entity_id": "604ad416-edc4-425f-b49a-e6e534349094",
+  "first_response": {
+    "correlation_id": "807ddbd6-e574-48dd-8395-872307fa2566",
+    "entity_id": "604ad416-edc4-425f-b49a-e6e534349094",
+    "message": "Rental listing created",
+    "success": true
+  },
+  "label": "after_fix",
+  "same_correlation_id": true,
+  "same_entity_id": true,
+  "scenario": "duplicate_delivery",
+  "second_entity_id": "604ad416-edc4-425f-b49a-e6e534349094",
+  "second_response": {
+    "correlation_id": "807ddbd6-e574-48dd-8395-872307fa2566",
+    "entity_id": "604ad416-edc4-425f-b49a-e6e534349094",
+    "idempotent_replay": true,
+    "message": "Rental listing created",
+    "success": true
+  }
+}
