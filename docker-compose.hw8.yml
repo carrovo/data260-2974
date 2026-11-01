@@ -47,6 +47,26 @@ services:
           --create --if-not-exists \
           --topic s2974_entity_responses \
           --partitions 1 --replication-factor 1
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka:19092 \
+          --create --if-not-exists \
+          --topic s2974_inbox \
+          --partitions 1 --replication-factor 1
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka:19092 \
+          --create --if-not-exists \
+          --topic s2974_tasks \
+          --partitions 2 --replication-factor 1
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka:19092 \
+          --create --if-not-exists \
+          --topic s2974_drafts \
+          --partitions 1 --replication-factor 1
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka:19092 \
+          --create --if-not-exists \
+          --topic s2974_final \
+          --partitions 1 --replication-factor 1
 
   worker:
     build:
@@ -92,3 +112,51 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
+
+  planner:
+    build:
+      context: .
+      dockerfile: code/Dockerfile.hw8
+    container_name: s2974-hw8-planner
+    command: ["python", "planner.py"]
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: qwen3:8b
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  writer:
+    build:
+      context: .
+      dockerfile: code/Dockerfile.hw8
+    container_name: s2974-hw8-writer
+    command: ["python", "writer.py"]
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: qwen3:8b
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  reviewer:
+    build:
+      context: .
+      dockerfile: code/Dockerfile.hw8
+    container_name: s2974-hw8-reviewer
+    command: ["python", "reviewer.py"]
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: qwen3:8b
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
