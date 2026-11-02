@@ -1,0 +1,21 @@
+{
+  "completed_after_restart": true,
+  "completed_at": "2026-11-01T23:15:29.762812+00:00",
+  "correlation_id": "4436d794-d1ce-493c-89ac-1a3394cb7e54",
+  "final_message": {
+    "offset": 2,
+    "partition": 0,
+    "topic": "s2974_final",
+    "value": {
+      "answer": "What should a renter verify before signing a lease?\n\nBefore signing a lease, a renter should verify the listing, costs, lease terms, and landlord. First, confirm that the rental listing is legitimate by checking the property's address and ensuring it matches the listing. Next, review all costs, including rent, utilities, and any additional fees, to avoid unexpected charges. Carefully read the lease terms to understand the duration, rules, and responsibilities of both parties. Finally, verify the landlord's identity and contact information to ensure you're renting from a legitimate owner.",
+      "correlation_id": "4436d794-d1ce-493c-89ac-1a3394cb7e54",
+      "status": "approved"
+    }
+  },
+  "processing_delay_seconds": 60.0,
+  "scenario": "consumer_killed_mid_work",
+  "sent_at": "2026-11-01T23:10:17.309217+00:00",
+  "task_offset": 0,
+  "task_partition": 1,
+  "task_topic": "s2974_tasks"
+}

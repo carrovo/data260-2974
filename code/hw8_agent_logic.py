@@ -3,6 +3,17 @@
 from typing import Any
 
 
+def processing_delay_seconds(message: dict[str, Any]) -> float:
+    """Return a bounded test delay requested by a failure-test message."""
+
+    value = message.get("processing_delay_seconds", 0)
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError("processing_delay_seconds must be numeric")
+    if value < 0 or value > 120:
+        raise ValueError("processing_delay_seconds must be between 0 and 120")
+    return float(value)
+
+
 def required_text(message: dict[str, Any], field: str) -> str:
     """Return a required non-empty string field or raise a clean error."""
 

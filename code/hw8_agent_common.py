@@ -9,6 +9,7 @@ from urllib.request import Request, urlopen
 
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 
+from hw8_agent_logic import processing_delay_seconds
 from hw8_config import (
     KAFKA_BOOTSTRAP_SERVERS,
     OLLAMA_BASE_URL,
@@ -107,6 +108,23 @@ async def run_agent(
                 flush=True,
             )
             log_json(f"[{agent_name}] INPUT", source)
+
+            delay_seconds = processing_delay_seconds(source)
+            print(
+                f"[{agent_name}] PROCESSING STARTED "
+                f"partition={record.partition} offset={record.offset} "
+                f"correlation_id={correlation_id} "
+                f"delay_seconds={delay_seconds:g}",
+                flush=True,
+            )
+            if delay_seconds:
+                await asyncio.sleep(delay_seconds)
+                print(
+                    f"[{agent_name}] DELAY COMPLETE "
+                    f"partition={record.partition} offset={record.offset} "
+                    f"correlation_id={correlation_id}",
+                    flush=True,
+                )
 
             prompt = prompt_builder(source)
             model_output = await asyncio.to_thread(
