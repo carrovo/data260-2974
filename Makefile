@@ -1,4 +1,4 @@
-.PHONY: mongo-up mongo-down test-hw06 experiment-hw06 verify-hw06
+.PHONY: mongo-up mongo-down test-hw06 experiment-hw06 verify-hw06 verify-hw08
 
 mongo-up:
 	docker compose -f docker-compose.hw6.yml up -d
@@ -15,3 +15,6 @@ experiment-hw06:
 
 verify-hw06:
 	python code/verify_hw6.py
+
+verify-hw08:
+	PYTHONPATH=code .venv/bin/python code/verify_hw8.py
