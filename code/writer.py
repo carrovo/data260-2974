@@ -1,10 +1,12 @@
 """Writer process for the HW8 Kafka agent pipeline."""
 
 import asyncio
+import os
 
 from hw8_agent_common import run_agent
 from hw8_agent_logic import writer_message, writer_prompt
 from hw8_config import DRAFTS_TOPIC, TASKS_TOPIC, WRITER_GROUP_ID
+from hw8_ordering import run_ordering_writer
 
 SYSTEM_PROMPT = (
     "You are the Writer for a rental-housing assistant. Produce a useful, "
@@ -14,6 +16,10 @@ SYSTEM_PROMPT = (
 
 async def main() -> None:
     """Run the Writer as an independent Kafka consumer and producer."""
+
+    if os.getenv("HW8_ORDERING_MODE") == "1":
+        await run_ordering_writer()
+        return
 
     await run_agent(
         agent_name="WRITER",

@@ -72,6 +72,11 @@ services:
           --create --if-not-exists \
           --topic s2974_dead_letter \
           --partitions 1 --replication-factor 1
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka:19092 \
+          --create --if-not-exists \
+          --topic s2974_ordering_results \
+          --partitions 1 --replication-factor 1
 
   worker:
     build:
@@ -149,6 +154,18 @@ services:
       OLLAMA_MODEL: qwen3:8b
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  ordering-writer:
+    build:
+      context: .
+      dockerfile: code/Dockerfile.hw8
+    command: ["python", "writer.py"]
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      HW8_ORDERING_MODE: "1"
 
   reviewer:
     build:
