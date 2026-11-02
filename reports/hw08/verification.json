@@ -1,0 +1,120 @@
+{
+  "branch": "hw8-work",
+  "checks": [
+    {
+      "detail": "Kafka, kafka-init, Worker, and FastAPI compose services started",
+      "name": "compose_stack_started",
+      "passed": true
+    },
+    {
+      "detail": "HTTP 200 health response reported both required topics",
+      "name": "api_health",
+      "passed": true
+    },
+    {
+      "detail": "CREATE_LISTING completed through FastAPI and Kafka",
+      "name": "live_create_listing",
+      "passed": true
+    },
+    {
+      "detail": "GET_LISTING returned the entity created in the same live run",
+      "name": "live_get_listing",
+      "passed": true
+    },
+    {
+      "detail": "test_create_then_get_round_trip (__main__.Part1MessageTests.test_create_then_get_round_trip) ... ok\ntest_empty_and_invalid_values_are_rejected (__main__.Part1MessageTests.test_empty_and_invalid_values_are_rejected) ... ok\ntest_invalid_envelope_preserves_available_correlation_id (__main__.Part1MessageTests.test_invalid_envelope_preserves_available_correlation_id) ... ok\ntest_missing_required_field_is_rejected (__main__.Part1MessageTests.test_missing_required_field_is_rejected) ... ok\ntest_unknown_entity_is_rejected (__main__.Part1MessageTests.test_unknown_entity_is_rejected) ... ok\ntest_unknown_operation_is_rejected (__main__.Part1MessageTests.test_unknown_operation_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK",
+      "name": "offline_test_hw8_part1_offline",
+      "passed": true
+    },
+    {
+      "detail": "ine_preserves_correlation_id (__main__.Part2AgentLogicTests.test_complete_pipeline_preserves_correlation_id) ... ok\ntest_final_json_has_required_fields (__main__.Part2AgentLogicTests.test_final_json_has_required_fields) ... ok\ntest_missing_required_field_is_rejected (__main__.Part2AgentLogicTests.test_missing_required_field_is_rejected) ... ok\ntest_planner_prompt_contains_question (__main__.Part2AgentLogicTests.test_planner_prompt_contains_question) ... ok\ntest_reviewer_prompt_contains_draft (__main__.Part2AgentLogicTests.test_reviewer_prompt_contains_draft) ... ok\ntest_writer_prompt_contains_question_and_plan (__main__.Part2AgentLogicTests.test_writer_prompt_contains_question_and_plan) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK",
+      "name": "offline_test_hw8_part2_offline",
+      "passed": true
+    },
+    {
+      "detail": "test_exact_replay_returns_same_entity_without_side_effect (__main__.IdempotencyTests.test_exact_replay_returns_same_entity_without_side_effect) ... ok\ntest_same_correlation_with_different_data_is_rejected (__main__.IdempotencyTests.test_same_correlation_with_different_data_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK",
+      "name": "offline_test_hw8_part3_idempotency",
+      "passed": true
+    },
+    {
+      "detail": "test_boolean_delay_is_rejected (__main__.ConsumerDeathDelayTests.test_boolean_delay_is_rejected) ... ok\ntest_missing_delay_defaults_to_zero (__main__.ConsumerDeathDelayTests.test_missing_delay_defaults_to_zero) ... ok\ntest_numeric_delay_is_accepted (__main__.ConsumerDeathDelayTests.test_numeric_delay_is_accepted) ... ok\ntest_out_of_range_delay_is_rejected (__main__.ConsumerDeathDelayTests.test_out_of_range_delay_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK",
+      "name": "offline_test_hw8_part3_consumer_death",
+      "passed": true
+    },
+    {
+      "detail": "test_dead_letter_preserves_failure_context (__main__.PoisonMessageTests.test_dead_letter_preserves_failure_context) ... ok\ntest_json_array_is_rejected (__main__.PoisonMessageTests.test_json_array_is_rejected) ... ok\ntest_malformed_json_is_rejected (__main__.PoisonMessageTests.test_malformed_json_is_rejected) ... ok\ntest_valid_json_object_is_decoded (__main__.PoisonMessageTests.test_valid_json_object_is_decoded) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK",
+      "name": "offline_test_hw8_part3_poison_dlq",
+      "passed": true
+    },
+    {
+      "detail": "test_entity_key_is_stable_for_related_messages (__main__.OrderingTests.test_entity_key_is_stable_for_related_messages) ... ok\ntest_messages_are_deterministic_from_verify_seed (__main__.OrderingTests.test_messages_are_deterministic_from_verify_seed) ... ok\ntest_no_key_mode_has_no_message_key (__main__.OrderingTests.test_no_key_mode_has_no_message_key) ... ok\ntest_summary_detects_cross_partition_reordering (__main__.OrderingTests.test_summary_detects_cross_partition_reordering) ... ok\ntest_summary_detects_entity_key_order (__main__.OrderingTests.test_summary_detects_entity_key_order) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK",
+      "name": "offline_test_hw8_part3_ordering",
+      "passed": true
+    },
+    {
+      "detail": "replay created a second entity before the fix and reused one after it",
+      "name": "duplicate_before_and_after",
+      "passed": true
+    },
+    {
+      "detail": "partition 1 offset 0 completed with approved status after restart",
+      "name": "consumer_death_redelivery",
+      "passed": true
+    },
+    {
+      "detail": "poison task moved to DLQ after 3 attempts and later task completed",
+      "name": "poison_message_dlq",
+      "passed": true
+    },
+    {
+      "detail": "20-message no-key and entity-key runs passed all six checks",
+      "name": "partition_key_ordering",
+      "passed": true
+    },
+    {
+      "detail": "all 23 labeled screenshots are present",
+      "name": "required_screenshots",
+      "passed": true
+    },
+    {
+      "detail": "all 5 machine-readable failure files are present",
+      "name": "required_raw_evidence",
+      "passed": true
+    },
+    {
+      "detail": "AI use, metrics, and run log documents are present",
+      "name": "required_documentation",
+      "passed": true
+    },
+    {
+      "detail": "required documentation and evidence are tracked by Git",
+      "name": "required_files_tracked",
+      "passed": true
+    },
+    {
+      "detail": "AI_USE.md answers all four required questions",
+      "name": "ai_use_four_questions",
+      "passed": true
+    },
+    {
+      "detail": "count-only Google API key pattern scan found zero matches",
+      "name": "secret_pattern_scan",
+      "passed": true
+    }
+  ],
+  "commit_hash": "60c16977c37df9a07ee65166388eb4185dbb1a91",
+  "configuration": {
+    "domain_id": 6,
+    "port_base": 8274,
+    "prefix": "s2974",
+    "seed": 2974,
+    "verify_seed": 262974
+  },
+  "generated_at": "2026-11-02T04:31:32.070946Z",
+  "homework": 8,
+  "model": "qwen3:8b",
+  "passed": true,
+  "scope": "live Kafka CREATE/GET round trip, deterministic offline suites, recorded Part 3 evidence, and required tracked artifacts",
+  "sid4": 2974,
+  "student": "Xuanhua Li"
+}
