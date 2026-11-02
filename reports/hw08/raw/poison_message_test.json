@@ -1,0 +1,50 @@
+{
+  "dead_letter_result": {
+    "offset": 0,
+    "partition": 0,
+    "topic": "s2974_dead_letter",
+    "value": {
+      "attempts": 3,
+      "correlation_id": "poison-b6dedf15-8c90-4b44-a2ea-68b698731a95",
+      "error_message": "plan is required",
+      "error_type": "ValueError",
+      "failed_agent": "WRITER",
+      "original_message": {
+        "correlation_id": "poison-b6dedf15-8c90-4b44-a2ea-68b698731a95",
+        "failure_scenario": "poison_message",
+        "question": "This poison task intentionally has no plan field.",
+        "stage": "planned"
+      },
+      "raw_value": "{\"correlation_id\": \"poison-b6dedf15-8c90-4b44-a2ea-68b698731a95\", \"stage\": \"planned\", \"question\": \"This poison task intentionally has no plan field.\", \"failure_scenario\": \"poison_message\"}",
+      "source_offset": 1,
+      "source_partition": 1,
+      "source_topic": "s2974_tasks"
+    }
+  },
+  "later_final_result": {
+    "offset": 3,
+    "partition": 0,
+    "topic": "s2974_final",
+    "value": {
+      "answer": "Before paying a deposit, a renter should verify the property details, confirm the identity of the landlord, review the written lease agreement, understand all costs involved, and ensure they are using a secure payment method.",
+      "correlation_id": "valid-b6dedf15-8c90-4b44-a2ea-68b698731a95",
+      "status": "approved"
+    }
+  },
+  "later_message_completed": true,
+  "later_valid_task": {
+    "correlation_id": "valid-b6dedf15-8c90-4b44-a2ea-68b698731a95",
+    "offset": 2,
+    "partition": 1,
+    "topic": "s2974_tasks"
+  },
+  "max_attempts": 3,
+  "poison_task": {
+    "correlation_id": "poison-b6dedf15-8c90-4b44-a2ea-68b698731a95",
+    "offset": 1,
+    "partition": 1,
+    "topic": "s2974_tasks"
+  },
+  "same_task_partition": true,
+  "scenario": "poison_message"
+}

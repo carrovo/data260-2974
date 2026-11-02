@@ -23,6 +23,7 @@ INBOX_TOPIC = f"{PREFIX}_inbox"
 TASKS_TOPIC = f"{PREFIX}_tasks"
 DRAFTS_TOPIC = f"{PREFIX}_drafts"
 FINAL_TOPIC = f"{PREFIX}_final"
+DEAD_LETTER_TOPIC = f"{PREFIX}_dead_letter"
 PLANNER_GROUP_ID = f"{PREFIX}_planner"
 WRITER_GROUP_ID = f"{PREFIX}_writer"
 REVIEWER_GROUP_ID = f"{PREFIX}_reviewer"
@@ -30,3 +31,7 @@ REVIEWER_GROUP_ID = f"{PREFIX}_reviewer"
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen3:8b")
 AGENT_TIMEOUT_SECONDS = float(os.getenv("HW8_AGENT_TIMEOUT_SECONDS", "180"))
+AGENT_MAX_ATTEMPTS = int(os.getenv("HW8_AGENT_MAX_ATTEMPTS", "3"))
+AGENT_RETRY_BACKOFF_SECONDS = float(
+    os.getenv("HW8_AGENT_RETRY_BACKOFF_SECONDS", "0.25")
+)
