@@ -1,0 +1,21 @@
+{
+  "cached_version": "1",
+  "correct_answer_after_update": "Rental listing 4 (S2974-000004) has a monthly rent of $1,725.00.",
+  "database_restored": true,
+  "fresh_answer_returned": "Rental listing 4 (S2974-000004) has a monthly rent of $1,725.00.",
+  "invalidation_version": "2",
+  "listing_id": 4,
+  "original_rent": "1700.00",
+  "query": "What is the monthly rent for rental listing 4?",
+  "refreshed_version": "2",
+  "restored_data_version": "3",
+  "restored_rent": "1700.00",
+  "stale_answer_returned": "Rental listing 4 (S2974-000004) has a monthly rent of $1,700.00.",
+  "stale_entry_rejected": true,
+  "stale_hit": true,
+  "strategy": "After a relevant relational write, increment the Redis data-version key. Each cache entry stores the version from creation time. A version-aware lookup deletes and rejects an entry when its stored version differs from the current version.",
+  "student_name": "Xuanhua Li",
+  "threshold": 0.9,
+  "tradeoff": "This coarse global version is simple and prevents stale answers, but any relevant listing update invalidates older semantic entries, reducing hit rate and causing extra agent recomputation.",
+  "updated_rent": "1725.00"
+}

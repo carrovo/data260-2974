@@ -1,0 +1,18 @@
+Student: Xuanhua Li
+=== HW9 Part 3.5: Stale Answer and Invalidation ===
+Query: What is the monthly rent for rental listing 4?
+Cached data version: 1
+Original database rent: $1700.00
+Updated database rent: $1725.00
+Stale cache hit: True
+Stale answer returned: Rental listing 4 (S2974-000004) has a monthly rent of $1,700.00.
+Correct answer after update: Rental listing 4 (S2974-000004) has a monthly rent of $1,725.00.
+Data version after update: 2
+Stale entry rejected: True
+Fresh answer returned: Rental listing 4 (S2974-000004) has a monthly rent of $1,725.00.
+Strategy: After a relevant relational write, increment the Redis data-version key. Each cache entry stores the version from creation time. A version-aware lookup deletes and rejects an entry when its stored version differs from the current version.
+Trade-off: This coarse global version is simple and prevents stale answers, but any relevant listing update invalidates older semantic entries, reducing hit rate and causing extra agent recomputation.
+Database restored: True
+Restored rent: $1700.00
+Restored data version: 3
+STALE_INVALIDATION_STATUS: PASS

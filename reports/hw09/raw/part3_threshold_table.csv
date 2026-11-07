@@ -1,0 +1,6 @@
+threshold,hit_rate_pct,false_hit_rate_pct,mean_latency_ms,false_hit_count,false_miss_count,accuracy_pct,total_cost
+0.75,52.5,25.0,14.029,5,4,77.5,10.38
+0.8,45.0,20.0,17.176,4,6,75.0,8.44
+0.85,32.5,10.0,16.318,2,9,72.5,4.54
+0.9,30.0,5.0,16.879,1,9,75.0,2.56
+0.95,27.5,5.0,13.629,1,10,72.5,2.58

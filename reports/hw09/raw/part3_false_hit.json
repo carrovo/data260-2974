@@ -1,0 +1,13 @@
+{
+  "cached_answer_returned": "Rental listing 4 (S2974-000004) has a monthly rent of $1,700.00.",
+  "cached_query": "What is the monthly rent for rental listing 4?",
+  "case_id": "similar_miss_02",
+  "correct_answer": "Rental listing 5 (S2974-000005) has a monthly rent of $1,750.00.",
+  "data_version": "1",
+  "embedding_confusion": "The two questions have nearly identical wording and intent; only the numeric entity identifier changes from 4 to 5. The embedding emphasizes the shared monthly-rent semantics and underweights the record ID, even though that ID changes the correct database answer.",
+  "incoming_query": "What is the monthly rent for rental listing 5?",
+  "is_false_hit": true,
+  "similarity": 0.954607,
+  "student_name": "Xuanhua Li",
+  "threshold": 0.95
+}

@@ -1,0 +1,16 @@
+Completed threshold 0.75: hits=21/40, false_hits=5, false_misses=4
+Completed threshold 0.80: hits=18/40, false_hits=4, false_misses=6
+Completed threshold 0.85: hits=13/40, false_hits=2, false_misses=9
+Completed threshold 0.90: hits=12/40, false_hits=1, false_misses=9
+Completed threshold 0.95: hits=11/40, false_hits=1, false_misses=10
+
+Student: Xuanhua Li
+Frozen dataset SHA-256: d890964a9274795d0afb18828776e13ed863c3e391024aebb6063750b6aea179
+=== HW9 Part 3.2 Threshold Sweep ===
+Threshold | Hit rate | False-hit rate | Mean latency (ms) | Total cost
+0.75      | 52.5%    | 25.0%          | 14.029             | PENDING 3.4
+0.80      | 45.0%    | 20.0%          | 17.176             | PENDING 3.4
+0.85      | 32.5%    | 10.0%          | 16.318             | PENDING 3.4
+0.90      | 30.0%    | 5.0%          | 16.879             | PENDING 3.4
+0.95      | 27.5%    | 5.0%          | 13.629             | PENDING 3.4
+PART3_SWEEP_STATUS: PASS

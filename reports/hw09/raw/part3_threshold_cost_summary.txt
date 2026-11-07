@@ -1,0 +1,12 @@
+Student: Xuanhua Li
+=== HW9 Part 3: Threshold Sweep and Cost Selection ===
+Threshold | Hit rate | False-hit rate | Mean latency | Total cost
+0.75      |  52.5%   |   25.0%        |  14.029 ms   | $10.38
+0.80      |  45.0%   |   20.0%        |  17.176 ms   | $8.44
+0.85      |  32.5%   |   10.0%        |  16.318 ms   | $4.54
+0.90      |  30.0%   |    5.0%        |  16.879 ms   | $2.56
+0.95      |  27.5%   |    5.0%        |  13.629 ms   | $2.58
+
+Selected threshold: 0.90
+Reason: Threshold 0.90 has the lowest modeled total cost ($2.56). It reduces false hits to one while avoiding the additional miss introduced at 0.95.
+THRESHOLD_COST_STATUS: PASS

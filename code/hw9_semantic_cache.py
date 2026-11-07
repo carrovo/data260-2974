@@ -17,7 +17,7 @@ EMBEDDING_MODEL_NAME = os.getenv(
     "sentence-transformers/all-MiniLM-L6-v2",
 )
 EMBEDDING_DIMENSION = 384
-SEMANTIC_THRESHOLD = float(os.getenv("HW9_SEMANTIC_THRESHOLD", "0.85"))
+SEMANTIC_THRESHOLD = float(os.getenv("HW9_SEMANTIC_THRESHOLD", "0.90"))
 SEMANTIC_INDEX = f"{PREFIX}:semantic:index"
 SEMANTIC_KEY_PREFIX = f"{PREFIX}:semantic:entry:"
 DATA_VERSION_KEY = f"{PREFIX}:semantic:data_version"

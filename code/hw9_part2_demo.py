@@ -54,7 +54,7 @@ TEST_QUERIES = [
 async def main() -> None:
     """Clear only semantic entries, execute ten queries, and print measurements."""
 
-    cache = SemanticResponseCache()
+    cache = SemanticResponseCache(threshold=0.85)
     deleted = cache.clear_entries(reset_data_version=True)
     print(f"Student: {STUDENT_NAME}")
     print("=== HW9 Part 2: Semantic Response Cache ===")

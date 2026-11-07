@@ -1,0 +1,13 @@
+Student: Xuanhua Li
+=== HW9 Part 3.4: Cost Model and Threshold Choice ===
+Cache-miss cost: $0.02
+False-hit/support cost: $2.00
+Threshold | Misses | False hits | Total cost | Accuracy
+0.75      |     19 |          5 | $    10.38 | 77.5%
+0.80      |     22 |          4 | $     8.44 | 75.0%
+0.85      |     27 |          2 | $     4.54 | 72.5%
+0.90      |     28 |          1 | $     2.56 | 75.0%
+0.95      |     29 |          1 | $     2.58 | 72.5%
+Selected threshold to ship: 0.90
+Reason: Threshold 0.90 has the lowest modeled total cost ($2.56). It reduces false hits to one while avoiding the additional miss introduced at 0.95.
+COST_MODEL_STATUS: PASS
