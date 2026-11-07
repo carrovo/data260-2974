@@ -1,0 +1,294 @@
+metadata:
+  assignment: "DATA 260 Homework 9 Part 3.1"
+  student_name: "Xuanhua Li"
+  prefix: "s2974"
+  domain: "rental listings"
+  schema_version: 1
+  frozen_before_threshold_sweep: true
+  labeling_policy: "Labels were assigned before observing threshold results."
+  category_counts:
+    exact_duplicate: 10
+    paraphrase_should_hit: 10
+    similar_different_answer_should_miss: 10
+    unrelated_should_miss: 10
+
+cases:
+  - case_id: "exact_01"
+    category: "exact_duplicate"
+    cached_query: "What is the monthly rent for rental listing 4?"
+    incoming_query: "What is the monthly rent for rental listing 4?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_02"
+    category: "exact_duplicate"
+    cached_query: "How many units are available for rental listing 4?"
+    incoming_query: "How many units are available for rental listing 4?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_03"
+    category: "exact_duplicate"
+    cached_query: "What is the address of rental listing 4?"
+    incoming_query: "What is the address of rental listing 4?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_04"
+    category: "exact_duplicate"
+    cached_query: "What property type is rental listing 4?"
+    incoming_query: "What property type is rental listing 4?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_05"
+    category: "exact_duplicate"
+    cached_query: "What should a renter verify before applying for a rental listing?"
+    incoming_query: "What should a renter verify before applying for a rental listing?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_06"
+    category: "exact_duplicate"
+    cached_query: "What should a renter ask about a security deposit before signing a lease?"
+    incoming_query: "What should a renter ask about a security deposit before signing a lease?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_07"
+    category: "exact_duplicate"
+    cached_query: "How should a tenant document a maintenance request?"
+    incoming_query: "How should a tenant document a maintenance request?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_08"
+    category: "exact_duplicate"
+    cached_query: "Which utilities are included with rental listing 4?"
+    incoming_query: "Which utilities are included with rental listing 4?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_09"
+    category: "exact_duplicate"
+    cached_query: "What documents are normally required for a rental application?"
+    incoming_query: "What documents are normally required for a rental application?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "exact_10"
+    category: "exact_duplicate"
+    cached_query: "How can a renter check whether a rental listing is legitimate?"
+    incoming_query: "How can a renter check whether a rental listing is legitimate?"
+    expected_hit: true
+    rationale: "The incoming query is an exact duplicate of the cached query."
+
+  - case_id: "paraphrase_01"
+    category: "paraphrase_should_hit"
+    cached_query: "What is the monthly rent for rental listing 4?"
+    incoming_query: "How much does listing 4 cost per month?"
+    expected_hit: true
+    rationale: "Both queries request the same monthly-rent fact for the same record."
+
+  - case_id: "paraphrase_02"
+    category: "paraphrase_should_hit"
+    cached_query: "How many units are available for rental listing 4?"
+    incoming_query: "What is the number of currently available units in listing 4?"
+    expected_hit: true
+    rationale: "Both queries request the same availability fact for listing 4."
+
+  - case_id: "paraphrase_03"
+    category: "paraphrase_should_hit"
+    cached_query: "What is the address of rental listing 4?"
+    incoming_query: "Where is listing 4 located?"
+    expected_hit: true
+    rationale: "Location and address refer to the same fact for the same listing."
+
+  - case_id: "paraphrase_04"
+    category: "paraphrase_should_hit"
+    cached_query: "What property type is rental listing 4?"
+    incoming_query: "Is listing 4 an apartment, house, or another kind of property?"
+    expected_hit: true
+    rationale: "Both queries ask for the property type of listing 4."
+
+  - case_id: "paraphrase_05"
+    category: "paraphrase_should_hit"
+    cached_query: "What should a renter verify before applying for a rental listing?"
+    incoming_query: "Which details should tenants check before submitting a rental application?"
+    expected_hit: true
+    rationale: "Both queries request the same pre-application verification guidance."
+
+  - case_id: "paraphrase_06"
+    category: "paraphrase_should_hit"
+    cached_query: "What should a renter ask about a security deposit before signing a lease?"
+    incoming_query: "Which security-deposit questions should a tenant ask before lease signing?"
+    expected_hit: true
+    rationale: "Both queries request the same security-deposit guidance."
+
+  - case_id: "paraphrase_07"
+    category: "paraphrase_should_hit"
+    cached_query: "How should a tenant document a maintenance request?"
+    incoming_query: "What is the best way for renters to keep records of repair requests?"
+    expected_hit: true
+    rationale: "Both queries request methods for documenting a maintenance issue."
+
+  - case_id: "paraphrase_08"
+    category: "paraphrase_should_hit"
+    cached_query: "Which utilities are included with rental listing 4?"
+    incoming_query: "Does the rent for listing 4 cover any utilities?"
+    expected_hit: true
+    rationale: "Both queries request the included-utilities fact for listing 4."
+
+  - case_id: "paraphrase_09"
+    category: "paraphrase_should_hit"
+    cached_query: "What documents are normally required for a rental application?"
+    incoming_query: "Which paperwork does a tenant usually need when applying to rent?"
+    expected_hit: true
+    rationale: "Both queries ask for standard rental-application documents."
+
+  - case_id: "paraphrase_10"
+    category: "paraphrase_should_hit"
+    cached_query: "How can a renter check whether a rental listing is legitimate?"
+    incoming_query: "What steps can tenants take to confirm that a listing is not a scam?"
+    expected_hit: true
+    rationale: "Both queries request the same listing-legitimacy guidance."
+
+  - case_id: "similar_miss_01"
+    category: "similar_different_answer_should_miss"
+    cached_query: "What is the monthly rent for rental listing 4?"
+    incoming_query: "How many units are available for rental listing 4?"
+    expected_hit: false
+    rationale: "The listing is the same, but rent and available-unit count require different answers."
+
+  - case_id: "similar_miss_02"
+    category: "similar_different_answer_should_miss"
+    cached_query: "What is the monthly rent for rental listing 4?"
+    incoming_query: "What is the monthly rent for rental listing 5?"
+    expected_hit: false
+    rationale: "The requested field is the same, but the record ID and correct value differ."
+
+  - case_id: "similar_miss_03"
+    category: "similar_different_answer_should_miss"
+    cached_query: "What is the address of rental listing 4?"
+    incoming_query: "What property type is rental listing 4?"
+    expected_hit: false
+    rationale: "The listing is the same, but address and property type are different facts."
+
+  - case_id: "similar_miss_04"
+    category: "similar_different_answer_should_miss"
+    cached_query: "How much is the security deposit?"
+    incoming_query: "When must the security deposit be returned?"
+    expected_hit: false
+    rationale: "Deposit amount and return timing have different correct answers."
+
+  - case_id: "similar_miss_05"
+    category: "similar_different_answer_should_miss"
+    cached_query: "What is the lease term length?"
+    incoming_query: "What is the move-in date?"
+    expected_hit: false
+    rationale: "Both concern lease timing, but duration and start date are different facts."
+
+  - case_id: "similar_miss_06"
+    category: "similar_different_answer_should_miss"
+    cached_query: "Which utilities are included in the rent?"
+    incoming_query: "Is parking included in the rent?"
+    expected_hit: false
+    rationale: "Utilities and parking are separate amenities with different answers."
+
+  - case_id: "similar_miss_07"
+    category: "similar_different_answer_should_miss"
+    cached_query: "Does the property allow pets?"
+    incoming_query: "Does the property allow smoking?"
+    expected_hit: false
+    rationale: "Pet and smoking policies are distinct even though the questions are structurally similar."
+
+  - case_id: "similar_miss_08"
+    category: "similar_different_answer_should_miss"
+    cached_query: "How much is the rental application fee?"
+    incoming_query: "How much is the monthly rent?"
+    expected_hit: false
+    rationale: "Both ask for a price, but the application fee and rent are different charges."
+
+  - case_id: "similar_miss_09"
+    category: "similar_different_answer_should_miss"
+    cached_query: "What is the property manager's name?"
+    incoming_query: "What is the property manager's email address?"
+    expected_hit: false
+    rationale: "The entity is the same, but name and email are different fields."
+
+  - case_id: "similar_miss_10"
+    category: "similar_different_answer_should_miss"
+    cached_query: "How should a tenant report an emergency repair?"
+    incoming_query: "How should a tenant report a routine repair?"
+    expected_hit: false
+    rationale: "Emergency and routine repairs require different reporting procedures."
+
+  - case_id: "unrelated_01"
+    category: "unrelated_should_miss"
+    cached_query: "What is the monthly rent for rental listing 4?"
+    incoming_query: "What will the weather be in San Francisco tomorrow?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_02"
+    category: "unrelated_should_miss"
+    cached_query: "How many units are available for rental listing 4?"
+    incoming_query: "How do I bake a loaf of sourdough bread?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_03"
+    category: "unrelated_should_miss"
+    cached_query: "What is the address of rental listing 4?"
+    incoming_query: "How can I sort a Python list in descending order?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_04"
+    category: "unrelated_should_miss"
+    cached_query: "What property type is rental listing 4?"
+    incoming_query: "Which planet is closest to the Sun?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_05"
+    category: "unrelated_should_miss"
+    cached_query: "What should a renter verify before applying for a rental listing?"
+    incoming_query: "What exercises strengthen the lower back?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_06"
+    category: "unrelated_should_miss"
+    cached_query: "What should a renter ask about a security deposit before signing a lease?"
+    incoming_query: "How early should I arrive for a domestic flight?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_07"
+    category: "unrelated_should_miss"
+    cached_query: "How should a tenant document a maintenance request?"
+    incoming_query: "How does photosynthesis convert sunlight into energy?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_08"
+    category: "unrelated_should_miss"
+    cached_query: "Which utilities are included with rental listing 4?"
+    incoming_query: "Who wrote the novel Pride and Prejudice?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_09"
+    category: "unrelated_should_miss"
+    cached_query: "What documents are normally required for a rental application?"
+    incoming_query: "How should a beginner tune an acoustic guitar?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
+
+  - case_id: "unrelated_10"
+    category: "unrelated_should_miss"
+    cached_query: "How can a renter check whether a rental listing is legitimate?"
+    incoming_query: "What is the current exchange rate between dollars and euros?"
+    expected_hit: false
+    rationale: "The incoming query is unrelated to rental listings."
