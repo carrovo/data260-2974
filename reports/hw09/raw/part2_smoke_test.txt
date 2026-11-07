@@ -1,0 +1,20 @@
+Student: Xuanhua Li
+=== HW9 Part 2 Smoke Test ===
+Question: What information should a renter verify before applying for a rental listing?
+
+--- Request 1: Expected Cache Miss ---
+[HW9 CACHE MISS] best_similarity=0.0000; running HW8 agents
+[HW9 AGENT] SENT topic=s2974_inbox partition=0 offset=2 correlation_id=f7ddad30-abc6-45e3-b25d-d6e978953808
+is_cached: False
+similarity_score: 0.0000
+latency_ms: 26392.56
+data_version: 1
+
+--- Request 2: Expected Cache Hit ---
+[HW9 CACHE HIT] similarity=1.0000 latency_ms=13.71
+is_cached: True
+similarity_score: 1.0000
+latency_ms: 13.71
+data_version: 1
+
+SMOKE_TEST_STATUS: PASS

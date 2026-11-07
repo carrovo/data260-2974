@@ -15,3 +15,5 @@ DOMAIN_ID = 6
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 VIEW_SYNC_INTERVAL = 10
+
+STUDENT_NAME = os.getenv("HW9_STUDENT_NAME", "Xuanhua Li")
