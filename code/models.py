@@ -161,6 +161,13 @@ class RentalListing(Base):
         nullable=False,
     )
 
+    viewCount: Mapped[int] = mapped_column(
+        Integer,
+        default=0,
+        server_default="0",
+        nullable=False,
+    )
+
     termsAccepted: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,

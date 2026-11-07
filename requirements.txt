@@ -55,6 +55,7 @@ PyJWT==2.10.1
 pymongo==4.8.0
 python-dotenv==1.2.3
 SQLAlchemy==2.0.54
+redis==8.1.0
 ruff==0.14.2
 pre-commit==4.3.0
 mcp[cli]==1.9.4
