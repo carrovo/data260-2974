@@ -1,0 +1,17 @@
+{
+  "split": "training",
+  "inputs": [
+    {
+      "question_id": "train_01",
+      "question": "What is the monthly rent and listing code for rental listing 4?"
+    },
+    {
+      "question_id": "train_02",
+      "question": "Give the monthly rent and listing code for rental listing 5."
+    },
+    {
+      "question_id": "train_03",
+      "question": "How should a tenant document a maintenance request?"
+    }
+  ]
+}

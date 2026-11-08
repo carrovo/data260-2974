@@ -1,0 +1,5 @@
+variant,correct_answers,incorrect_answers,average_attempts,average_latency_ms
+Baseline,0,4,1.0,9351.0
+Evaluator Repair,4,0,2.0,11407.78
+Lesson Memory,4,0,1.25,7167.1
+Validated Improvement,4,0,1.25,6703.9

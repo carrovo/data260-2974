@@ -1,0 +1,20 @@
+Completed Baseline: correct=0/4, average_attempts=1.00
+Completed Evaluator Repair: correct=4/4, average_attempts=2.00
+Completed Lesson Memory: correct=4/4, average_attempts=1.25
+Completed Validated Improvement: correct=4/4, average_attempts=1.25
+
+Student: Xuanhua Li
+=== HW9 Part 4.4: Four System Variants ===
+Held-out test cases: 4
+Test dataset SHA-256: 6ddaf9ed99680be65ead0d1ebbc591d2b15395bd312f1718002bede98392b95c
+Test dataset unchanged: True
+
+Variant               Correct  Incorrect  Avg attempts  Avg latency (ms)
+Baseline                 0         4          1.00          9351.00
+Evaluator Repair         4         0          2.00          11407.78
+Lesson Memory            4         0          1.25          7167.10
+Validated Improvement    4         0          1.25          6703.90
+
+Maximum answer attempts: 2
+Lessons created from test data: False
+PART4_4_STATUS: PASS

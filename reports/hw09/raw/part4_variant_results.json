@@ -1,0 +1,426 @@
+{
+  "student_name": "Xuanhua Li",
+  "test_case_count": 4,
+  "test_dataset": "test_data.json",
+  "test_dataset_sha256_after": "6ddaf9ed99680be65ead0d1ebbc591d2b15395bd312f1718002bede98392b95c",
+  "test_dataset_sha256_before": "6ddaf9ed99680be65ead0d1ebbc591d2b15395bd312f1718002bede98392b95c",
+  "test_dataset_unchanged": true,
+  "test_question_ids": [
+    "test_01",
+    "test_02",
+    "test_03",
+    "test_04"
+  ],
+  "variant_results": [
+    {
+      "allow_revision": false,
+      "case_results": [
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The code and monthly rent for rental listing 4 are not supplied.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer is incorrect. The ground truth provides the code \"S2974-000004\" and the monthly rent of $1,700.00 for rental listing 4, which were not included in the original answer. The answer should be revised to include this information.",
+              "feedback": "Include these ground-truth facts: Rental listing 4 has listing code S2974-000004. Its monthly rent is $1,700.00."
+            }
+          ],
+          "final_answer": "The code and monthly rent for rental listing 4 are not supplied.",
+          "final_evaluation": "REVISE",
+          "latency_ms": 14350.52,
+          "loaded_lesson_ids": [],
+          "question": "What are the code and monthly rent for rental listing 4?",
+          "question_id": "test_01"
+        },
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The code and monthly rent for rental listing 5 are not supplied.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer is incorrect. The ground truth provides the code \"S2974-000005\" and the monthly rent of $1,750.00 for rental listing 5, which were not included in the original answer. The answer should be revised to include this information.",
+              "feedback": "Include these ground-truth facts: Rental listing 5 has listing code S2974-000005. Its monthly rent is $1,750.00."
+            }
+          ],
+          "final_answer": "The code and monthly rent for rental listing 5 are not supplied.",
+          "final_evaluation": "REVISE",
+          "latency_ms": 6085.15,
+          "loaded_lesson_ids": [],
+          "question": "What are the code and monthly rent for rental listing 5?",
+          "question_id": "test_02"
+        },
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The renter should confirm the amount of the security deposit, the length of time it will be held, and the conditions under which it will be returned. They should also check if the deposit is refundable and whether it is subject to any interest or fees.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer provides relevant information but is slightly less comprehensive than the ground truth. It should include details about permitted deductions and move-in inspection documentation, which are important for a renter to understand their obligations and rights regarding the security deposit. Therefore, the answer should be revised to include these elements.",
+              "feedback": "Include these ground-truth facts: Before signing, ask about the deposit amount, return conditions and timing, permitted deductions, and move-in inspection documentation."
+            }
+          ],
+          "final_answer": "The renter should confirm the amount of the security deposit, the length of time it will be held, and the conditions under which it will be returned. They should also check if the deposit is refundable and whether it is subject to any interest or fees.",
+          "final_evaluation": "REVISE",
+          "latency_ms": 8209.52,
+          "loaded_lesson_ids": [],
+          "question": "What security-deposit details should a renter confirm before signing?",
+          "question_id": "test_03"
+        },
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The tenant should contact the property manager or landlord immediately to report the emergency repair. If the landlord is unavailable, the tenant may contact the local housing authority or emergency services if the situation poses an immediate risk to safety.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer should be revised to better align with the ground-truth facts. While it mentions contacting the property manager or landlord, the ground-truth emphasizes using the emergency contact channel first, providing specific details, and calling emergency services when there is an immediate threat to life. The original answer lacks clarity on the priority of emergency services in life-threatening situations and does not mention including key details like unit location and callback information.",
+              "feedback": "Include these ground-truth facts: Report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. Call emergency services first when there is an immediate threat to life."
+            }
+          ],
+          "final_answer": "The tenant should contact the property manager or landlord immediately to report the emergency repair. If the landlord is unavailable, the tenant may contact the local housing authority or emergency services if the situation poses an immediate risk to safety.",
+          "final_evaluation": "REVISE",
+          "latency_ms": 8758.79,
+          "loaded_lesson_ids": [],
+          "question": "How should a tenant report an emergency repair?",
+          "question_id": "test_04"
+        }
+      ],
+      "key": "baseline",
+      "lesson_source": "none",
+      "loaded_lesson_ids": [],
+      "metrics": {
+        "average_attempts": 1.0,
+        "average_latency_ms": 9351.0,
+        "correct_answers": 0,
+        "incorrect_answers": 4
+      },
+      "use_lessons": false,
+      "variant": "Baseline"
+    },
+    {
+      "allow_revision": true,
+      "case_results": [
+        {
+          "attempt_count": 2,
+          "attempts": [
+            {
+              "answer": "The code and monthly rent for rental listing 4 are not supplied.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer is incorrect. The ground truth provides the code \"S2974-000004\" and the monthly rent of $1,700.00 for rental listing 4, which were not included in the original answer. The answer should be revised to include this information.",
+              "feedback": "Include these ground-truth facts: Rental listing 4 has listing code S2974-000004. Its monthly rent is $1,700.00."
+            },
+            {
+              "answer": "The code for rental listing 4 is S2974-000004, and the monthly rent is $1,700.00.",
+              "attempt": 2,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "The code for rental listing 4 is S2974-000004, and the monthly rent is $1,700.00.",
+          "final_evaluation": "PASS",
+          "latency_ms": 10097.94,
+          "loaded_lesson_ids": [],
+          "question": "What are the code and monthly rent for rental listing 4?",
+          "question_id": "test_01"
+        },
+        {
+          "attempt_count": 2,
+          "attempts": [
+            {
+              "answer": "The code and monthly rent for rental listing 5 are not supplied.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer is incorrect. The ground truth provides the code \"S2974-000005\" and the monthly rent of $1,750.00 for rental listing 5, which were not included in the original answer. The answer should be revised to include this information.",
+              "feedback": "Include these ground-truth facts: Rental listing 5 has listing code S2974-000005. Its monthly rent is $1,750.00."
+            },
+            {
+              "answer": "The code for rental listing 5 is S2974-000005, and the monthly rent is $1,750.00.",
+              "attempt": 2,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "The code for rental listing 5 is S2974-000005, and the monthly rent is $1,750.00.",
+          "final_evaluation": "PASS",
+          "latency_ms": 10420.46,
+          "loaded_lesson_ids": [],
+          "question": "What are the code and monthly rent for rental listing 5?",
+          "question_id": "test_02"
+        },
+        {
+          "attempt_count": 2,
+          "attempts": [
+            {
+              "answer": "The renter should confirm the amount of the security deposit, the length of time it will be held, and the conditions under which it will be returned. They should also check if the deposit is refundable and whether it is subject to any interest or fees.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer provides relevant information but is slightly less comprehensive than the ground truth. It should include details about permitted deductions and move-in inspection documentation, which are important for a renter to understand their obligations and rights regarding the security deposit. Therefore, the answer should be revised to include these elements.",
+              "feedback": "Include these ground-truth facts: Before signing, ask about the deposit amount, return conditions and timing, permitted deductions, and move-in inspection documentation."
+            },
+            {
+              "answer": "A renter should confirm the security deposit amount, return conditions and timing, permitted deductions, and the move-in inspection documentation before signing the lease.",
+              "attempt": 2,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "A renter should confirm the security deposit amount, return conditions and timing, permitted deductions, and the move-in inspection documentation before signing the lease.",
+          "final_evaluation": "PASS",
+          "latency_ms": 12013.22,
+          "loaded_lesson_ids": [],
+          "question": "What security-deposit details should a renter confirm before signing?",
+          "question_id": "test_03"
+        },
+        {
+          "attempt_count": 2,
+          "attempts": [
+            {
+              "answer": "The tenant should contact the property manager or landlord immediately to report the emergency repair. If the landlord is unavailable, the tenant may contact the local housing authority or emergency services if the situation poses an immediate risk to safety.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer should be revised to better align with the ground-truth facts. While it mentions contacting the property manager or landlord, the ground-truth emphasizes using the emergency contact channel first, providing specific details, and calling emergency services when there is an immediate threat to life. The original answer lacks clarity on the priority of emergency services in life-threatening situations and does not mention including key details like unit location and callback information.",
+              "feedback": "Include these ground-truth facts: Report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. Call emergency services first when there is an immediate threat to life."
+            },
+            {
+              "answer": "A tenant should report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. If there is an immediate threat to life, call emergency services first.",
+              "attempt": 2,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "A tenant should report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. If there is an immediate threat to life, call emergency services first.",
+          "final_evaluation": "PASS",
+          "latency_ms": 13099.51,
+          "loaded_lesson_ids": [],
+          "question": "How should a tenant report an emergency repair?",
+          "question_id": "test_04"
+        }
+      ],
+      "key": "evaluator_repair",
+      "lesson_source": "none",
+      "loaded_lesson_ids": [],
+      "metrics": {
+        "average_attempts": 2.0,
+        "average_latency_ms": 11407.78,
+        "correct_answers": 4,
+        "incorrect_answers": 0
+      },
+      "use_lessons": false,
+      "variant": "Evaluator Repair"
+    },
+    {
+      "allow_revision": true,
+      "case_results": [
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The code for rental listing 4 is S2974-000004, and the monthly rent is $1,700.00.",
+              "attempt": 1,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "The code for rental listing 4 is S2974-000004, and the monthly rent is $1,700.00.",
+          "final_evaluation": "PASS",
+          "latency_ms": 4933.64,
+          "loaded_lesson_ids": [
+            "lesson_001"
+          ],
+          "question": "What are the code and monthly rent for rental listing 4?",
+          "question_id": "test_01"
+        },
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The code for rental listing 5 is S2974-000005, and the monthly rent is $1,750.00.",
+              "attempt": 1,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "The code for rental listing 5 is S2974-000005, and the monthly rent is $1,750.00.",
+          "final_evaluation": "PASS",
+          "latency_ms": 5045.96,
+          "loaded_lesson_ids": [
+            "lesson_001"
+          ],
+          "question": "What are the code and monthly rent for rental listing 5?",
+          "question_id": "test_02"
+        },
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "Before signing, a renter should confirm the security-deposit amount, return conditions and timing, permitted deductions, and move-in inspection documentation. These details are essential for understanding the terms of the deposit as outlined in the listing.",
+              "attempt": 1,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "Before signing, a renter should confirm the security-deposit amount, return conditions and timing, permitted deductions, and move-in inspection documentation. These details are essential for understanding the terms of the deposit as outlined in the listing.",
+          "final_evaluation": "PASS",
+          "latency_ms": 6310.88,
+          "loaded_lesson_ids": [
+            "lesson_001"
+          ],
+          "question": "What security-deposit details should a renter confirm before signing?",
+          "question_id": "test_03"
+        },
+        {
+          "attempt_count": 2,
+          "attempts": [
+            {
+              "answer": "The tenant should contact the property manager or landlord immediately to report the emergency repair. If the landlord is unavailable, the tenant may contact the local housing authority or emergency services if the situation poses an immediate risk to safety.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer should be revised to better align with the ground-truth facts. While it mentions contacting the property manager or landlord, the ground-truth emphasizes using the emergency contact channel first, providing specific details, and calling emergency services when there is an immediate threat to life. The original answer lacks clarity on the priority of emergency services in life-threatening situations and does not mention including key details like unit location and callback information.",
+              "feedback": "Include these ground-truth facts: Report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. Call emergency services first when there is an immediate threat to life."
+            },
+            {
+              "answer": "A tenant should report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. If there is an immediate threat to life, call emergency services first.",
+              "attempt": 2,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "A tenant should report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. If there is an immediate threat to life, call emergency services first.",
+          "final_evaluation": "PASS",
+          "latency_ms": 12377.93,
+          "loaded_lesson_ids": [],
+          "question": "How should a tenant report an emergency repair?",
+          "question_id": "test_04"
+        }
+      ],
+      "key": "lesson_memory",
+      "lesson_source": "candidate lesson saved before validation",
+      "loaded_lesson_ids": [
+        "lesson_001"
+      ],
+      "metrics": {
+        "average_attempts": 1.25,
+        "average_latency_ms": 7167.1,
+        "correct_answers": 4,
+        "incorrect_answers": 0
+      },
+      "use_lessons": true,
+      "variant": "Lesson Memory"
+    },
+    {
+      "allow_revision": true,
+      "case_results": [
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The code for rental listing 4 is S2974-000004, and the monthly rent is $1,700.00.",
+              "attempt": 1,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "The code for rental listing 4 is S2974-000004, and the monthly rent is $1,700.00.",
+          "final_evaluation": "PASS",
+          "latency_ms": 4818.8,
+          "loaded_lesson_ids": [
+            "lesson_001"
+          ],
+          "question": "What are the code and monthly rent for rental listing 4?",
+          "question_id": "test_01"
+        },
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "The code for rental listing 5 is S2974-000005, and the monthly rent is $1,750.00.",
+              "attempt": 1,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "The code for rental listing 5 is S2974-000005, and the monthly rent is $1,750.00.",
+          "final_evaluation": "PASS",
+          "latency_ms": 4581.45,
+          "loaded_lesson_ids": [
+            "lesson_001"
+          ],
+          "question": "What are the code and monthly rent for rental listing 5?",
+          "question_id": "test_02"
+        },
+        {
+          "attempt_count": 1,
+          "attempts": [
+            {
+              "answer": "Before signing, a renter should confirm the security-deposit amount, return conditions and timing, permitted deductions, and move-in inspection documentation. These details are essential for understanding the terms of the deposit as outlined in the listing.",
+              "attempt": 1,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "Before signing, a renter should confirm the security-deposit amount, return conditions and timing, permitted deductions, and move-in inspection documentation. These details are essential for understanding the terms of the deposit as outlined in the listing.",
+          "final_evaluation": "PASS",
+          "latency_ms": 4884.14,
+          "loaded_lesson_ids": [
+            "lesson_001"
+          ],
+          "question": "What security-deposit details should a renter confirm before signing?",
+          "question_id": "test_03"
+        },
+        {
+          "attempt_count": 2,
+          "attempts": [
+            {
+              "answer": "The tenant should contact the property manager or landlord immediately to report the emergency repair. If the landlord is unavailable, the tenant may contact the local housing authority or emergency services if the situation poses an immediate risk to safety.",
+              "attempt": 1,
+              "evaluation": "REVISE",
+              "explanation": "The answer should be revised to better align with the ground-truth facts. While it mentions contacting the property manager or landlord, the ground-truth emphasizes using the emergency contact channel first, providing specific details, and calling emergency services when there is an immediate threat to life. The original answer lacks clarity on the priority of emergency services in life-threatening situations and does not mention including key details like unit location and callback information.",
+              "feedback": "Include these ground-truth facts: Report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. Call emergency services first when there is an immediate threat to life."
+            },
+            {
+              "answer": "A tenant should report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. If there is an immediate threat to life, call emergency services first.",
+              "attempt": 2,
+              "evaluation": "PASS",
+              "explanation": "The answer covers every required reference concept without a conflicting fact.",
+              "feedback": ""
+            }
+          ],
+          "final_answer": "A tenant should report an emergency repair immediately through the emergency contact channel. Include the unit location, problem, safety risk, and callback information. If there is an immediate threat to life, call emergency services first.",
+          "final_evaluation": "PASS",
+          "latency_ms": 12531.19,
+          "loaded_lesson_ids": [],
+          "question": "How should a tenant report an emergency repair?",
+          "question_id": "test_04"
+        }
+      ],
+      "key": "validated_improvement",
+      "lesson_source": "lesson kept by validation gate",
+      "loaded_lesson_ids": [
+        "lesson_001"
+      ],
+      "metrics": {
+        "average_attempts": 1.25,
+        "average_latency_ms": 6703.9,
+        "correct_answers": 4,
+        "incorrect_answers": 0
+      },
+      "use_lessons": true,
+      "variant": "Validated Improvement"
+    }
+  ]
+}

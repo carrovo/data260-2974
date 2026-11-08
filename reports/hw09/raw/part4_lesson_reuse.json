@@ -1,0 +1,44 @@
+{
+  "later_result": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "answer": "The monthly rent for rental listing 5 is $1,750.00, and its listing code is S2974-000005.",
+        "attempt": 1,
+        "evaluation": "PASS",
+        "explanation": "The answer covers every required reference concept without a conflicting fact.",
+        "feedback": ""
+      }
+    ],
+    "final_answer": "The monthly rent for rental listing 5 is $1,750.00, and its listing code is S2974-000005.",
+    "final_evaluation": "PASS",
+    "latency_ms": 11343.7,
+    "loaded_lesson_ids": [
+      "lesson_001"
+    ],
+    "question": "Give the monthly rent and listing code for rental listing 5.",
+    "question_id": "train_02"
+  },
+  "lesson": {
+    "correction": "For listing-specific questions, load the matching reference record and include its exact listing code and numeric value.",
+    "created_at": "2026-11-07",
+    "failure_pattern": "Answers to listing-specific questions omit the exact current value or listing code.",
+    "keywords": [
+      "listing",
+      "rent",
+      "monthly"
+    ],
+    "lesson_id": "lesson_001",
+    "use_count": 1,
+    "use_reference_facts": true
+  },
+  "source_failure": {
+    "answer": "The listing has a recorded monthly rent and listing code, but those exact values should be verified before replying.",
+    "attempt": 1,
+    "evaluation": "REVISE",
+    "explanation": "The answer should be revised. The ground truth provides specific values for the monthly rent and listing code of rental listing 4, which are $1,700.00 and S2974-000004, respectively. The original answer incorrectly states that the values should be verified before replying, when in fact they are explicitly provided in the ground truth.",
+    "feedback": "Include these ground-truth facts: Rental listing 4 has listing code S2974-000004. Its monthly rent is $1,700.00."
+  },
+  "source_question": "What is the monthly rent and listing code for rental listing 4?",
+  "student_name": "Xuanhua Li"
+}

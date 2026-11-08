@@ -1,0 +1,21 @@
+{
+  "split": "validation",
+  "inputs": [
+    {
+      "question_id": "validation_01",
+      "question": "State the listing code and monthly rent for rental listing 4."
+    },
+    {
+      "question_id": "validation_02",
+      "question": "What should a renter verify before applying for a listing?"
+    },
+    {
+      "question_id": "validation_03",
+      "question": "What records should a tenant keep for a maintenance request?"
+    },
+    {
+      "question_id": "validation_04",
+      "question": "Name two common written channels for sending a maintenance request."
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "after": [
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "Listing code: S2974-000004  \nMonthly rent: $1,700.00",
+          "attempt": 1,
+          "evaluation": "PASS",
+          "explanation": "The answer covers every required reference concept without a conflicting fact.",
+          "feedback": ""
+        }
+      ],
+      "final_answer": "Listing code: S2974-000004  \nMonthly rent: $1,700.00",
+      "final_evaluation": "PASS",
+      "latency_ms": 4269.4,
+      "loaded_lesson_ids": [
+        "lesson_001"
+      ],
+      "question": "State the listing code and monthly rent for rental listing 4.",
+      "question_id": "validation_01"
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "Before applying for a listing, a renter should verify the exact address, monthly rent and fees, availability date, lease term, and property-manager identity. Ensure to reference the exact listing code and numeric value from the matching reference record.",
+          "attempt": 1,
+          "evaluation": "PASS",
+          "explanation": "The answer covers every required reference concept without a conflicting fact.",
+          "feedback": ""
+        }
+      ],
+      "final_answer": "Before applying for a listing, a renter should verify the exact address, monthly rent and fees, availability date, lease term, and property-manager identity. Ensure to reference the exact listing code and numeric value from the matching reference record.",
+      "final_evaluation": "PASS",
+      "latency_ms": 7827.48,
+      "loaded_lesson_ids": [
+        "lesson_001"
+      ],
+      "question": "What should a renter verify before applying for a listing?",
+      "question_id": "validation_02"
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "The tenant should keep records such as the date of the maintenance request, a description of the issue, any communication with the landlord or property manager (including dates and methods of contact), and any receipts or documentation related to the repair or replacement of items.",
+          "attempt": 1,
+          "evaluation": "REVISE",
+          "explanation": "The answer provides additional details beyond the ground-truth facts, such as communication records and receipts, which are not explicitly mentioned in the ground-truth. However, it also includes some accurate elements like date and problem description. The answer should be revised to align more closely with the specified ground-truth facts.",
+          "feedback": "Include these ground-truth facts: A maintenance request should record the date, problem description, and photos. It should be sent through a written channel and retain follow-up records."
+        }
+      ],
+      "final_answer": "The tenant should keep records such as the date of the maintenance request, a description of the issue, any communication with the landlord or property manager (including dates and methods of contact), and any receipts or documentation related to the repair or replacement of items.",
+      "final_evaluation": "REVISE",
+      "latency_ms": 6584.32,
+      "loaded_lesson_ids": [],
+      "question": "What records should a tenant keep for a maintenance request?",
+      "question_id": "validation_03"
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "Email and a written request form.",
+          "attempt": 1,
+          "evaluation": "PASS",
+          "explanation": "The answer covers every required reference concept without a conflicting fact.",
+          "feedback": ""
+        }
+      ],
+      "final_answer": "Email and a written request form.",
+      "final_evaluation": "PASS",
+      "latency_ms": 4629.38,
+      "loaded_lesson_ids": [],
+      "question": "Name two common written channels for sending a maintenance request.",
+      "question_id": "validation_04"
+    }
+  ],
+  "before": [
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "The listing code and monthly rent for rental listing 4 are not supplied.",
+          "attempt": 1,
+          "evaluation": "REVISE",
+          "explanation": "The answer is incorrect. The ground truth provides the listing code as \"S2974-000004\" and the monthly rent as \"$1,700.00,\" which were not included in the original answer. The response should be revised to include these details.",
+          "feedback": "Include these ground-truth facts: Rental listing 4 has listing code S2974-000004. Its monthly rent is $1,700.00."
+        }
+      ],
+      "final_answer": "The listing code and monthly rent for rental listing 4 are not supplied.",
+      "final_evaluation": "REVISE",
+      "latency_ms": 12052.36,
+      "loaded_lesson_ids": [],
+      "question": "State the listing code and monthly rent for rental listing 4.",
+      "question_id": "validation_01"
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "Before applying for a listing, a renter should verify the property details, such as the address, number of bedrooms and bathrooms, and any included amenities. They should also confirm the rental price, lease terms, and any additional fees. It is important to check if the listing is active and ensure that the contact information provided is accurate.",
+          "attempt": 1,
+          "evaluation": "REVISE",
+          "explanation": "The answer provides relevant information but omits key details from the ground truth, such as the availability date and property-manager identity. It also uses broader terms like \"property details\" and \"rental price\" without specifying \"monthly rent and fees.\" Therefore, the answer should be revised to include these specific elements for accuracy.",
+          "feedback": "Include these ground-truth facts: Before applying, verify the exact address, monthly rent and fees, availability date, lease term, and property-manager identity."
+        }
+      ],
+      "final_answer": "Before applying for a listing, a renter should verify the property details, such as the address, number of bedrooms and bathrooms, and any included amenities. They should also confirm the rental price, lease terms, and any additional fees. It is important to check if the listing is active and ensure that the contact information provided is accurate.",
+      "final_evaluation": "REVISE",
+      "latency_ms": 8392.98,
+      "loaded_lesson_ids": [],
+      "question": "What should a renter verify before applying for a listing?",
+      "question_id": "validation_02"
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "The tenant should keep records such as the date of the maintenance request, a description of the issue, any communication with the landlord or property manager (including dates and methods of contact), and any receipts or documentation related to the repair or replacement of items.",
+          "attempt": 1,
+          "evaluation": "REVISE",
+          "explanation": "The answer provides additional details beyond the ground-truth facts, such as communication records and receipts, which are not explicitly mentioned in the ground-truth. However, it also includes some accurate elements like date and problem description. The answer should be revised to align more closely with the specified ground-truth facts.",
+          "feedback": "Include these ground-truth facts: A maintenance request should record the date, problem description, and photos. It should be sent through a written channel and retain follow-up records."
+        }
+      ],
+      "final_answer": "The tenant should keep records such as the date of the maintenance request, a description of the issue, any communication with the landlord or property manager (including dates and methods of contact), and any receipts or documentation related to the repair or replacement of items.",
+      "final_evaluation": "REVISE",
+      "latency_ms": 7474.1,
+      "loaded_lesson_ids": [],
+      "question": "What records should a tenant keep for a maintenance request?",
+      "question_id": "validation_03"
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "answer": "Email and a written request form.",
+          "attempt": 1,
+          "evaluation": "PASS",
+          "explanation": "The answer covers every required reference concept without a conflicting fact.",
+          "feedback": ""
+        }
+      ],
+      "final_answer": "Email and a written request form.",
+      "final_evaluation": "PASS",
+      "latency_ms": 4772.3,
+      "loaded_lesson_ids": [],
+      "question": "Name two common written channels for sending a maintenance request.",
+      "question_id": "validation_04"
+    }
+  ],
+  "decision": {
+    "after_correct_count": 3,
+    "before_correct_count": 1,
+    "failure_cases_not_worse": true,
+    "keep_lesson": true,
+    "listing_case_improved": true,
+    "previously_correct_preserved": true,
+    "unrelated_questions_safe": true
+  },
+  "lesson_action": "KEPT",
+  "student_name": "Xuanhua Li",
+  "test_data_used": false,
+  "validation_dataset": "validation_data.json"
+}

@@ -1,0 +1,21 @@
+{
+  "split": "test",
+  "inputs": [
+    {
+      "question_id": "test_01",
+      "question": "What are the code and monthly rent for rental listing 4?"
+    },
+    {
+      "question_id": "test_02",
+      "question": "What are the code and monthly rent for rental listing 5?"
+    },
+    {
+      "question_id": "test_03",
+      "question": "What security-deposit details should a renter confirm before signing?"
+    },
+    {
+      "question_id": "test_04",
+      "question": "How should a tenant report an emergency repair?"
+    }
+  ]
+}

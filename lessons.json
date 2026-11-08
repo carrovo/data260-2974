@@ -1,0 +1,17 @@
+{
+  "lessons": [
+    {
+      "correction": "For listing-specific questions, load the matching reference record and include its exact listing code and numeric value.",
+      "created_at": "2026-11-07",
+      "failure_pattern": "Answers to listing-specific questions omit the exact current value or listing code.",
+      "keywords": [
+        "listing",
+        "rent",
+        "monthly"
+      ],
+      "lesson_id": "lesson_001",
+      "use_count": 1,
+      "use_reference_facts": true
+    }
+  ]
+}

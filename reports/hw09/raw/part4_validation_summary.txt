@@ -1,0 +1,16 @@
+Student: Xuanhua Li
+=== HW9 Part 4.3: Lesson Validation ===
+
+Case          Before   After    Lesson loaded after
+validation_01 REVISE   PASS     lesson_001
+validation_02 REVISE   PASS     lesson_001
+validation_03 REVISE   REVISE   none
+validation_04 PASS     PASS     none
+
+Correct answers: 1/4 before -> 3/4 after
+Previously correct preserved: True
+Unrelated questions safe: True
+Listing-specific case improved: True
+Test data used: False
+Lesson action: KEPT
+PART4_3_FINAL_STATUS: PASS

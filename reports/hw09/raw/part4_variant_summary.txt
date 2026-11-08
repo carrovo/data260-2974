@@ -1,0 +1,15 @@
+Student: Xuanhua Li
+=== HW9 Part 4.4: Four System Variants ===
+
+Variant               Correct  Incorrect  Avg attempts  Avg latency
+Baseline                 0         4          1.00       9351.00 ms
+Evaluator Repair         4         0          2.00      11407.78 ms
+Lesson Memory            4         0          1.25       7167.10 ms
+Validated Improvement    4         0          1.25       6703.90 ms
+
+Held-out test cases: 4
+Test dataset unchanged: True
+Maximum answer attempts: 2
+Lessons created from test data: False
+Validated lesson loaded: lesson_001
+PART4_4_FINAL_STATUS: PASS

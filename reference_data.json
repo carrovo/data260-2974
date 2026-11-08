@@ -1,0 +1,273 @@
+{
+  "domain": "rental_listing",
+  "student_name": "Xuanhua Li",
+  "records": {
+    "train_01": {
+      "category": "listing_specific",
+      "facts": [
+        "Rental listing 4 has listing code S2974-000004.",
+        "Its monthly rent is $1,700.00."
+      ],
+      "required_concepts": [
+        [
+          "S2974-000004"
+        ],
+        [
+          "$1,700.00",
+          "$1,700",
+          "1700"
+        ]
+      ],
+      "forbidden_concepts": [
+        "S2974-000005",
+        "$1,750",
+        "1750"
+      ]
+    },
+    "train_02": {
+      "category": "listing_specific",
+      "facts": [
+        "Rental listing 5 has listing code S2974-000005.",
+        "Its monthly rent is $1,750.00."
+      ],
+      "required_concepts": [
+        [
+          "S2974-000005"
+        ],
+        [
+          "$1,750.00",
+          "$1,750",
+          "1750"
+        ]
+      ],
+      "forbidden_concepts": [
+        "S2974-000004",
+        "$1,700",
+        "1700"
+      ]
+    },
+    "train_03": {
+      "category": "maintenance",
+      "facts": [
+        "A maintenance request should record the date, problem description, and photos.",
+        "It should be sent through a written channel and retain follow-up records."
+      ],
+      "required_concepts": [
+        [
+          "date"
+        ],
+        [
+          "description",
+          "describe"
+        ],
+        [
+          "photo",
+          "picture"
+        ],
+        [
+          "written",
+          "email",
+          "portal"
+        ]
+      ],
+      "forbidden_concepts": []
+    },
+    "validation_01": {
+      "category": "listing_specific",
+      "facts": [
+        "Rental listing 4 has listing code S2974-000004.",
+        "Its monthly rent is $1,700.00."
+      ],
+      "required_concepts": [
+        [
+          "S2974-000004"
+        ],
+        [
+          "$1,700.00",
+          "$1,700",
+          "1700"
+        ]
+      ],
+      "forbidden_concepts": [
+        "S2974-000005",
+        "$1,750",
+        "1750"
+      ]
+    },
+    "validation_02": {
+      "category": "application",
+      "facts": [
+        "Before applying, verify the exact address, monthly rent and fees, availability date, lease term, and property-manager identity."
+      ],
+      "required_concepts": [
+        [
+          "address",
+          "location"
+        ],
+        [
+          "rent"
+        ],
+        [
+          "fee",
+          "charge"
+        ],
+        [
+          "availability",
+          "available"
+        ],
+        [
+          "lease term",
+          "lease length"
+        ]
+      ],
+      "forbidden_concepts": []
+    },
+    "validation_03": {
+      "category": "maintenance",
+      "facts": [
+        "A maintenance request should record the date, problem description, and photos.",
+        "It should be sent through a written channel and retain follow-up records."
+      ],
+      "required_concepts": [
+        [
+          "date"
+        ],
+        [
+          "description",
+          "describe"
+        ],
+        [
+          "photo",
+          "picture"
+        ],
+        [
+          "written",
+          "email",
+          "portal"
+        ]
+      ],
+      "forbidden_concepts": [
+        "S2974-000004",
+        "S2974-000005"
+      ]
+    },
+    "test_01": {
+      "category": "listing_specific",
+      "facts": [
+        "Rental listing 4 has listing code S2974-000004.",
+        "Its monthly rent is $1,700.00."
+      ],
+      "required_concepts": [
+        [
+          "S2974-000004"
+        ],
+        [
+          "$1,700.00",
+          "$1,700",
+          "1700"
+        ]
+      ],
+      "forbidden_concepts": [
+        "S2974-000005",
+        "$1,750",
+        "1750"
+      ]
+    },
+    "test_02": {
+      "category": "listing_specific",
+      "facts": [
+        "Rental listing 5 has listing code S2974-000005.",
+        "Its monthly rent is $1,750.00."
+      ],
+      "required_concepts": [
+        [
+          "S2974-000005"
+        ],
+        [
+          "$1,750.00",
+          "$1,750",
+          "1750"
+        ]
+      ],
+      "forbidden_concepts": [
+        "S2974-000004",
+        "$1,700",
+        "1700"
+      ]
+    },
+    "test_03": {
+      "category": "security_deposit",
+      "facts": [
+        "Before signing, ask about the deposit amount, return conditions and timing, permitted deductions, and move-in inspection documentation."
+      ],
+      "required_concepts": [
+        [
+          "amount"
+        ],
+        [
+          "return",
+          "refund"
+        ],
+        [
+          "deduction"
+        ],
+        [
+          "inspection",
+          "move-in"
+        ]
+      ],
+      "forbidden_concepts": []
+    },
+    "test_04": {
+      "category": "emergency_repair",
+      "facts": [
+        "Report an emergency repair immediately through the emergency contact channel.",
+        "Include the unit location, problem, safety risk, and callback information.",
+        "Call emergency services first when there is an immediate threat to life."
+      ],
+      "required_concepts": [
+        [
+          "immediately",
+          "urgent"
+        ],
+        [
+          "emergency contact",
+          "emergency channel"
+        ],
+        [
+          "location",
+          "unit"
+        ],
+        [
+          "safety",
+          "risk"
+        ],
+        [
+          "emergency services",
+          "911"
+        ]
+      ],
+      "forbidden_concepts": []
+    },
+    "validation_04": {
+      "category": "maintenance",
+      "facts": [
+        "Common written channels for a maintenance request include email, a tenant portal, or a written request form."
+      ],
+      "forbidden_concepts": [
+        "S2974-000004",
+        "S2974-000005"
+      ],
+      "required_concepts": [
+        [
+          "email"
+        ],
+        [
+          "portal",
+          "request form",
+          "written form"
+        ]
+      ]
+    }
+  }
+}

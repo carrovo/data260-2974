@@ -1,0 +1,14 @@
+Student: Xuanhua Li
+=== HW9 Part 4.3: Validate Before Keeping Lesson ===
+Case | Before | After | Loaded lesson after
+validation_01 | REVISE | PASS | ['lesson_001']
+validation_02 | REVISE | PASS | ['lesson_001']
+validation_03 | REVISE | REVISE | []
+validation_04 | PASS | PASS | []
+Failure cases improved or unchanged: True
+Previously correct answers preserved: True
+Unrelated questions remain safe: True
+Listing-specific case improved: True
+Test data used during validation: False
+Lesson decision: KEPT
+PART4_3_STATUS: PASS

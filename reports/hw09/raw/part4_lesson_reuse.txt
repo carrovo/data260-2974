@@ -1,0 +1,14 @@
+Student: Xuanhua Li
+=== HW9 Part 4.2: Save and Reuse a Lesson ===
+Source question: What is the monthly rent and listing code for rental listing 4?
+Source evaluation: REVISE
+Failure pattern: Answers to listing-specific questions omit the exact current value or listing code.
+Saved lesson ID: lesson_001
+Correction: For listing-specific questions, load the matching reference record and include its exact listing code and numeric value.
+Later question: Give the monthly rent and listing code for rental listing 5.
+Loaded lessons: ['lesson_001']
+Lesson-assisted answer: The monthly rent for rental listing 5 is $1,750.00, and its listing code is S2974-000005.
+Final evaluation: PASS
+Number of attempts: 1
+Updated use_count: 1
+PART4_2_STATUS: PASS
