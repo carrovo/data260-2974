@@ -1,0 +1,43 @@
+PYTHONPATH=code .venv/bin/python code/hw10_freeze_cases.py
+[HW10 FREEZE] 1/20 capturing case-01
+[HW10 FREEZE] saved checkpoint with 1 cases
+[HW10 FREEZE] 2/20 capturing case-02
+[HW10 FREEZE] saved checkpoint with 2 cases
+[HW10 FREEZE] 3/20 capturing case-03
+[HW10 FREEZE] saved checkpoint with 3 cases
+[HW10 FREEZE] 4/20 capturing case-04
+[HW10 FREEZE] saved checkpoint with 4 cases
+[HW10 FREEZE] 5/20 capturing case-05
+[HW10 FREEZE] saved checkpoint with 5 cases
+[HW10 FREEZE] 6/20 capturing case-06
+[HW10 FREEZE] saved checkpoint with 6 cases
+[HW10 FREEZE] 7/20 capturing case-07
+[HW10 FREEZE] saved checkpoint with 7 cases
+[HW10 FREEZE] 8/20 capturing case-08
+[HW10 FREEZE] saved checkpoint with 8 cases
+[HW10 FREEZE] 9/20 capturing case-09
+[HW10 FREEZE] saved checkpoint with 9 cases
+[HW10 FREEZE] 10/20 capturing case-10
+[HW10 FREEZE] saved checkpoint with 10 cases
+[HW10 FREEZE] 11/20 capturing case-11
+[HW10 FREEZE] saved checkpoint with 11 cases
+[HW10 FREEZE] 12/20 capturing case-12
+[HW10 FREEZE] saved checkpoint with 12 cases
+[HW10 FREEZE] 13/20 capturing case-13
+[HW10 FREEZE] saved checkpoint with 13 cases
+[HW10 FREEZE] 14/20 capturing case-14
+[HW10 FREEZE] saved checkpoint with 14 cases
+[HW10 FREEZE] 15/20 capturing case-15
+[HW10 FREEZE] saved checkpoint with 15 cases
+[HW10 FREEZE] 16/20 capturing case-16
+[HW10 FREEZE] saved checkpoint with 16 cases
+[HW10 FREEZE] 17/20 capturing case-17
+[HW10 FREEZE] saved checkpoint with 17 cases
+[HW10 FREEZE] 18/20 capturing case-18
+[HW10 FREEZE] saved checkpoint with 18 cases
+[HW10 FREEZE] 19/20 capturing case-19
+[HW10 FREEZE] saved checkpoint with 19 cases
+[HW10 FREEZE] 20/20 capturing case-20
+[HW10 FREEZE] saved checkpoint with 20 cases
+[HW10 FREEZE] complete: 20 drafts saved to /Users/carol/Documents/data260-2974/data260-2974-hw7/eval_cases.json
+[HW10 FREEZE] manually assign 1-5 labels in /Users/carol/Documents/data260-2974/data260-2974-hw7/human_labels.csv before any judge run

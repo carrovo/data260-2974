@@ -1,0 +1,342 @@
+[
+  {
+    "case_id": "case-01",
+    "correlation_id": "c9a126e1-de83-4ce1-8386-e45e8dccc0a0",
+    "question": "What should a renter verify before paying an application fee for a listing?",
+    "plan": "1. Confirm the listing is legitimate by checking the property details and landlord contact information.  \n2. Ensure the application fee is required by the landlord and not a scam.  \n3. Verify the fee amount and payment method with the landlord or property manager.  \n4. Check if the fee is refundable if the application is not accepted.  \n5. Keep a record of all communication and payment details for reference.",
+    "draft": "Before paying an application fee for a rental listing, a renter should confirm the listing is legitimate by checking the property details and landlord contact information. They should ensure the fee is required by the landlord and not a scam, verify the fee amount and payment method with the landlord or property manager, check if the fee is refundable if the application is not accepted, and keep a record of all communication and payment details for reference.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:22:21.740543+00:00",
+      "captured_at": "2026-11-13T21:23:09.230873+00:00"
+    }
+  },
+  {
+    "case_id": "case-02",
+    "correlation_id": "0883ba96-5f02-4654-914b-0635ccbee9ec",
+    "question": "How can a renter confirm that a rental listing and its contact person are legitimate?",
+    "plan": "1. Verify the landlord's contact information through public records or a reverse phone lookup.  \n2. Check for a physical address and visit in person if possible, or use a trusted third-party service for verification.  \n3. Confirm the listing details with the contact person via multiple communication channels (e.g., phone, email).  \n4. Look for signs of legitimacy, such as a professional website, clear photos, and a detailed lease agreement.  \n5. Report suspicious listings to local housing authorities or rental platforms if something feels off.",
+    "draft": "To confirm a rental listing and its contact person are legitimate, a renter should:\n\n1. Check the landlord's contact information using public records or a reverse phone lookup to ensure it's real and not a scam number.  \n2. Look for a physical address and consider visiting in person if possible, or use a trusted third-party service to verify the address.  \n3. Communicate with the contact person through multiple channels, like phone and email, to confirm the listing details and ensure consistency.  \n4. Be cautious of signs that may indicate a scam, such as a lack of a professional website, unclear photos, or an incomplete lease agreement.  \n5. If anything feels suspicious, report the listing to local housing authorities or the rental platform to help protect other renters.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:23:10.513212+00:00",
+      "captured_at": "2026-11-13T21:23:58.978299+00:00"
+    }
+  },
+  {
+    "case_id": "case-03",
+    "correlation_id": "111a064d-1218-477d-85a3-fc7d36640d7c",
+    "question": "What questions should a renter ask about utilities before signing a lease?",
+    "plan": "1. Ask which utilities are included in the rent.  \n2. Determine if the landlord covers electricity, water, gas, and internet.  \n3. Find out if there are any utility deposits or service fees.  \n4. Inquire about the utility provider and any potential service charges.  \n5. Confirm if the renter is responsible for maintenance or repairs related to utilities.",
+    "draft": "Before signing a lease, a renter should ask:\n\n1. Which utilities are included in the rent?  \n2. Does the landlord cover electricity, water, gas, and internet?  \n3. Are there any utility deposits or service fees?  \n4. What utility provider is used, and are there any service charges?  \n5. Will the renter be responsible for maintenance or repairs related to utilities?",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:24:00.383776+00:00",
+      "captured_at": "2026-11-13T21:24:32.309047+00:00"
+    }
+  },
+  {
+    "case_id": "case-04",
+    "correlation_id": "71571f44-6342-448b-8f33-943641ce1863",
+    "question": "What details should be documented during a rental move-in inspection?",
+    "plan": "1. **List all appliances and fixtures** to ensure they are accounted for.  \n2. **Take photos or videos** of the property's condition as it is.  \n3. **Note any existing damage or wear** to establish a baseline for future claims.  \n4. **Record the condition of walls, floors, and ceilings** for reference.  \n5. **Create a signed move-in checklist** with the landlord or property manager.",
+    "draft": "During a rental move-in inspection, you should document the following details:\n\n- List all appliances and fixtures to make sure they are accounted for.  \n- Take photos or videos of the property’s current condition.  \n- Note any existing damage or wear to set a baseline for future claims.  \n- Record the condition of walls, floors, and ceilings for reference.  \n- Create a signed move-in checklist with the landlord or property manager.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:24:33.513274+00:00",
+      "captured_at": "2026-11-13T21:25:06.463627+00:00"
+    }
+  },
+  {
+    "case_id": "case-05",
+    "correlation_id": "238a9a3f-ee45-4fb7-b85a-cec10b3c4df1",
+    "question": "How should a renter compare the true monthly cost of two apartments?",
+    "plan": "1. **List all potential costs** for each apartment (rent, utilities, internet, parking, etc.).  \n2. **Estimate or find exact figures** for each cost item for both apartments.  \n3. **Add up the total monthly costs** for each apartment.  \n4. **Compare the totals** to determine which option is more affordable.  \n5. **Consider long-term costs** like maintenance or potential rent increases.",
+    "draft": "To compare the true monthly cost of two apartments, start by listing all possible expenses for each, such as rent, utilities, internet, parking, and any additional fees. Find exact numbers for each item for both apartments. Add up the total monthly costs for each. Compare the totals to see which is more affordable. Also, think about long-term costs like maintenance or possible rent increases to make an informed decision.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:25:07.693795+00:00",
+      "captured_at": "2026-11-13T21:25:40.420741+00:00"
+    }
+  },
+  {
+    "case_id": "case-06",
+    "correlation_id": "8070a401-1676-456a-a18e-ac0408651d16",
+    "question": "What should a renter check about parking before applying for an apartment?",
+    "plan": "1. Check if on-site parking is available and how many spaces are allocated.  \n2. Determine if parking is included in the rent or if it requires an additional fee.  \n3. Verify if there are any restrictions on parking, such as time limits or permit requirements.  \n4. Confirm if off-street parking is guaranteed or if street parking may be an option.  \n5. Look into any rules about parking in common areas or guest parking.",
+    "draft": "Before applying for an apartment, a renter should check the following about parking:\n\n1. Find out if there is on-site parking available and how many spaces are provided.  \n2. Check whether parking is included in the rent or if it requires an extra fee.  \n3. See if there are any parking restrictions, like time limits or the need for a permit.  \n4. Confirm whether off-street parking is guaranteed or if street parking might be an option.  \n5. Review any rules regarding parking in shared areas or for guests.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:25:41.553939+00:00",
+      "captured_at": "2026-11-13T21:26:20.298862+00:00"
+    }
+  },
+  {
+    "case_id": "case-07",
+    "correlation_id": "43dfd224-e9fd-4a6a-9013-ba490e94b442",
+    "question": "What lease terms should a renter review before agreeing to live with roommates?",
+    "plan": "1. Review the lease duration and renewal terms.  \n2. Check for clauses about rent increases and payment schedules.  \n3. Confirm rules on subletting, guests, and noise.  \n4. Ensure responsibilities for utilities and maintenance are clear.  \n5. Verify the process for ending the lease and exit conditions.",
+    "draft": "Before agreeing to live with roommates, a renter should review the lease terms to ensure they understand all obligations and rights. First, check the lease duration and renewal terms to know how long you'll be staying and what happens when the lease ends. Next, look for clauses about rent increases and payment schedules to avoid surprises with costs and due dates. Then, confirm rules on subletting, guests, and noise to understand what is allowed and expected. Make sure the lease clearly outlines who is responsible for utilities and maintenance to avoid confusion. Finally, verify the process for ending the lease and exit conditions so you know your options if you need to leave before the lease ends.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:26:21.714539+00:00",
+      "captured_at": "2026-11-13T21:27:00.072942+00:00"
+    }
+  },
+  {
+    "case_id": "case-08",
+    "correlation_id": "e8481087-8730-4e18-9f7d-f430d7c2ab5e",
+    "question": "How can a renter evaluate whether a listing's commute description is accurate?",
+    "plan": "1. **Check the listing's source**: Verify if the listing comes from a reliable platform or real estate agent with a track record of accurate information.  \n2. **Cross-reference commute times**: Use a mapping tool like Google Maps to calculate travel times based on the listed address and public transit options.  \n3. **Look for specific details**: Assess if the description includes specific routes, transit lines, or estimated times, rather than vague statements.  \n4. **Read reviews and comments**: Check for other renters' feedback about the accuracy of commute times or transportation options.  \n5. **Contact the landlord or agent**: Ask for clarification or additional details about the commute to confirm the information provided.",
+    "draft": "To evaluate whether a listing's commute description is accurate, start by checking the listing's source to ensure it comes from a reliable platform or agent. Then, use a mapping tool like Google Maps to calculate actual travel times based on the listed address and public transit options. Look for specific details such as exact routes, transit lines, or estimated times, rather than vague statements. Read reviews or comments from other renters to see if they’ve experienced similar commute times or issues. Finally, contact the landlord or agent directly to ask for clarification or additional details about the commute.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:27:01.326366+00:00",
+      "captured_at": "2026-11-13T21:27:52.186185+00:00"
+    }
+  },
+  {
+    "case_id": "case-09",
+    "correlation_id": "de4ad5a9-f46f-4d50-8e43-b40ebe2c0ad9",
+    "question": "What should a renter ask about repairs and maintenance response times?",
+    "plan": "1. Ask about the typical response time for urgent repairs.  \n2. Inquire about the process for reporting maintenance issues.  \n3. Find out if there are any time limits for non-urgent repairs.  \n4. Ask if emergency services are available outside regular business hours.  \n5. Request examples of past repair response times, if available.",
+    "draft": "A renter should ask the landlord or property manager the following about repairs and maintenance:\n\n- What is the usual time frame for responding to urgent repairs?  \n- How does the process work for reporting maintenance issues?  \n- Are there any time limits for when non-urgent repairs must be completed?  \n- Are emergency services available if something breaks outside of regular business hours?  \n- Can you provide examples of past repair response times?",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:27:53.391808+00:00",
+      "captured_at": "2026-11-13T21:28:24.945170+00:00"
+    }
+  },
+  {
+    "case_id": "case-10",
+    "correlation_id": "305c07e4-df23-4754-9967-81291dc8aabb",
+    "question": "What information should a renter verify about a security deposit?",
+    "plan": "1. Confirm the deposit amount and whether it's refundable.  \n2. Check the length of the lease term and when the deposit is due.  \n3. Verify the conditions for withholding the deposit (e.g., damages, unpaid rent).  \n4. Ensure the landlord provides a written agreement outlining deposit terms.  \n5. Note the process for returning the deposit upon lease termination.",
+    "draft": "A renter should verify the following about a security deposit:  \n1. The amount of the deposit and whether it is refundable.  \n2. The length of the lease term and when the deposit is required to be paid.  \n3. The conditions under which the landlord may withhold the deposit, such as for damages or unpaid rent.  \n4. That the landlord provides a written agreement that clearly outlines the terms of the deposit.  \n5. The process for returning the deposit when the lease ends, including any required notice or documentation.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:28:26.388592+00:00",
+      "captured_at": "2026-11-13T21:28:59.850169+00:00"
+    }
+  },
+  {
+    "case_id": "case-11",
+    "correlation_id": "5dbfcc6f-a4b3-44e3-bf9c-bffdb902e4ac",
+    "question": "How should a renter assess whether a furnished apartment meets their needs?",
+    "plan": "1. **List Essential Needs**: Identify must-have features like bedroom size, kitchen appliances, and internet access.  \n2. **Visit in Person or Virtually**: Check the apartment’s condition, layout, and furnishings to ensure they match your requirements.  \n3. **Review Furnishings**: Ensure all provided furniture is functional, clean, and in good condition.  \n4. **Check for Hidden Costs**: Confirm if additional fees (e.g., utilities, cleaning, or maintenance) are included in the rent.  \n5. **Compare with Alternatives**: Weigh the furnished option against renting unfurnished or a different property.",
+    "draft": "To assess whether a furnished apartment meets your needs, start by listing your essential requirements, such as bedroom size, kitchen appliances, and internet access. Next, visit the apartment in person or virtually to evaluate its condition, layout, and furnishings. Make sure all provided furniture is functional, clean, and in good shape. Check if there are any hidden costs, like utilities or maintenance fees, and confirm whether they are included in the rent. Finally, compare the furnished option with other housing choices to determine which best fits your lifestyle and budget.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:29:02.413742+00:00",
+      "captured_at": "2026-11-13T21:29:45.390853+00:00"
+    }
+  },
+  {
+    "case_id": "case-12",
+    "correlation_id": "b42076c0-8873-4774-af01-cd7442ad6da5",
+    "question": "What should a renter confirm about pets before signing a lease?",
+    "plan": "1. Check if pets are allowed in the rental unit.  \n2. Confirm any pet deposit or fee requirements.  \n3. Verify if there are weight, size, or breed restrictions.  \n4. Ensure the landlord agrees to the type and number of pets.  \n5. Ask about any additional rules or responsibilities for pet ownership.",
+    "draft": "Before signing a lease, a renter should confirm the following about pets:\n\n1. Make sure pets are allowed in the rental unit.  \n2. Find out if there is a pet deposit or fee required.  \n3. Check if there are any weight, size, or breed restrictions.  \n4. Ensure the landlord agrees to the specific type and number of pets.  \n5. Ask about any extra rules or responsibilities related to pet ownership, such as cleaning or waste management.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:29:46.489844+00:00",
+      "captured_at": "2026-11-13T21:30:19.085386+00:00"
+    }
+  },
+  {
+    "case_id": "case-13",
+    "correlation_id": "3945f746-9850-4754-ac75-0c3fda28851d",
+    "question": "What questions should a renter ask when a listing offers a move-in discount?",
+    "plan": "1. Ask about the duration of the move-in discount.  \n2. Inquire if the discount applies to the entire lease term or just the first month.  \n3. Confirm if there are any conditions or restrictions on the discount.  \n4. Ask about the required move-in date to qualify for the discount.  \n5. Request clarification on what happens if the renter moves out before the lease ends.",
+    "draft": "When a listing offers a move-in discount, a renter should ask:\n\n1. How long does the move-in discount last?  \n2. Does the discount apply for the entire lease term or only for the first month?  \n3. Are there any conditions or restrictions that come with the discount?  \n4. What move-in date is required to qualify for the discount?  \n5. What happens if the renter moves out before the lease ends?",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:30:20.247147+00:00",
+      "captured_at": "2026-11-13T21:30:52.725268+00:00"
+    }
+  },
+  {
+    "case_id": "case-14",
+    "correlation_id": "fc6af123-abc5-4bfa-a926-5e1a179587c7",
+    "question": "How can a renter compare lease renewal and rent increase terms?",
+    "plan": "1. **Review the current lease agreement** to understand the terms for renewal and any existing clauses about rent increases.  \n2. **Research local rent control laws or regulations** that may limit how much rent can increase.  \n3. **Compare the proposed rent increase** with market rates in the area to assess fairness.  \n4. **Negotiate or request a written offer** if the terms seem unreasonable or unclear.  \n5. **Decide whether to renew or seek alternative housing** based on the terms and your financial situation.",
+    "draft": "To compare lease renewal and rent increase terms, start by reviewing your current lease to understand the renewal process and any rules about rent changes. Next, check local rent control laws that might limit how much your rent can go up. Then, compare the proposed increase with what similar apartments are renting for in your area to see if it's fair. If you think the terms aren't reasonable, ask for a written offer or try to negotiate. Finally, decide whether to renew your lease or look for another place based on the terms and your budget.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:30:53.901934+00:00",
+      "captured_at": "2026-11-13T21:31:34.323377+00:00"
+    }
+  },
+  {
+    "case_id": "case-15",
+    "correlation_id": "97d9e0b5-8326-4eca-8c14-4f9e1989a9df",
+    "question": "What should a renter verify when considering a sublease?",
+    "plan": "1. Confirm the sublease is approved by the landlord or property manager.  \n2. Verify the terms of the original lease to ensure subleasing is permitted.  \n3. Check for any restrictions on subletting in the lease agreement.  \n4. Ensure the subletter provides proper identification and references.  \n5. Review the sublease agreement for clarity on responsibilities and duration.",
+    "draft": "When considering a sublease, a renter should verify the following:  \n1. Make sure the sublease is approved by the landlord or property manager.  \n2. Check the original lease to confirm that subleasing is allowed.  \n3. Review the lease for any specific rules or restrictions about subletting.  \n4. Ensure the subletter provides valid identification and good references.  \n5. Read the sublease agreement carefully to understand responsibilities, duration, and any additional terms.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:31:35.405119+00:00",
+      "captured_at": "2026-11-13T21:32:06.087143+00:00"
+    }
+  },
+  {
+    "case_id": "case-16",
+    "correlation_id": "569a42db-8139-44fb-831b-9eb3aec85989",
+    "question": "What accessibility details should a renter confirm before applying?",
+    "plan": "1. Check if the property has wheelchair access, including ramps or elevators.  \n2. Confirm the availability and condition of accessible bathrooms and showers.  \n3. Ensure the rental includes sufficient space for mobility aids and door widths that accommodate wheelchairs.  \n4. Verify if there are any required modifications or adaptations needed for accessibility.  \n5. Ask about parking availability and proximity to the property for individuals with mobility challenges.",
+    "draft": "Before applying for a rental, a renter should confirm the following accessibility details:\n\n- Whether the property has wheelchair access, such as ramps or elevators.  \n- If accessible bathrooms and showers are available and in good condition.  \n- If there is enough space for mobility aids and door widths that can accommodate a wheelchair.  \n- If any modifications or adaptations are required to make the space accessible.  \n- The availability and proximity of parking for individuals with mobility challenges.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:32:07.314760+00:00",
+      "captured_at": "2026-11-13T21:32:42.406225+00:00"
+    }
+  },
+  {
+    "case_id": "case-17",
+    "correlation_id": "e972ad79-824f-42e9-b7aa-36bdf58e6192",
+    "question": "How should a renter evaluate noise concerns during an apartment tour?",
+    "plan": "1. **Test sound transmission** by speaking loudly in different rooms and listening for echoes or disturbances in adjacent units.  \n2. **Check for shared walls** and consider asking about the number of units on each floor to assess potential noise levels.  \n3. **Observe traffic or external noise** during the tour, especially near windows or common areas.  \n4. **Ask the landlord or building manager** about noise policies and any past complaints.  \n5. **Visit during different times of day** to gauge how noise levels change throughout the day.",
+    "draft": "To evaluate noise concerns during an apartment tour, follow these steps:\n\n1. **Test sound transmission** by speaking loudly in different rooms and listen for echoes or disturbances in nearby units.  \n2. **Check for shared walls** and ask about the number of units on each floor, as this can affect how noise travels.  \n3. **Observe traffic or external noise** near windows or common areas, especially during the tour.  \n4. **Ask the landlord or building manager** about noise policies and any history of noise complaints.  \n5. **Visit during different times of day** to see how noise levels change, such as early morning, midday, and evening.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:32:43.503911+00:00",
+      "captured_at": "2026-11-13T21:33:29.723073+00:00"
+    }
+  },
+  {
+    "case_id": "case-18",
+    "correlation_id": "97815bbf-d5b2-4495-b1f9-b817f31337d7",
+    "question": "What internet and connectivity details should a remote worker verify in a rental?",
+    "plan": "1. Check the available internet speed and provider details.  \n2. Confirm if the property includes a wired or wireless connection.  \n3. Verify if there are any data caps or additional fees for high usage.  \n4. Ensure the Wi-Fi signal is strong and covers the workspace area.  \n5. Ask about potential service disruptions or outages in the area.",
+    "draft": "A remote worker should check the following internet and connectivity details in a rental:  \n- Confirm the internet speed and which provider is used.  \n- Find out if the property has a wired (Ethernet) or wireless (Wi-Fi) connection.  \n- Check if there are data caps or extra charges for heavy usage.  \n- Make sure the Wi-Fi signal is strong and reaches the workspace.  \n- Ask about any possible service interruptions or outages in the area.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:33:30.866895+00:00",
+      "captured_at": "2026-11-13T21:34:01.519375+00:00"
+    }
+  },
+  {
+    "case_id": "case-19",
+    "correlation_id": "7d2aa6fc-5810-4dea-b1e2-007a66d40360",
+    "question": "What should a renter check before agreeing to an early lease termination clause?",
+    "plan": "1. Review the lease agreement for specific terms on early termination.  \n2. Check for any required notice period or penalties for breaking the lease.  \n3. Confirm if the landlord requires a replacement tenant or security deposit.  \n4. Calculate potential financial impact, including fees or lost deposits.  \n5. Seek clarification from the landlord in writing to avoid misunderstandings.",
+    "draft": "Before agreeing to an early lease termination clause, a renter should review the lease agreement to understand the specific terms related to ending the lease early. They should also check if there is a required notice period or any penalties for breaking the lease. It's important to confirm whether the landlord needs a replacement tenant or if a security deposit is required. The renter should calculate any potential financial impact, such as fees or loss of a security deposit. Finally, they should get any unclear terms in writing from the landlord to avoid misunderstandings.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:34:02.609506+00:00",
+      "captured_at": "2026-11-13T21:34:35.044417+00:00"
+    }
+  },
+  {
+    "case_id": "case-20",
+    "correlation_id": "9afd9ac3-fd81-4ef6-9d55-62f7616113ca",
+    "question": "What records should a renter keep after submitting a rental application?",
+    "plan": "1. Save a copy of the rental application form.  \n2. Keep records of all communication with the landlord or property manager.  \n3. Retain proof of application fees paid.  \n4. Store copies of any documents submitted with the application.  \n5. Save confirmation of application status (e.g., accepted, denied, pending).",
+    "draft": "After submitting a rental application, a renter should keep the following records:\n\n- A copy of the rental application form.  \n- Records of all communication with the landlord or property manager, such as emails or text messages.  \n- Proof of any application fees that were paid.  \n- Copies of any documents submitted with the application, like identification or income verification.  \n- Confirmation of the application's status, such as whether it was accepted, denied, or still pending.",
+    "metadata": {
+      "domain": "rental housing listings",
+      "pipeline": "HW8 Planner-Writer",
+      "planner_model": "qwen3:8b",
+      "writer_model": "qwen3:8b",
+      "temperature": 0,
+      "seed": 2974,
+      "submitted_at": "2026-11-13T21:34:36.347161+00:00",
+      "captured_at": "2026-11-13T21:35:06.551463+00:00"
+    }
+  }
+]
