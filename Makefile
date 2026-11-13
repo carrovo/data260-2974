@@ -1,4 +1,4 @@
-.PHONY: mongo-up mongo-down test-hw06 experiment-hw06 verify-hw06 verify-hw08
+.PHONY: mongo-up mongo-down test-hw06 experiment-hw06 verify-hw06 verify-hw08 test-hw10-freeze freeze-hw10-cases
 
 mongo-up:
 	docker compose -f docker-compose.hw6.yml up -d
@@ -18,3 +18,9 @@ verify-hw06:
 
 verify-hw08:
 	PYTHONPATH=code .venv/bin/python code/verify_hw8.py
+
+test-hw10-freeze:
+	PYTHONPATH=code .venv/bin/python code/test_hw10_freeze_offline.py
+
+freeze-hw10-cases:
+	PYTHONPATH=code .venv/bin/python code/hw10_freeze_cases.py

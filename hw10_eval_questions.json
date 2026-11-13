@@ -1,0 +1,82 @@
+[
+  {
+    "case_id": "case-01",
+    "question": "What should a renter verify before paying an application fee for a listing?"
+  },
+  {
+    "case_id": "case-02",
+    "question": "How can a renter confirm that a rental listing and its contact person are legitimate?"
+  },
+  {
+    "case_id": "case-03",
+    "question": "What questions should a renter ask about utilities before signing a lease?"
+  },
+  {
+    "case_id": "case-04",
+    "question": "What details should be documented during a rental move-in inspection?"
+  },
+  {
+    "case_id": "case-05",
+    "question": "How should a renter compare the true monthly cost of two apartments?"
+  },
+  {
+    "case_id": "case-06",
+    "question": "What should a renter check about parking before applying for an apartment?"
+  },
+  {
+    "case_id": "case-07",
+    "question": "What lease terms should a renter review before agreeing to live with roommates?"
+  },
+  {
+    "case_id": "case-08",
+    "question": "How can a renter evaluate whether a listing's commute description is accurate?"
+  },
+  {
+    "case_id": "case-09",
+    "question": "What should a renter ask about repairs and maintenance response times?"
+  },
+  {
+    "case_id": "case-10",
+    "question": "What information should a renter verify about a security deposit?"
+  },
+  {
+    "case_id": "case-11",
+    "question": "How should a renter assess whether a furnished apartment meets their needs?"
+  },
+  {
+    "case_id": "case-12",
+    "question": "What should a renter confirm about pets before signing a lease?"
+  },
+  {
+    "case_id": "case-13",
+    "question": "What questions should a renter ask when a listing offers a move-in discount?"
+  },
+  {
+    "case_id": "case-14",
+    "question": "How can a renter compare lease renewal and rent increase terms?"
+  },
+  {
+    "case_id": "case-15",
+    "question": "What should a renter verify when considering a sublease?"
+  },
+  {
+    "case_id": "case-16",
+    "question": "What accessibility details should a renter confirm before applying?"
+  },
+  {
+    "case_id": "case-17",
+    "question": "How should a renter evaluate noise concerns during an apartment tour?"
+  },
+  {
+    "case_id": "case-18",
+    "question": "What internet and connectivity details should a remote worker verify in a rental?"
+  },
+  {
+    "case_id": "case-19",
+    "question": "What should a renter check before agreeing to an early lease termination clause?"
+  },
+  {
+    "case_id": "case-20",
+    "question": "What records should a renter keep after submitting a rental application?"
+  }
+]
