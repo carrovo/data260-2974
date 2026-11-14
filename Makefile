@@ -1,4 +1,4 @@
-.PHONY: mongo-up mongo-down test-hw06 experiment-hw06 verify-hw06 verify-hw08 test-hw10-freeze freeze-hw10-cases install-hw10 test-hw10-judge run-hw10-judge test-hw10-part2 run-hw10-part2 test-hw10-part4 run-hw10-part4-examples run-hw10-part4-experiment
+.PHONY: mongo-up mongo-down test-hw06 experiment-hw06 verify-hw06 verify-hw08 test-hw10-freeze freeze-hw10-cases install-hw10 test-hw10-judge run-hw10-judge test-hw10-part2 run-hw10-part2 test-hw10-part4 run-hw10-part4-examples run-hw10-part4-experiment test-hw10-dashboard run-hw10-dashboard
 
 mongo-up:
 	docker compose -f docker-compose.hw6.yml up -d
@@ -50,3 +50,9 @@ run-hw10-part4-examples:
 
 run-hw10-part4-experiment:
 	PYTHONPATH=code .venv-hw10/bin/python code/hw10_part4_observability.py experiment
+
+test-hw10-dashboard:
+	PYTHONPATH=code .venv-hw10/bin/python code/test_hw10_dashboard_offline.py -v
+
+run-hw10-dashboard:
+	PYTHONPATH=code .venv-hw10/bin/python -m streamlit run code/hw10_dashboard.py
