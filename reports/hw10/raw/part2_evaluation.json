@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "schema_version": 1,
+    "evaluation_code_commit": "229912065c8ebe48867bcb2c2ef0be39682c6da3",
+    "judge_framework": "DeepEval GEval",
+    "judge_configuration_version": "ollama-nonthinking-v2",
+    "judge_model": "qwen3:8b",
+    "temperature": 0.0,
+    "seed": 2974,
+    "thinking_enabled": false,
+    "num_predict": 512,
+    "judge_timeout_seconds_per_metric": 180,
+    "pipeline_timeout_seconds": 300,
+    "score_scale": {
+      "minimum": 1,
+      "maximum": 5
+    }
+  },
+  "question": "What should a renter verify before paying an application fee for an online rental listing?",
+  "pipeline": {
+    "correlation_id": "44f4d3e1-6b80-47dd-9ac1-b92cdb831fb6",
+    "question": "What should a renter verify before paying an application fee for an online rental listing?",
+    "plan": "1. Confirm the landlord or property manager's contact information.  \n2. Verify the property's address and location.  \n3. Check for any hidden fees or additional costs mentioned in the listing.  \n4. Ensure the listing is legitimate by cross-referencing with official records or reviews.  \n5. Review the application requirements and deadlines.",
+    "draft": "Before paying an application fee for an online rental listing, a renter should verify the landlord or property manager's contact information, confirm the property's address and location, check for any hidden fees or additional costs, ensure the listing is legitimate by cross-referencing with official records or reviews, and review the application requirements and deadlines.",
+    "final_answer": "Before paying an application fee for an online rental listing, a renter should verify the landlord or property manager's contact information, confirm the property's address and location, check for any hidden fees or additional costs, ensure the listing is legitimate by cross-referencing with official records or reviews, and review the application requirements and deadlines.",
+    "raw_messages": {
+      "s2974_tasks": {
+        "correlation_id": "44f4d3e1-6b80-47dd-9ac1-b92cdb831fb6",
+        "stage": "planned",
+        "question": "What should a renter verify before paying an application fee for an online rental listing?",
+        "plan": "1. Confirm the landlord or property manager's contact information.  \n2. Verify the property's address and location.  \n3. Check for any hidden fees or additional costs mentioned in the listing.  \n4. Ensure the listing is legitimate by cross-referencing with official records or reviews.  \n5. Review the application requirements and deadlines."
+      },
+      "s2974_drafts": {
+        "correlation_id": "44f4d3e1-6b80-47dd-9ac1-b92cdb831fb6",
+        "stage": "drafted",
+        "question": "What should a renter verify before paying an application fee for an online rental listing?",
+        "plan": "1. Confirm the landlord or property manager's contact information.  \n2. Verify the property's address and location.  \n3. Check for any hidden fees or additional costs mentioned in the listing.  \n4. Ensure the listing is legitimate by cross-referencing with official records or reviews.  \n5. Review the application requirements and deadlines.",
+        "draft": "Before paying an application fee for an online rental listing, a renter should verify the landlord or property manager's contact information, confirm the property's address and location, check for any hidden fees or additional costs, ensure the listing is legitimate by cross-referencing with official records or reviews, and review the application requirements and deadlines."
+      },
+      "s2974_final": {
+        "correlation_id": "44f4d3e1-6b80-47dd-9ac1-b92cdb831fb6",
+        "status": "approved",
+        "answer": "Before paying an application fee for an online rental listing, a renter should verify the landlord or property manager's contact information, confirm the property's address and location, check for any hidden fees or additional costs, ensure the listing is legitimate by cross-referencing with official records or reviews, and review the application requirements and deadlines."
+      }
+    },
+    "captured_at": "2026-11-14T03:47:38.687611+00:00"
+  },
+  "metrics": {
+    "plan_quality": {
+      "metric_name": "Plan Quality",
+      "score": 3,
+      "deepeval_normalized_score": 0.5,
+      "reason": "The plan addresses the rental-housing question by focusing on verification steps before paying an application fee. However, it lacks important safety concerns such as checking for scams, verifying the landlord's legitimacy through official channels, and ensuring the property's safety features. The steps are logical but missing critical details that would make the plan more complete and actionable.",
+      "latency_ms": 23172.49
+    },
+    "writer_helpfulness": {
+      "metric_name": "Writer Helpfulness",
+      "score": 4,
+      "deepeval_normalized_score": 0.75,
+      "reason": "The response directly answers the question by listing actionable steps a renter should take before paying an application fee. It covers key areas such as verifying contact information, checking for hidden fees, and confirming the listing's legitimacy. The advice is practical and relevant, though it could have been more specific about how to cross-reference listings or what official records to check. Overall, it is accurate, clear, and useful.",
+      "latency_ms": 23656.26
+    },
+    "final_answer_helpfulness": {
+      "metric_name": "Final Answer Helpfulness",
+      "score": 4,
+      "deepeval_normalized_score": 0.75,
+      "reason": "The response directly answers the question by listing actionable steps a renter should take before paying an application fee. It covers key areas such as verifying contact information, checking for hidden fees, and confirming the listing's legitimacy. The advice is practical and relevant, though it could have been more specific about how to cross-reference listings or what official records to check. Overall, it is accurate, clear, and useful.",
+      "latency_ms": 16657.15
+    },
+    "final_vs_draft_improvement": {
+      "metric_name": "Final-vs-Draft Improvement",
+      "score": 3,
+      "deepeval_normalized_score": 0.5,
+      "reason": "The final answer is identical to the original draft, showing no meaningful improvement. The quality and content remain essentially unchanged, which aligns with a score of 3.",
+      "latency_ms": 16890.85
+    }
+  },
+  "started_at": "2026-11-14T03:47:38.867424+00:00",
+  "completed_at": "2026-11-14T03:48:59.619143+00:00"
+}

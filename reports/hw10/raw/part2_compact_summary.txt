@@ -1,0 +1,15 @@
+HW10 PART 2 — END-TO-END EVALUATION
+=====================================
+evaluation_code_commit = 229912065c8ebe48867bcb2c2ef0be39682c6da3
+correlation_id = 44f4d3e1-6b80-47dd-9ac1-b92cdb831fb6
+stages_collected = s2974_drafts, s2974_final, s2974_tasks
+correlation_ids_match = True
+plan_quality = 3 / 5
+writer_helpfulness = 4 / 5
+final_answer_helpfulness = 4 / 5
+final_vs_draft_improvement = 3 / 5
+final_minus_writer_score = 0
+final_equals_draft = True
+judge_timeout_seconds = 180
+pipeline_timeout_seconds = 300
+completed = True
