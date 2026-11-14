@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "schema_version": 1,
+    "captured_at": "2026-11-14T05:43:52.880866+00:00",
+    "trace_id_policy": "trace_id equals the reused HW8 correlation_id",
+    "cache_threshold": 1.0
+  },
+  "cache_hit": {
+    "trace_id": "4b627dcb-9837-4c96-bc4d-88f797ff30a5",
+    "correlation_id": "4b627dcb-9837-4c96-bc4d-88f797ff30a5",
+    "question": "What should a renter verify before paying an application fee? [HW10 trace example 18c40fbc6475]",
+    "answer": "Before paying an application fee, a renter should verify the following:  \n- The fee amount matches what the landlord or agency stated.  \n- The fee is for a legitimate application, not a deposit or security fee.  \n- The method of payment and any required documentation are clear and understood.",
+    "is_cached": true,
+    "cache_hit_latency_ms": 1640.48,
+    "spans": [
+      {
+        "trace_id": "4b627dcb-9837-4c96-bc4d-88f797ff30a5",
+        "stage": "cache_lookup",
+        "component": "Cache",
+        "start_time": "2026-11-14T05:43:48.915260+00:00",
+        "end_time": "2026-11-14T05:43:50.555931+00:00",
+        "duration_ms": 1640.48,
+        "queue_wait_ms": 0.0,
+        "status": "ok",
+        "error": null,
+        "cache_status": "hit",
+        "metadata": {
+          "similarity": 1.0,
+          "threshold": 1.0
+        }
+      }
+    ]
+  },
+  "successful_cache_miss": {
+    "trace_id": "58dabf59-c54a-4016-8736-18cff5385443",
+    "correlation_id": "58dabf59-c54a-4016-8736-18cff5385443",
+    "question": "What should a renter verify before paying an application fee? [HW10 trace example 18c40fbc6475]",
+    "answer": "Before paying an application fee, a renter should verify the following:  \n- The fee amount matches what the landlord or agency stated.  \n- The fee is for a legitimate application, not a deposit or security fee.  \n- The method of payment and any required documentation are clear and understood.",
+    "is_cached": false,
+    "judge": {
+      "judge_score": 5,
+      "deepeval_normalized_score": 1.0,
+      "reason": "The response directly answers the question by listing actionable steps a renter should take before paying an application fee. It covers key points such as verifying the fee amount, ensuring it is for a legitimate application, and confirming payment details. The response is clear, concise, and free of unsupported claims, making it highly useful and accurate.",
+      "latency_ms": 20962.42
+    },
+    "e2e_latency_ms": 85179.32,
+    "spans": [
+      {
+        "trace_id": "58dabf59-c54a-4016-8736-18cff5385443",
+        "stage": "cache_lookup",
+        "component": "Cache",
+        "start_time": "2026-11-14T05:42:23.317148+00:00",
+        "end_time": "2026-11-14T05:42:30.675220+00:00",
+        "duration_ms": 7357.94,
+        "queue_wait_ms": 0.0,
+        "status": "ok",
+        "error": null,
+        "cache_status": "miss",
+        "metadata": {
+          "similarity": 0.98549,
+          "threshold": 1.0
+        }
+      },
+      {
+        "trace_id": "58dabf59-c54a-4016-8736-18cff5385443",
+        "stage": "inbox",
+        "component": "PLANNER",
+        "start_time": "2026-11-14T05:42:31.733136+00:00",
+        "end_time": "2026-11-14T05:42:54.362313+00:00",
+        "duration_ms": 22675.69,
+        "queue_wait_ms": 17.55,
+        "status": "ok",
+        "error": null,
+        "metadata": {
+          "input_topic": "s2974_inbox",
+          "output_topic": "s2974_tasks",
+          "attempts": 1
+        }
+      },
+      {
+        "trace_id": "58dabf59-c54a-4016-8736-18cff5385443",
+        "stage": "tasks",
+        "component": "WRITER",
+        "start_time": "2026-11-14T05:42:54.758307+00:00",
+        "end_time": "2026-11-14T05:43:09.214320+00:00",
+        "duration_ms": 14427.49,
+        "queue_wait_ms": 722.63,
+        "status": "ok",
+        "error": null,
+        "metadata": {
+          "input_topic": "s2974_tasks",
+          "output_topic": "s2974_drafts",
+          "attempts": 1
+        }
+      },
+      {
+        "trace_id": "58dabf59-c54a-4016-8736-18cff5385443",
+        "stage": "drafts",
+        "component": "REVIEWER",
+        "start_time": "2026-11-14T05:43:09.271916+00:00",
+        "end_time": "2026-11-14T05:43:20.950528+00:00",
+        "duration_ms": 11677.05,
+        "queue_wait_ms": 420.23,
+        "status": "ok",
+        "error": null,
+        "metadata": {
+          "input_topic": "s2974_drafts",
+          "output_topic": "s2974_final",
+          "attempts": 1
+        }
+      },
+      {
+        "trace_id": "58dabf59-c54a-4016-8736-18cff5385443",
+        "stage": "final",
+        "component": "FINAL",
+        "start_time": "2026-11-14T05:42:31.722203+00:00",
+        "end_time": "2026-11-14T05:43:21.414113+00:00",
+        "duration_ms": 49705.75,
+        "queue_wait_ms": 1278.06,
+        "status": "ok",
+        "error": null,
+        "metadata": {
+          "topic": "s2974_final"
+        }
+      },
+      {
+        "trace_id": "58dabf59-c54a-4016-8736-18cff5385443",
+        "stage": "evaluator",
+        "component": "EVALUATOR",
+        "start_time": "2026-11-14T05:43:26.612336+00:00",
+        "end_time": "2026-11-14T05:43:47.665231+00:00",
+        "duration_ms": 21051.04,
+        "queue_wait_ms": 0.0,
+        "status": "ok",
+        "error": null,
+        "metadata": {
+          "judge_score": 5
+        }
+      }
+    ]
+  },
+  "failed_trace": {
+    "trace_id": "f9a34ddf-a043-4891-ab02-4917c8097034",
+    "correlation_id": "f9a34ddf-a043-4891-ab02-4917c8097034",
+    "failing_stage": "tasks",
+    "error": "ValueError: plan is required",
+    "spans": [
+      {
+        "trace_id": "f9a34ddf-a043-4891-ab02-4917c8097034",
+        "stage": "cache_lookup",
+        "component": "Cache",
+        "start_time": "2026-11-14T05:43:50.645205+00:00",
+        "end_time": "2026-11-14T05:43:50.645205+00:00",
+        "duration_ms": 0.0,
+        "queue_wait_ms": 0.0,
+        "status": "ok",
+        "error": null,
+        "cache_status": "miss",
+        "metadata": {
+          "controlled_failure": true
+        }
+      },
+      {
+        "trace_id": "f9a34ddf-a043-4891-ab02-4917c8097034",
+        "stage": "tasks",
+        "component": "WRITER",
+        "start_time": "2026-11-14T05:43:51.952636+00:00",
+        "end_time": "2026-11-14T05:43:52.505699+00:00",
+        "duration_ms": 552.75,
+        "queue_wait_ms": 1280.55,
+        "status": "error",
+        "error": "ValueError: plan is required",
+        "metadata": {
+          "input_topic": "s2974_tasks",
+          "dead_letter_topic": "s2974_dead_letter",
+          "attempts": 3
+        }
+      }
+    ]
+  }
+}

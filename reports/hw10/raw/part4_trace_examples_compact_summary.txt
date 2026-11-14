@@ -1,0 +1,12 @@
+HW10 PART 4 — TRACE VALIDATION
+================================
+cache_hit_trace_id = 4b627dcb-9837-4c96-bc4d-88f797ff30a5
+cache_hit_latency_ms = 1640.48
+cache_hit_stages = cache_lookup
+successful_miss_trace_id = 58dabf59-c54a-4016-8736-18cff5385443
+successful_miss_stages = cache_lookup, inbox, tasks, drafts, final, evaluator
+failed_trace_id = f9a34ddf-a043-4891-ab02-4917c8097034
+failing_stage = tasks
+error = ValueError: plan is required
+trace_id_equals_correlation_id = PASS
+required_trace_examples = PASS

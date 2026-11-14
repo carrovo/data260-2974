@@ -1,0 +1,133 @@
+PYTHONPATH=code .venv-hw10/bin/python code/hw10_part4_observability.py examples
+[HW10 PART4] capturing successful cache-miss trace
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 7000.59it/s]
+[HW9 AGENT] SENT topic=s2974_inbox partition=0 offset=31 correlation_id=5aa773b0-6d80-4a48-b7bd-8eae7138ae87
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead
+Heartbeat failed for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87: coordinator (node 1) is either not started or not valid
+Marking the coordinator dead (node 1)for group s2974_hw9_result_5aa773b0-6d80-4a48-b7bd-8eae7138ae87.
+Heartbeat session expired - marking coordinator dead

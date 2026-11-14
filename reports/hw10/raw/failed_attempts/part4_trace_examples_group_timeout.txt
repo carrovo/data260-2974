@@ -1,0 +1,40 @@
+PYTHONPATH=code .venv-hw10/bin/python code/hw10_part4_observability.py examples
+[HW10 PART4] capturing successful cache-miss trace
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4056.54it/s]
+[HW9 AGENT] SENT topic=s2974_inbox partition=0 offset=30 correlation_id=5c9b21fc-4b0a-4745-8610-d093d3b0d15e
+Heartbeat failed: local member_id was not recognized; resetting and re-joining group
+Heartbeat session expired - marking coordinator dead
+Marking the coordinator dead (node 1)for group s2974_hw10_trace_5e36e1d9-3137-4b7d-a41b-cc954397b73d.
+Traceback (most recent call last):
+  File "/Users/carol/Documents/data260-2974/data260-2974-hw7/code/hw10_part4_observability.py", line 506, in <module>
+    main()
+    ~~~~^^
+  File "/Users/carol/Documents/data260-2974/data260-2974-hw7/code/hw10_part4_observability.py", line 500, in main
+    print_examples(asyncio.run(trace_examples(args.output)))
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/asyncio/runners.py", line 205, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Users/carol/Documents/data260-2974/data260-2974-hw7/code/hw10_part4_observability.py", line 326, in trace_examples
+    successful_miss = await run_confirmed_miss(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/Users/carol/Documents/data260-2974/data260-2974-hw7/code/hw10_part4_observability.py", line 208, in run_confirmed_miss
+    spans = await collect_trace(
+            ^^^^^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+    )
+    ^
+  File "/Users/carol/Documents/data260-2974/data260-2974-hw7/code/hw10_part4_observability.py", line 75, in collect_trace
+    raise TimeoutError(f"trace {trace_id} is incomplete; missing {missing}")
+TimeoutError: trace 5c9b21fc-4b0a-4745-8610-d093d3b0d15e is incomplete; missing [('EVALUATOR', 'ok'), ('FINAL', 'ok'), ('PLANNER', 'ok'), ('REVIEWER', 'ok'), ('WRITER', 'ok')]
+make: *** [run-hw10-part4-examples] Error 1

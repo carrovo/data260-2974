@@ -1,0 +1,17 @@
+PYTHONPATH=code .venv-hw10/bin/python code/hw10_part4_observability.py examples
+[HW10 PART4] capturing successful cache-miss trace
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4143.85it/s]
+[HW9 AGENT] SENT topic=s2974_inbox partition=0 offset=32 correlation_id=58dabf59-c54a-4016-8736-18cff5385443
+[HW10 PART4] capturing exact cache-hit trace
+[HW10 PART4] capturing controlled failed trace
+HW10 PART 4 — REQUIRED TRACE EXAMPLES
+======================================
+cache_hit_trace_id = 4b627dcb-9837-4c96-bc4d-88f797ff30a5
+cache_hit_latency_ms = 1640.48
+successful_miss_trace_id = 58dabf59-c54a-4016-8736-18cff5385443
+successful_miss_stages = cache_lookup, inbox, tasks, drafts, final, evaluator
+failed_trace_id = f9a34ddf-a043-4891-ab02-4917c8097034
+failing_stage = tasks
+error = ValueError: plan is required
+trace_id_equals_correlation_id = PASS
