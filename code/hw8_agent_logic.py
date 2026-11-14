@@ -2,6 +2,8 @@
 
 from typing import Any
 
+from hw10_tracing import trace_identity
+
 
 def processing_delay_seconds(message: dict[str, Any]) -> float:
     """Return a bounded test delay requested by a failure-test message."""
@@ -41,6 +43,7 @@ def planner_message(
 
     return {
         "correlation_id": required_text(source, "correlation_id"),
+        "trace_id": trace_identity(source),
         "stage": "planned",
         "question": required_text(source, "question"),
         "plan": model_output.strip(),
@@ -67,6 +70,7 @@ def writer_message(
 
     return {
         "correlation_id": required_text(source, "correlation_id"),
+        "trace_id": trace_identity(source),
         "stage": "drafted",
         "question": required_text(source, "question"),
         "plan": required_text(source, "plan"),
@@ -94,6 +98,7 @@ def reviewer_message(
 
     return {
         "correlation_id": required_text(source, "correlation_id"),
+        "trace_id": trace_identity(source),
         "status": "approved",
         "answer": model_output.strip(),
     }

@@ -3,6 +3,7 @@
 import asyncio
 import json
 from collections.abc import Callable
+from time import perf_counter
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -18,7 +19,9 @@ from hw8_config import (
     OLLAMA_BASE_URL,
     OLLAMA_MODEL,
     SEED,
+    TRACE_TOPIC,
 )
+from hw10_tracing import make_span, queue_wait_ms, trace_identity, utc_now
 
 PromptBuilder = Callable[[dict[str, Any]], str]
 MessageBuilder = Callable[[dict[str, Any], str], dict[str, Any]]
@@ -50,8 +53,10 @@ def build_dead_letter_message(
     """Build a machine-readable dead-letter record for a failed message."""
 
     correlation_id = source.get("correlation_id") if source else None
+    trace_id = source.get("trace_id", correlation_id) if source else None
     return {
         "correlation_id": correlation_id,
+        "trace_id": trace_id,
         "failed_agent": agent_name,
         "source_topic": source_topic,
         "source_partition": source_partition,
@@ -146,6 +151,8 @@ async def run_agent(
 
     try:
         async for record in consumer:
+            span_started_at = utc_now()
+            span_started_perf = perf_counter()
             raw_value = record.value
             source: dict[str, Any] | None = None
             try:
@@ -153,6 +160,13 @@ async def run_agent(
             except ValueError:
                 pass
             correlation_id = source.get("correlation_id") if source else None
+            trace_id = (
+                source.get("trace_id", correlation_id) if source else correlation_id
+            )
+            stage_name = input_topic.removeprefix("s2974_")
+            stage_queue_wait_ms = (
+                queue_wait_ms(source, span_started_at) if source is not None else 0.0
+            )
             print(
                 f"[{agent_name}] RECEIVED topic={record.topic} "
                 f"partition={record.partition} offset={record.offset} "
@@ -178,6 +192,7 @@ async def run_agent(
                 try:
                     source = decode_json_object(raw_value)
                     correlation_id = source.get("correlation_id")
+                    trace_id = trace_identity(source)
                     delay_seconds = processing_delay_seconds(source)
                     print(
                         f"[{agent_name}] PROCESSING STARTED "
@@ -202,6 +217,8 @@ async def run_agent(
                         prompt,
                     )
                     outgoing = message_builder(source, model_output)
+                    outgoing["trace_id"] = trace_identity(outgoing)
+                    outgoing["published_at"] = utc_now()
                     log_json(f"[{agent_name}] OUTPUT", outgoing)
 
                     key = str(outgoing["correlation_id"]).encode("utf-8")
@@ -216,6 +233,34 @@ async def run_agent(
                         f"correlation_id={outgoing['correlation_id']}",
                         flush=True,
                     )
+                    span_finished_at = utc_now()
+                    span = make_span(
+                        trace_id=trace_id,
+                        stage=stage_name,
+                        component=agent_name,
+                        start_time=span_started_at,
+                        end_time=span_finished_at,
+                        duration_ms=(perf_counter() - span_started_perf) * 1000,
+                        queue_wait=stage_queue_wait_ms,
+                        status="ok",
+                        metadata={
+                            "input_topic": input_topic,
+                            "output_topic": output_topic,
+                            "attempts": attempt,
+                        },
+                    )
+                    try:
+                        await producer.send_and_wait(
+                            TRACE_TOPIC,
+                            span,
+                            key=trace_id.encode("utf-8"),
+                        )
+                    except Exception as trace_error:
+                        print(
+                            f"[{agent_name}] TRACE EMIT FAILED "
+                            f"error={type(trace_error).__name__}: {trace_error}",
+                            flush=True,
+                        )
                     last_error = None
                     break
                 except Exception as exc:
@@ -262,6 +307,36 @@ async def run_agent(
                     flush=True,
                 )
                 log_json(f"[{agent_name}] DLQ", dead_letter)
+                if isinstance(trace_id, str) and trace_id:
+                    span_finished_at = utc_now()
+                    span = make_span(
+                        trace_id=trace_id,
+                        stage=stage_name,
+                        component=agent_name,
+                        start_time=span_started_at,
+                        end_time=span_finished_at,
+                        duration_ms=(perf_counter() - span_started_perf) * 1000,
+                        queue_wait=stage_queue_wait_ms,
+                        status="error",
+                        error=f"{type(last_error).__name__}: {last_error}",
+                        metadata={
+                            "input_topic": input_topic,
+                            "dead_letter_topic": DEAD_LETTER_TOPIC,
+                            "attempts": AGENT_MAX_ATTEMPTS,
+                        },
+                    )
+                    try:
+                        await producer.send_and_wait(
+                            TRACE_TOPIC,
+                            span,
+                            key=trace_id.encode("utf-8"),
+                        )
+                    except Exception as trace_error:
+                        print(
+                            f"[{agent_name}] TRACE EMIT FAILED "
+                            f"error={type(trace_error).__name__}: {trace_error}",
+                            flush=True,
+                        )
 
             await consumer.commit()
             disposition = "dead_letter" if last_error is not None else "success"

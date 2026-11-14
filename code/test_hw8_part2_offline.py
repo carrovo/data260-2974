@@ -20,6 +20,7 @@ class Part2AgentLogicTests(unittest.TestCase):
     def test_complete_pipeline_preserves_correlation_id(self) -> None:
         inbox = {
             "correlation_id": CORRELATION_ID,
+            "trace_id": CORRELATION_ID,
             "question": "What should a renter verify?",
         }
         task = planner_message(inbox, "1. Check price. 2. Check terms.")
@@ -29,6 +30,9 @@ class Part2AgentLogicTests(unittest.TestCase):
         self.assertEqual(task["correlation_id"], CORRELATION_ID)
         self.assertEqual(draft["correlation_id"], CORRELATION_ID)
         self.assertEqual(final["correlation_id"], CORRELATION_ID)
+        self.assertEqual(task["trace_id"], CORRELATION_ID)
+        self.assertEqual(draft["trace_id"], CORRELATION_ID)
+        self.assertEqual(final["trace_id"], CORRELATION_ID)
         self.assertEqual(final["status"], "approved")
         self.assertEqual(final["answer"], "Verify the price and lease terms.")
 
@@ -77,7 +81,7 @@ class Part2AgentLogicTests(unittest.TestCase):
         )
         self.assertEqual(
             set(final),
-            {"correlation_id", "status", "answer"},
+            {"correlation_id", "trace_id", "status", "answer"},
         )
 
 
