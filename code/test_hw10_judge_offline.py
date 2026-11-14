@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from hw10_judge import NonThinkingOllamaClient
 from hw10_judge_core import (
     build_case_rows,
     load_human_labels,
@@ -17,6 +18,19 @@ from hw10_judge_core import (
 
 class HW10JudgeCoreTests(unittest.TestCase):
     """Verify agreement, ties, repeatability, and label validation."""
+
+    def test_ollama_wrapper_disables_thinking(self) -> None:
+        class FakeClient:
+            def chat(self, *args: object, **kwargs: object) -> dict[str, object]:
+                return {"args": args, **kwargs}
+
+        wrapped = NonThinkingOllamaClient(FakeClient())
+        result = wrapped.chat(
+            model="qwen3:8b",
+            messages=[],
+            think=True,
+        )
+        self.assertEqual(result["think"], False)
 
     def test_rank_with_ties_uses_average_rank(self) -> None:
         self.assertEqual(rank_with_ties([4, 4, 5, 5]), [1.5, 1.5, 3.5, 3.5])

@@ -43,8 +43,10 @@ JUDGE_BASE_URL = os.getenv(
 )
 JUDGE_TEMPERATURE = 0.0
 JUDGE_SEED = 2974
+JUDGE_NUM_PREDICT = 512
 JUDGE_TIMEOUT_SECONDS = int(os.getenv("HW10_JUDGE_TIMEOUT_SECONDS", "180"))
 RUBRIC_VERSION = "writer-helpfulness-v1"
+JUDGE_CONFIGURATION_VERSION = "ollama-nonthinking-v2"
 
 WRITER_RUBRIC = [
     Rubric(
@@ -98,6 +100,28 @@ class JudgeTimeoutError(TimeoutError):
     """Raised when a single bounded local judge call exceeds its deadline."""
 
 
+class NonThinkingOllamaClient:
+    """Forward Ollama calls while explicitly disabling Qwen reasoning mode."""
+
+    def __init__(self, client: Any) -> None:
+        self.client = client
+
+    def chat(self, *args: Any, **kwargs: Any) -> Any:
+        """Force the supported top-level Ollama think flag to false."""
+
+        kwargs["think"] = False
+        return self.client.chat(*args, **kwargs)
+
+
+class NonThinkingOllamaModel(OllamaModel):
+    """DeepEval Ollama adapter with bounded non-thinking JSON generation."""
+
+    def load_model(self, async_mode: bool = False) -> NonThinkingOllamaClient:
+        """Wrap both sync and async clients with the same thinking setting."""
+
+        return NonThinkingOllamaClient(super().load_model(async_mode))
+
+
 def utc_now() -> str:
     """Return a timezone-aware UTC timestamp."""
 
@@ -149,16 +173,16 @@ def hard_timeout(seconds: int) -> Iterator[None]:
         signal.signal(signal.SIGALRM, previous_handler)
 
 
-def build_model() -> OllamaModel:
+def build_model() -> NonThinkingOllamaModel:
     """Build the documented local DeepEval Ollama model adapter."""
 
-    return OllamaModel(
+    return NonThinkingOllamaModel(
         model=JUDGE_MODEL,
         base_url=JUDGE_BASE_URL,
         temperature=JUDGE_TEMPERATURE,
         generation_kwargs={
             "seed": JUDGE_SEED,
-            "num_predict": 512,
+            "num_predict": JUDGE_NUM_PREDICT,
         },
         timeout=JUDGE_TIMEOUT_SECONDS,
     )
@@ -227,6 +251,7 @@ def stable_metadata(cases_path: Path, labels_path: Path) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "rubric_version": RUBRIC_VERSION,
+        "judge_configuration_version": JUDGE_CONFIGURATION_VERSION,
         "judge_framework": "DeepEval GEval",
         "deepeval_version": version("deepeval"),
         "judge_provider": "local Ollama",
@@ -234,6 +259,8 @@ def stable_metadata(cases_path: Path, labels_path: Path) -> dict[str, Any]:
         "judge_base_url": JUDGE_BASE_URL,
         "temperature": JUDGE_TEMPERATURE,
         "seed": JUDGE_SEED,
+        "thinking_enabled": False,
+        "num_predict": JUDGE_NUM_PREDICT,
         "timeout_seconds_per_case": JUDGE_TIMEOUT_SECONDS,
         "score_scale": {"minimum": 1, "maximum": 5},
         "eval_cases_sha256": file_sha256(cases_path),
