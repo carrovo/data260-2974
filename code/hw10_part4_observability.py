@@ -14,7 +14,6 @@ from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 
 from hw8_config import (
     KAFKA_BOOTSTRAP_SERVERS,
-    PREFIX,
     TASKS_TOPIC,
     TRACE_TOPIC,
 )
@@ -81,7 +80,7 @@ async def start_trace_io() -> tuple[AIOKafkaConsumer, AIOKafkaProducer]:
     consumer = AIOKafkaConsumer(
         TRACE_TOPIC,
         bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
-        group_id=f"{PREFIX}_hw10_trace_{uuid4()}",
+        group_id=None,
         auto_offset_reset="latest",
         enable_auto_commit=False,
         value_deserializer=lambda value: json.loads(value.decode("utf-8")),
