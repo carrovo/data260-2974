@@ -1,0 +1,68 @@
+{
+  "case_count": 20,
+  "run_count": 3,
+  "agreement_using_mean_judge_score": {
+    "spearman_correlation": 0.050251890762960605,
+    "mean_absolute_difference": 0.45
+  },
+  "agreement_by_run": [
+    {
+      "run": 1,
+      "spearman_correlation": 0.050251890762960605,
+      "mean_absolute_difference": 0.45
+    },
+    {
+      "run": 2,
+      "spearman_correlation": 0.050251890762960605,
+      "mean_absolute_difference": 0.45
+    },
+    {
+      "run": 3,
+      "spearman_correlation": 0.050251890762960605,
+      "mean_absolute_difference": 0.45
+    }
+  ],
+  "repeatability": {
+    "changed_case_count": 0,
+    "changed_case_rate": 0.0,
+    "changed_case_ids": [],
+    "pairwise_comparison_count": 60,
+    "changed_pairwise_comparison_count": 0,
+    "changed_pairwise_comparison_rate": 0.0,
+    "mean_absolute_score_change": 0,
+    "maximum_absolute_score_change": 0
+  },
+  "deployment_gate_recommendation": {
+    "trust_to_gate_deployment": false,
+    "decision_rule": "Trust only if Spearman is at least 0.70, mean absolute difference is at most 0.50, and changed-case rate is at most 0.10.",
+    "additional_evidence_required": [
+      "A broader human-label distribution with more weak and adversarial drafts.",
+      "Labels from a second independent human reviewer.",
+      "Validation on new questions not used in these 20 cases."
+    ]
+  },
+  "metadata": {
+    "schema_version": 1,
+    "rubric_version": "writer-helpfulness-v1",
+    "judge_configuration_version": "ollama-nonthinking-v2",
+    "judge_framework": "DeepEval GEval",
+    "deepeval_version": "4.3.3",
+    "judge_provider": "local Ollama",
+    "judge_model": "qwen3:8b",
+    "judge_base_url": "http://127.0.0.1:11434",
+    "temperature": 0.0,
+    "seed": 2974,
+    "thinking_enabled": false,
+    "num_predict": 512,
+    "timeout_seconds_per_case": 180,
+    "score_scale": {
+      "minimum": 1,
+      "maximum": 5
+    },
+    "eval_cases_sha256": "38b211862bdd4491ac65224e3cb2e2624deb12851f480a0c91e7c72aef3663d0",
+    "human_labels_sha256": "58f668ecb47d5995bea0eeb53936a3c167a1a963b4fb0ea96cade6a59b074075",
+    "frozen_inputs_commit": "8f98e3ca6e1825ec4eb1ba4500925b9f9bd09ede",
+    "evaluation_code_commit": "0169655529c1b9921992102c4082c98518988248"
+  },
+  "completed_at": "2026-11-14T01:04:03.014029+00:00"
+}

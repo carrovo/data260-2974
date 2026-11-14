@@ -1,0 +1,650 @@
+{
+  "metadata": {
+    "schema_version": 1,
+    "rubric_version": "writer-helpfulness-v1",
+    "judge_configuration_version": "ollama-nonthinking-v2",
+    "judge_framework": "DeepEval GEval",
+    "deepeval_version": "4.3.3",
+    "judge_provider": "local Ollama",
+    "judge_model": "qwen3:8b",
+    "judge_base_url": "http://127.0.0.1:11434",
+    "temperature": 0.0,
+    "seed": 2974,
+    "thinking_enabled": false,
+    "num_predict": 512,
+    "timeout_seconds_per_case": 180,
+    "score_scale": {
+      "minimum": 1,
+      "maximum": 5
+    },
+    "eval_cases_sha256": "38b211862bdd4491ac65224e3cb2e2624deb12851f480a0c91e7c72aef3663d0",
+    "human_labels_sha256": "58f668ecb47d5995bea0eeb53936a3c167a1a963b4fb0ea96cade6a59b074075",
+    "frozen_inputs_commit": "8f98e3ca6e1825ec4eb1ba4500925b9f9bd09ede",
+    "evaluation_code_commit": "0169655529c1b9921992102c4082c98518988248"
+  },
+  "started_at": "2026-11-14T00:45:55.215113+00:00",
+  "completed_at": "2026-11-14T01:04:03.014029+00:00",
+  "runs": [
+    {
+      "run": 1,
+      "started_at": "2026-11-14T00:45:55.446130+00:00",
+      "completed_at": "2026-11-14T00:51:51.855684+00:00",
+      "cases": [
+        {
+          "case_id": "case-01",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by outlining specific steps a renter should take before paying an application fee. It covers important points such as verifying legitimacy, fee requirements, refundability, and record-keeping. The information is practical, actionable, and free of unsupported claims, making it accurate and clear.",
+          "latency_ms": 16505.87,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:46:11.952977+00:00"
+        },
+        {
+          "case_id": "case-02",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question by providing actionable steps for renters to verify rental listings and contacts. It covers key points such as checking contact information, verifying addresses, cross-referencing communication channels, identifying scam red flags, and reporting suspicious activity. The advice is practical, clear, and free of unsupported claims, making it highly useful and accurate.",
+          "latency_ms": 18905.37,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:46:30.872977+00:00"
+        },
+        {
+          "case_id": "case-03",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by listing relevant questions a renter should ask about utilities. It covers important points such as included utilities, deposits, providers, and responsibilities. The answer is clear, organized, and actionable, with no unsupported claims or inaccuracies. It meets the criteria for a good response.",
+          "latency_ms": 16350.91,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:46:47.233326+00:00"
+        },
+        {
+          "case_id": "case-04",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by listing actionable details to document during a rental move-in inspection. It covers important points such as appliances, photos, damage notes, and a signed checklist. The information is clear, organized, and practical, with no unsupported claims or invented specifics. The answer is complete and actionable, meeting the criteria for a good response.",
+          "latency_ms": 17998.01,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:47:05.249357+00:00"
+        },
+        {
+          "case_id": "case-05",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining a method to compare true monthly costs, including listing expenses, calculating totals, and considering long-term costs. It is clear, actionable, and covers important points without unsupported claims. The answer is concise and relevant, meeting the criteria for a good response.",
+          "latency_ms": 15355.06,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:47:20.608328+00:00"
+        },
+        {
+          "case_id": "case-06",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific actionable steps a renter should take to check parking details before applying for an apartment. It covers important points such as availability, cost, restrictions, and shared area rules. The information is accurate, clear, and practical, with no unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 17972.55,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:47:38.586909+00:00"
+        },
+        {
+          "case_id": "case-07",
+          "human_score": 4,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining key lease terms a renter should review when living with roommates. It covers important points such as lease duration, rent increases, subletting, utilities, and exit conditions. The answer is clear, organized, and provides actionable guidance without inventing unsupported specifics. It is accurate and relevant, meeting the criteria for a good response.",
+          "latency_ms": 19676.62,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:47:58.272776+00:00"
+        },
+        {
+          "case_id": "case-08",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question by providing actionable steps to evaluate commute accuracy. It includes practical advice like using mapping tools, checking reviews, and contacting the landlord. The answer is clear, organized, and concise, with no unsupported claims or invented details. It covers important points without unnecessary complexity.",
+          "latency_ms": 16354.15,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:48:14.636534+00:00"
+        },
+        {
+          "case_id": "case-09",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by providing specific, actionable questions a renter should ask about repairs and maintenance. It covers important points such as response times, reporting processes, and availability of emergency services. The answer is clear, organized, and concise, with no unsupported claims or invented details. It meets the criteria for a good response.",
+          "latency_ms": 17560.41,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:48:32.213876+00:00"
+        },
+        {
+          "case_id": "case-10",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing key points a renter should verify about a security deposit. It covers important aspects like refundability, lease terms, conditions for withholding, written agreements, and return processes. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The answer is well-organized and concise, meeting the criteria for a high score.",
+          "latency_ms": 19776.63,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:48:52.004538+00:00"
+        },
+        {
+          "case_id": "case-11",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by providing a structured approach for assessing a furnished apartment. It covers essential requirements, inspection process, hidden costs, and comparison with other options. The advice is practical and actionable, with no unsupported claims or invented details. The response is clear and concise, meeting the criteria for a good answer.",
+          "latency_ms": 17390.12,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:49:09.402691+00:00"
+        },
+        {
+          "case_id": "case-12",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific actions a renter should take to confirm pet-related details before signing a lease. It covers important points such as pet allowance, deposits, restrictions, and responsibilities. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The response is well-organized and concise.",
+          "latency_ms": 17494.08,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:49:26.913283+00:00"
+        },
+        {
+          "case_id": "case-13",
+          "human_score": 4,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by listing relevant questions a renter should ask about a move-in discount. It covers important points such as the duration of the discount, its applicability, conditions, required move-in date, and consequences of early termination. The answer is clear, organized, and actionable without inventing unsupported details. It meets the criteria for a good response.",
+          "latency_ms": 17404.02,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:49:44.339893+00:00"
+        },
+        {
+          "case_id": "case-14",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining steps to compare lease renewal and rent increase terms. It covers key points such as reviewing the lease, checking rent control laws, comparing market rates, and negotiating. The advice is practical and actionable without inventing unsupported claims. The response is clear and concise, meeting the criteria for a good answer.",
+          "latency_ms": 17911.7,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:50:02.258374+00:00"
+        },
+        {
+          "case_id": "case-15",
+          "human_score": 4,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing actionable steps a renter should take when considering a sublease. It covers important points such as checking lease terms, landlord approval, and subletter verification. The answer is clear, organized, and concise, with no unsupported claims or invented details. It provides practical guidance without unnecessary complexity.",
+          "latency_ms": 17582.49,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:50:19.865798+00:00"
+        },
+        {
+          "case_id": "case-16",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing key accessibility details a renter should confirm. It covers important points such as wheelchair access, bathroom facilities, space requirements, modifications, and parking. The information is accurate, clear, and actionable without any unsupported claims or invented specifics. The answer is well-organized and concise.",
+          "latency_ms": 15965.66,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:50:35.846208+00:00"
+        },
+        {
+          "case_id": "case-17",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question about evaluating noise concerns during an apartment tour and provides actionable steps. It covers key points such as testing sound transmission, checking shared walls, observing external noise, asking about noise policies, and visiting at different times. The advice is practical, clear, and well-organized, with no unsupported claims or invented specifics. The answer is complete and actionable, aligning well with the rubric for a high score.",
+          "latency_ms": 21271.33,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:50:57.127120+00:00"
+        },
+        {
+          "case_id": "case-18",
+          "human_score": 4,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing relevant internet and connectivity details a remote worker should verify. It covers important points such as internet speed, provider, connection type, data caps, signal strength, and service interruptions. The information is accurate, clear, and actionable without any unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 17844.33,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:51:14.997559+00:00"
+        },
+        {
+          "case_id": "case-19",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining key steps a renter should take before agreeing to an early lease termination clause. It covers important points such as reviewing the lease, checking notice periods, penalties, replacement tenant requirements, financial impact, and getting unclear terms in writing. The answer is clear, organized, and provides actionable guidance without inventing unsupported specifics. It is accurate and relevant, meeting the criteria for a good response.",
+          "latency_ms": 20993.27,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:51:35.999315+00:00"
+        },
+        {
+          "case_id": "case-20",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific records a renter should keep. It covers important points such as application forms, communication records, fees, supporting documents, and application status. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 15834.7,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:51:51.849205+00:00"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "started_at": "2026-11-14T00:51:51.857991+00:00",
+      "completed_at": "2026-11-14T00:57:49.111373+00:00",
+      "cases": [
+        {
+          "case_id": "case-01",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by outlining specific steps a renter should take before paying an application fee. It covers important points such as verifying legitimacy, fee requirements, refundability, and record-keeping. The information is practical, actionable, and free of unsupported claims, making it accurate and clear.",
+          "latency_ms": 15770.56,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:52:07.637028+00:00"
+        },
+        {
+          "case_id": "case-02",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question by providing actionable steps for renters to verify rental listings and contacts. It covers key points such as checking contact information, verifying addresses, cross-referencing communication channels, identifying scam red flags, and reporting suspicious activity. The advice is practical, clear, and free of unsupported claims, making it highly useful and accurate.",
+          "latency_ms": 19496.11,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:52:27.143320+00:00"
+        },
+        {
+          "case_id": "case-03",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by listing relevant questions a renter should ask about utilities. It covers important points such as included utilities, deposits, providers, and responsibilities. The answer is clear, organized, and actionable, with no unsupported claims or inaccuracies. It meets the criteria for a good response.",
+          "latency_ms": 16766.8,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:52:43.916382+00:00"
+        },
+        {
+          "case_id": "case-04",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by listing actionable details to document during a rental move-in inspection. It covers important points such as appliances, photos, damage notes, and a signed checklist. The information is clear, organized, and practical, with no unsupported claims or invented specifics. The answer is complete and actionable, meeting the criteria for a good response.",
+          "latency_ms": 18185.28,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:53:02.122854+00:00"
+        },
+        {
+          "case_id": "case-05",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining a method to compare true monthly costs, including listing expenses, calculating totals, and considering long-term costs. It is clear, actionable, and covers important points without unsupported claims. The answer is concise and relevant, meeting the criteria for a good response.",
+          "latency_ms": 15596.16,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:53:17.727359+00:00"
+        },
+        {
+          "case_id": "case-06",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific actionable steps a renter should take to check parking details before applying for an apartment. It covers important points such as availability, cost, restrictions, and shared area rules. The information is accurate, clear, and practical, with no unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 18100.66,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:53:35.848776+00:00"
+        },
+        {
+          "case_id": "case-07",
+          "human_score": 4,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining key lease terms a renter should review when living with roommates. It covers important points such as lease duration, rent increases, subletting, utilities, and exit conditions. The answer is clear, organized, and provides actionable guidance without inventing unsupported specifics. It is accurate and relevant, meeting the criteria for a good response.",
+          "latency_ms": 19279.26,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:53:55.144202+00:00"
+        },
+        {
+          "case_id": "case-08",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question by providing actionable steps to evaluate commute accuracy. It includes practical advice like using mapping tools, checking reviews, and contacting the landlord. The answer is clear, organized, and concise, with no unsupported claims or invented details. It covers important points without unnecessary complexity.",
+          "latency_ms": 16480.98,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:54:11.641752+00:00"
+        },
+        {
+          "case_id": "case-09",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by providing specific, actionable questions a renter should ask about repairs and maintenance. It covers important points such as response times, reporting processes, and availability of emergency services. The answer is clear, organized, and concise, with no unsupported claims or invented details. It meets the criteria for a good response.",
+          "latency_ms": 17397.04,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:54:29.057718+00:00"
+        },
+        {
+          "case_id": "case-10",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing key points a renter should verify about a security deposit. It covers important aspects like refundability, lease terms, conditions for withholding, written agreements, and return processes. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The answer is well-organized and concise, meeting the criteria for a high score.",
+          "latency_ms": 18524.71,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:54:47.605940+00:00"
+        },
+        {
+          "case_id": "case-11",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by providing a structured approach for assessing a furnished apartment. It covers essential requirements, inspection process, hidden costs, and comparison with other options. The advice is practical and actionable, with no unsupported claims or invented details. The response is clear and concise, meeting the criteria for a good answer.",
+          "latency_ms": 17404.12,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:55:05.017082+00:00"
+        },
+        {
+          "case_id": "case-12",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific actions a renter should take to confirm pet-related details before signing a lease. It covers important points such as pet allowance, deposits, restrictions, and responsibilities. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The response is well-organized and concise.",
+          "latency_ms": 17950.33,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:55:22.980409+00:00"
+        },
+        {
+          "case_id": "case-13",
+          "human_score": 4,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by listing relevant questions a renter should ask about a move-in discount. It covers important points such as the duration of the discount, its applicability, conditions, required move-in date, and consequences of early termination. The answer is clear, organized, and actionable without inventing unsupported details. It meets the criteria for a good response.",
+          "latency_ms": 17177.24,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:55:40.182732+00:00"
+        },
+        {
+          "case_id": "case-14",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining steps to compare lease renewal and rent increase terms. It covers key points such as reviewing the lease, checking rent control laws, comparing market rates, and negotiating. The advice is practical and actionable without inventing unsupported claims. The response is clear and concise, meeting the criteria for a good answer.",
+          "latency_ms": 17018.56,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:55:57.210617+00:00"
+        },
+        {
+          "case_id": "case-15",
+          "human_score": 4,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing actionable steps a renter should take when considering a sublease. It covers important points such as checking lease terms, landlord approval, and subletter verification. The answer is clear, organized, and concise, with no unsupported claims or invented details. It provides practical guidance without unnecessary complexity.",
+          "latency_ms": 17733.77,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:56:14.960524+00:00"
+        },
+        {
+          "case_id": "case-16",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing key accessibility details a renter should confirm. It covers important points such as wheelchair access, bathroom facilities, space requirements, modifications, and parking. The information is accurate, clear, and actionable without any unsupported claims or invented specifics. The answer is well-organized and concise.",
+          "latency_ms": 16109.75,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:56:31.090378+00:00"
+        },
+        {
+          "case_id": "case-17",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question about evaluating noise concerns during an apartment tour and provides actionable steps. It covers key points such as testing sound transmission, checking shared walls, observing external noise, asking about noise policies, and visiting at different times. The advice is practical, clear, and well-organized, with no unsupported claims or invented specifics. The answer is complete and actionable, aligning well with the rubric for a high score.",
+          "latency_ms": 22123.99,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:56:53.238214+00:00"
+        },
+        {
+          "case_id": "case-18",
+          "human_score": 4,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing relevant internet and connectivity details a remote worker should verify. It covers important points such as internet speed, provider, connection type, data caps, signal strength, and service interruptions. The information is accurate, clear, and actionable without any unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 18599.78,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:57:11.876187+00:00"
+        },
+        {
+          "case_id": "case-19",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining key steps a renter should take before agreeing to an early lease termination clause. It covers important points such as reviewing the lease, checking notice periods, penalties, replacement tenant requirements, financial impact, and getting unclear terms in writing. The answer is clear, organized, and provides actionable guidance without inventing unsupported specifics. It is accurate and relevant, meeting the criteria for a good response.",
+          "latency_ms": 20839.59,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:57:32.739059+00:00"
+        },
+        {
+          "case_id": "case-20",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific records a renter should keep. It covers important points such as application forms, communication records, fees, supporting documents, and application status. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 16329.32,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:57:49.098533+00:00"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "started_at": "2026-11-14T00:57:49.121869+00:00",
+      "completed_at": "2026-11-14T01:04:03.000834+00:00",
+      "cases": [
+        {
+          "case_id": "case-01",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by outlining specific steps a renter should take before paying an application fee. It covers important points such as verifying legitimacy, fee requirements, refundability, and record-keeping. The information is practical, actionable, and free of unsupported claims, making it accurate and clear.",
+          "latency_ms": 16166.81,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:58:05.297124+00:00"
+        },
+        {
+          "case_id": "case-02",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question by providing actionable steps for renters to verify rental listings and contacts. It covers key points such as checking contact information, verifying addresses, cross-referencing communication channels, identifying scam red flags, and reporting suspicious activity. The advice is practical, clear, and free of unsupported claims, making it highly useful and accurate.",
+          "latency_ms": 19204.0,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:58:24.513497+00:00"
+        },
+        {
+          "case_id": "case-03",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by listing relevant questions a renter should ask about utilities. It covers important points such as included utilities, deposits, providers, and responsibilities. The answer is clear, organized, and actionable, with no unsupported claims or inaccuracies. It meets the criteria for a good response.",
+          "latency_ms": 15812.82,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:58:40.332948+00:00"
+        },
+        {
+          "case_id": "case-04",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by listing actionable details to document during a rental move-in inspection. It covers important points such as appliances, photos, damage notes, and a signed checklist. The information is clear, organized, and practical, with no unsupported claims or invented specifics. The answer is complete and actionable, meeting the criteria for a good response.",
+          "latency_ms": 18074.48,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:58:58.431988+00:00"
+        },
+        {
+          "case_id": "case-05",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining a method to compare true monthly costs, including listing expenses, calculating totals, and considering long-term costs. It is clear, actionable, and covers important points without unsupported claims. The answer is concise and relevant, meeting the criteria for a good response.",
+          "latency_ms": 16546.1,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:59:15.001046+00:00"
+        },
+        {
+          "case_id": "case-06",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific actionable steps a renter should take to check parking details before applying for an apartment. It covers important points such as availability, cost, restrictions, and shared area rules. The information is accurate, clear, and practical, with no unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 19017.89,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:59:34.033670+00:00"
+        },
+        {
+          "case_id": "case-07",
+          "human_score": 4,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining key lease terms a renter should review when living with roommates. It covers important points such as lease duration, rent increases, subletting, utilities, and exit conditions. The answer is clear, organized, and provides actionable guidance without inventing unsupported specifics. It is accurate and relevant, meeting the criteria for a good response.",
+          "latency_ms": 21514.84,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:59:55.564466+00:00"
+        },
+        {
+          "case_id": "case-08",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question by providing actionable steps to evaluate commute accuracy. It includes practical advice like using mapping tools, checking reviews, and contacting the landlord. The answer is clear, organized, and concise, with no unsupported claims or invented details. It covers important points without unnecessary complexity.",
+          "latency_ms": 17290.86,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:00:12.867380+00:00"
+        },
+        {
+          "case_id": "case-09",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by providing specific, actionable questions a renter should ask about repairs and maintenance. It covers important points such as response times, reporting processes, and availability of emergency services. The answer is clear, organized, and concise, with no unsupported claims or invented details. It meets the criteria for a good response.",
+          "latency_ms": 17863.31,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:00:30.753007+00:00"
+        },
+        {
+          "case_id": "case-10",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing key points a renter should verify about a security deposit. It covers important aspects like refundability, lease terms, conditions for withholding, written agreements, and return processes. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The answer is well-organized and concise, meeting the criteria for a high score.",
+          "latency_ms": 20722.7,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:00:51.506028+00:00"
+        },
+        {
+          "case_id": "case-11",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly answers the question by providing a structured approach for assessing a furnished apartment. It covers essential requirements, inspection process, hidden costs, and comparison with other options. The advice is practical and actionable, with no unsupported claims or invented details. The response is clear and concise, meeting the criteria for a good answer.",
+          "latency_ms": 18496.56,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:01:10.039087+00:00"
+        },
+        {
+          "case_id": "case-12",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific actions a renter should take to confirm pet-related details before signing a lease. It covers important points such as pet allowance, deposits, restrictions, and responsibilities. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The response is well-organized and concise.",
+          "latency_ms": 18228.89,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:01:28.276681+00:00"
+        },
+        {
+          "case_id": "case-13",
+          "human_score": 4,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by listing relevant questions a renter should ask about a move-in discount. It covers important points such as the duration of the discount, its applicability, conditions, required move-in date, and consequences of early termination. The answer is clear, organized, and actionable without inventing unsupported details. It meets the criteria for a good response.",
+          "latency_ms": 19121.32,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:01:47.419214+00:00"
+        },
+        {
+          "case_id": "case-14",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining steps to compare lease renewal and rent increase terms. It covers key points such as reviewing the lease, checking rent control laws, comparing market rates, and negotiating. The advice is practical and actionable without inventing unsupported claims. The response is clear and concise, meeting the criteria for a good answer.",
+          "latency_ms": 18999.67,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:02:06.431291+00:00"
+        },
+        {
+          "case_id": "case-15",
+          "human_score": 4,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing actionable steps a renter should take when considering a sublease. It covers important points such as checking lease terms, landlord approval, and subletter verification. The answer is clear, organized, and concise, with no unsupported claims or invented details. It provides practical guidance without unnecessary complexity.",
+          "latency_ms": 17981.74,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:02:24.421087+00:00"
+        },
+        {
+          "case_id": "case-16",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing key accessibility details a renter should confirm. It covers important points such as wheelchair access, bathroom facilities, space requirements, modifications, and parking. The information is accurate, clear, and actionable without any unsupported claims or invented specifics. The answer is well-organized and concise.",
+          "latency_ms": 17753.28,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:02:42.196335+00:00"
+        },
+        {
+          "case_id": "case-17",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question about evaluating noise concerns during an apartment tour and provides actionable steps. It covers key points such as testing sound transmission, checking shared walls, observing external noise, asking about noise policies, and visiting at different times. The advice is practical, clear, and well-organized, with no unsupported claims or invented specifics. The answer is complete and actionable, aligning well with the rubric for a high score.",
+          "latency_ms": 23151.17,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:03:05.362148+00:00"
+        },
+        {
+          "case_id": "case-18",
+          "human_score": 4,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing relevant internet and connectivity details a remote worker should verify. It covers important points such as internet speed, provider, connection type, data caps, signal strength, and service interruptions. The information is accurate, clear, and actionable without any unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 19023.11,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:03:24.403710+00:00"
+        },
+        {
+          "case_id": "case-19",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining key steps a renter should take before agreeing to an early lease termination clause. It covers important points such as reviewing the lease, checking notice periods, penalties, replacement tenant requirements, financial impact, and getting unclear terms in writing. The answer is clear, organized, and provides actionable guidance without inventing unsupported specifics. It is accurate and relevant, meeting the criteria for a good response.",
+          "latency_ms": 21357.26,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:03:45.768970+00:00"
+        },
+        {
+          "case_id": "case-20",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question by listing specific records a renter should keep. It covers important points such as application forms, communication records, fees, supporting documents, and application status. The information is accurate, clear, and actionable, with no unsupported claims or invented details. The answer is well-organized and concise.",
+          "latency_ms": 17159.91,
+          "error": null,
+          "evaluated_at": "2026-11-14T01:04:02.995224+00:00"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+PYTHONPATH=code .venv-hw10/bin/python code/hw10_judge.py
+[HW10 JUDGE] run=1/3 case=1/20 scoring case-01
+[HW10 JUDGE] case-01 score=5 latency_ms=16505.87
+[HW10 JUDGE] run=1/3 case=2/20 scoring case-02
+[HW10 JUDGE] case-02 score=5 latency_ms=18905.37
+[HW10 JUDGE] run=1/3 case=3/20 scoring case-03
+[HW10 JUDGE] case-03 score=4 latency_ms=16350.91
+[HW10 JUDGE] run=1/3 case=4/20 scoring case-04
+[HW10 JUDGE] case-04 score=4 latency_ms=17998.01
+[HW10 JUDGE] run=1/3 case=5/20 scoring case-05
+[HW10 JUDGE] case-05 score=4 latency_ms=15355.06
+[HW10 JUDGE] run=1/3 case=6/20 scoring case-06
+[HW10 JUDGE] case-06 score=5 latency_ms=17972.55
+[HW10 JUDGE] run=1/3 case=7/20 scoring case-07
+[HW10 JUDGE] case-07 score=4 latency_ms=19676.62
+[HW10 JUDGE] run=1/3 case=8/20 scoring case-08
+[HW10 JUDGE] case-08 score=5 latency_ms=16354.15
+[HW10 JUDGE] run=1/3 case=9/20 scoring case-09
+[HW10 JUDGE] case-09 score=4 latency_ms=17560.41
+[HW10 JUDGE] run=1/3 case=10/20 scoring case-10
+[HW10 JUDGE] case-10 score=5 latency_ms=19776.63
+[HW10 JUDGE] run=1/3 case=11/20 scoring case-11
+[HW10 JUDGE] case-11 score=4 latency_ms=17390.12
+[HW10 JUDGE] run=1/3 case=12/20 scoring case-12
+[HW10 JUDGE] case-12 score=5 latency_ms=17494.08
+[HW10 JUDGE] run=1/3 case=13/20 scoring case-13
+[HW10 JUDGE] case-13 score=4 latency_ms=17404.02
+[HW10 JUDGE] run=1/3 case=14/20 scoring case-14
+[HW10 JUDGE] case-14 score=4 latency_ms=17911.7
+[HW10 JUDGE] run=1/3 case=15/20 scoring case-15
+[HW10 JUDGE] case-15 score=5 latency_ms=17582.49
+[HW10 JUDGE] run=1/3 case=16/20 scoring case-16
+[HW10 JUDGE] case-16 score=5 latency_ms=15965.66
+[HW10 JUDGE] run=1/3 case=17/20 scoring case-17
+[HW10 JUDGE] case-17 score=5 latency_ms=21271.33
+[HW10 JUDGE] run=1/3 case=18/20 scoring case-18
+[HW10 JUDGE] case-18 score=5 latency_ms=17844.33
+[HW10 JUDGE] run=1/3 case=19/20 scoring case-19
+[HW10 JUDGE] case-19 score=4 latency_ms=20993.27
+[HW10 JUDGE] run=1/3 case=20/20 scoring case-20
+[HW10 JUDGE] case-20 score=5 latency_ms=15834.7
+[HW10 JUDGE] run=2/3 case=1/20 scoring case-01
+[HW10 JUDGE] case-01 score=5 latency_ms=15770.56
+[HW10 JUDGE] run=2/3 case=2/20 scoring case-02
+[HW10 JUDGE] case-02 score=5 latency_ms=19496.11
+[HW10 JUDGE] run=2/3 case=3/20 scoring case-03
+[HW10 JUDGE] case-03 score=4 latency_ms=16766.8
+[HW10 JUDGE] run=2/3 case=4/20 scoring case-04
+[HW10 JUDGE] case-04 score=4 latency_ms=18185.28
+[HW10 JUDGE] run=2/3 case=5/20 scoring case-05
+[HW10 JUDGE] case-05 score=4 latency_ms=15596.16
+[HW10 JUDGE] run=2/3 case=6/20 scoring case-06
+[HW10 JUDGE] case-06 score=5 latency_ms=18100.66
+[HW10 JUDGE] run=2/3 case=7/20 scoring case-07
+[HW10 JUDGE] case-07 score=4 latency_ms=19279.26
+[HW10 JUDGE] run=2/3 case=8/20 scoring case-08
+[HW10 JUDGE] case-08 score=5 latency_ms=16480.98
+[HW10 JUDGE] run=2/3 case=9/20 scoring case-09
+[HW10 JUDGE] case-09 score=4 latency_ms=17397.04
+[HW10 JUDGE] run=2/3 case=10/20 scoring case-10
+[HW10 JUDGE] case-10 score=5 latency_ms=18524.71
+[HW10 JUDGE] run=2/3 case=11/20 scoring case-11
+[HW10 JUDGE] case-11 score=4 latency_ms=17404.12
+[HW10 JUDGE] run=2/3 case=12/20 scoring case-12
+[HW10 JUDGE] case-12 score=5 latency_ms=17950.33
+[HW10 JUDGE] run=2/3 case=13/20 scoring case-13
+[HW10 JUDGE] case-13 score=4 latency_ms=17177.24
+[HW10 JUDGE] run=2/3 case=14/20 scoring case-14
+[HW10 JUDGE] case-14 score=4 latency_ms=17018.56
+[HW10 JUDGE] run=2/3 case=15/20 scoring case-15
+[HW10 JUDGE] case-15 score=5 latency_ms=17733.77
+[HW10 JUDGE] run=2/3 case=16/20 scoring case-16
+[HW10 JUDGE] case-16 score=5 latency_ms=16109.75
+[HW10 JUDGE] run=2/3 case=17/20 scoring case-17
+[HW10 JUDGE] case-17 score=5 latency_ms=22123.99
+[HW10 JUDGE] run=2/3 case=18/20 scoring case-18
+[HW10 JUDGE] case-18 score=5 latency_ms=18599.78
+[HW10 JUDGE] run=2/3 case=19/20 scoring case-19
+[HW10 JUDGE] case-19 score=4 latency_ms=20839.59
+[HW10 JUDGE] run=2/3 case=20/20 scoring case-20
+[HW10 JUDGE] case-20 score=5 latency_ms=16329.32
+[HW10 JUDGE] run=3/3 case=1/20 scoring case-01
+[HW10 JUDGE] case-01 score=5 latency_ms=16166.81
+[HW10 JUDGE] run=3/3 case=2/20 scoring case-02
+[HW10 JUDGE] case-02 score=5 latency_ms=19204.0
+[HW10 JUDGE] run=3/3 case=3/20 scoring case-03
+[HW10 JUDGE] case-03 score=4 latency_ms=15812.82
+[HW10 JUDGE] run=3/3 case=4/20 scoring case-04
+[HW10 JUDGE] case-04 score=4 latency_ms=18074.48
+[HW10 JUDGE] run=3/3 case=5/20 scoring case-05
+[HW10 JUDGE] case-05 score=4 latency_ms=16546.1
+[HW10 JUDGE] run=3/3 case=6/20 scoring case-06
+[HW10 JUDGE] case-06 score=5 latency_ms=19017.89
+[HW10 JUDGE] run=3/3 case=7/20 scoring case-07
+[HW10 JUDGE] case-07 score=4 latency_ms=21514.84
+[HW10 JUDGE] run=3/3 case=8/20 scoring case-08
+[HW10 JUDGE] case-08 score=5 latency_ms=17290.86
+[HW10 JUDGE] run=3/3 case=9/20 scoring case-09
+[HW10 JUDGE] case-09 score=4 latency_ms=17863.31
+[HW10 JUDGE] run=3/3 case=10/20 scoring case-10
+[HW10 JUDGE] case-10 score=5 latency_ms=20722.7
+[HW10 JUDGE] run=3/3 case=11/20 scoring case-11
+[HW10 JUDGE] case-11 score=4 latency_ms=18496.56
+[HW10 JUDGE] run=3/3 case=12/20 scoring case-12
+[HW10 JUDGE] case-12 score=5 latency_ms=18228.89
+[HW10 JUDGE] run=3/3 case=13/20 scoring case-13
+[HW10 JUDGE] case-13 score=4 latency_ms=19121.32
+[HW10 JUDGE] run=3/3 case=14/20 scoring case-14
+[HW10 JUDGE] case-14 score=4 latency_ms=18999.67
+[HW10 JUDGE] run=3/3 case=15/20 scoring case-15
+[HW10 JUDGE] case-15 score=5 latency_ms=17981.74
+[HW10 JUDGE] run=3/3 case=16/20 scoring case-16
+[HW10 JUDGE] case-16 score=5 latency_ms=17753.28
+[HW10 JUDGE] run=3/3 case=17/20 scoring case-17
+[HW10 JUDGE] case-17 score=5 latency_ms=23151.17
+[HW10 JUDGE] run=3/3 case=18/20 scoring case-18
+[HW10 JUDGE] case-18 score=5 latency_ms=19023.11
+[HW10 JUDGE] run=3/3 case=19/20 scoring case-19
+[HW10 JUDGE] case-19 score=4 latency_ms=21357.26
+[HW10 JUDGE] run=3/3 case=20/20 scoring case-20
+[HW10 JUDGE] case-20 score=5 latency_ms=17159.91
+[HW10 JUDGE] validation complete
+{
+  "case_count": 20,
+  "run_count": 3,
+  "agreement_using_mean_judge_score": {
+    "spearman_correlation": 0.050251890762960605,
+    "mean_absolute_difference": 0.45
+  },
+  "agreement_by_run": [
+    {
+      "run": 1,
+      "spearman_correlation": 0.050251890762960605,
+      "mean_absolute_difference": 0.45
+    },
+    {
+      "run": 2,
+      "spearman_correlation": 0.050251890762960605,
+      "mean_absolute_difference": 0.45
+    },
+    {
+      "run": 3,
+      "spearman_correlation": 0.050251890762960605,
+      "mean_absolute_difference": 0.45
+    }
+  ],
+  "repeatability": {
+    "changed_case_count": 0,
+    "changed_case_rate": 0.0,
+    "changed_case_ids": [],
+    "pairwise_comparison_count": 60,
+    "changed_pairwise_comparison_count": 0,
+    "changed_pairwise_comparison_rate": 0.0,
+    "mean_absolute_score_change": 0,
+    "maximum_absolute_score_change": 0
+  },
+  "deployment_gate_recommendation": {
+    "trust_to_gate_deployment": false,
+    "decision_rule": "Trust only if Spearman is at least 0.70, mean absolute difference is at most 0.50, and changed-case rate is at most 0.10.",
+    "additional_evidence_required": [
+      "A broader human-label distribution with more weak and adversarial drafts.",
+      "Labels from a second independent human reviewer.",
+      "Validation on new questions not used in these 20 cases."
+    ]
+  },
+  "metadata": {
+    "schema_version": 1,
+    "rubric_version": "writer-helpfulness-v1",
+    "judge_configuration_version": "ollama-nonthinking-v2",
+    "judge_framework": "DeepEval GEval",
+    "deepeval_version": "4.3.3",
+    "judge_provider": "local Ollama",
+    "judge_model": "qwen3:8b",
+    "judge_base_url": "http://127.0.0.1:11434",
+    "temperature": 0.0,
+    "seed": 2974,
+    "thinking_enabled": false,
+    "num_predict": 512,
+    "timeout_seconds_per_case": 180,
+    "score_scale": {
+      "minimum": 1,
+      "maximum": 5
+    },
+    "eval_cases_sha256": "38b211862bdd4491ac65224e3cb2e2624deb12851f480a0c91e7c72aef3663d0",
+    "human_labels_sha256": "58f668ecb47d5995bea0eeb53936a3c167a1a963b4fb0ea96cade6a59b074075",
+    "frozen_inputs_commit": "8f98e3ca6e1825ec4eb1ba4500925b9f9bd09ede",
+    "evaluation_code_commit": "0169655529c1b9921992102c4082c98518988248"
+  },
+  "completed_at": "2026-11-14T01:04:03.014029+00:00"
+}

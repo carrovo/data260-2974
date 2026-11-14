@@ -1,0 +1,18 @@
+HW10 PART 3 — JUDGE VALIDATION
+================================
+judge_framework = DeepEval GEval
+judge_model = qwen3:8b
+judge_configuration = ollama-nonthinking-v2
+thinking_enabled = False
+case_count = 20
+run_count = 3
+human_distribution = {4: 4, 5: 16}
+judge_run_1_distribution = {4: 9, 5: 11}
+judge_run_2_distribution = {4: 9, 5: 11}
+judge_run_3_distribution = {4: 9, 5: 11}
+spearman = 0.0503
+mean_absolute_difference = 0.45
+changed_case_count = 0
+changed_case_rate = 0.0
+trust_to_gate_deployment = False
+conclusion = Repeatable, but human rank agreement is too low for deployment gating.

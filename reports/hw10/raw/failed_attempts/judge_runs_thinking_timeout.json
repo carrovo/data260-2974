@@ -1,0 +1,161 @@
+{
+  "metadata": {
+    "schema_version": 1,
+    "rubric_version": "writer-helpfulness-v1",
+    "judge_framework": "DeepEval GEval",
+    "deepeval_version": "4.3.3",
+    "judge_provider": "local Ollama",
+    "judge_model": "qwen3:8b",
+    "judge_base_url": "http://127.0.0.1:11434",
+    "temperature": 0.0,
+    "seed": 2974,
+    "timeout_seconds_per_case": 180,
+    "score_scale": {
+      "minimum": 1,
+      "maximum": 5
+    },
+    "eval_cases_sha256": "38b211862bdd4491ac65224e3cb2e2624deb12851f480a0c91e7c72aef3663d0",
+    "human_labels_sha256": "58f668ecb47d5995bea0eeb53936a3c167a1a963b4fb0ea96cade6a59b074075",
+    "frozen_inputs_commit": "8f98e3ca6e1825ec4eb1ba4500925b9f9bd09ede",
+    "evaluation_code_commit": "73b28e5012a50fad6cd87285a52911a399b2cdb0"
+  },
+  "started_at": "2026-11-14T00:02:20.298817+00:00",
+  "completed_at": null,
+  "runs": [
+    {
+      "run": 1,
+      "started_at": "2026-11-14T00:02:20.382717+00:00",
+      "completed_at": null,
+      "cases": [
+        {
+          "case_id": "case-01",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question with actionable steps, covers key points like verifying legitimacy, fee details, refundability, and record-keeping, and avoids unsupported claims. It is clear and organized but could include more specific guidance on scam verification methods, earning it a slightly lower score than excellent.",
+          "latency_ms": 80183.58,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:03:40.541801+00:00"
+        },
+        {
+          "case_id": "case-02",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question with actionable steps, including verifying contact information, checking addresses, cross-verifying communication channels, and identifying red flags. It avoids unsupported claims and provides practical guidance. The structure is clear and concise, though it could have mentioned additional safeguards like verifying the landlord's identity beyond contact info, which slightly limits completeness.",
+          "latency_ms": 75231.21,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:04:55.789448+00:00"
+        },
+        {
+          "case_id": "case-03",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question with practical, actionable questions about utilities in a lease. It is clear, organized, and concise, covering key points like included utilities, deposits, providers, and responsibilities. However, it is somewhat generic and could include more specific details like service charges or maintenance responsibilities, which are minor omissions.",
+          "latency_ms": 68988.54,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:06:04.937093+00:00"
+        },
+        {
+          "case_id": "case-04",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question with practical, actionable guidance on documenting rental move-in inspections. It covers key points like photographing the property, noting damage, and creating a checklist. However, it is slightly generic and could include more specific details (e.g., checking for leaks or pest infestations), which minor omissions align with a 4 rating.",
+          "latency_ms": 65802.39,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:07:10.751575+00:00"
+        },
+        {
+          "case_id": "case-05",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question by outlining a method to compare monthly costs, including listing expenses, calculating totals, and considering long-term costs. It is clear, actionable, and avoids unsupported claims. The only minor omission is not explicitly mentioning hidden fees, but the guidance is practical and relevant.",
+          "latency_ms": 68984.87,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:08:19.753126+00:00"
+        },
+        {
+          "case_id": "case-06",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the parking-related query with practical, actionable guidance. It covers key considerations like parking availability, fees, restrictions, and shared area rules without inventing unsupported claims. The answer is clear, well-organized, and concise, meeting all criteria for an excellent response.",
+          "latency_ms": 83508.15,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:09:43.289151+00:00"
+        },
+        {
+          "case_id": "case-07",
+          "human_score": 4,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question about lease terms for roommates, covers key points like duration, rent increases, subletting, utilities, and exit conditions, and provides actionable guidance. It is clear and organized, though slightly generic in some areas. No unsupported claims or factual errors are present.",
+          "latency_ms": 72615.55,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:10:55.922404+00:00"
+        },
+        {
+          "case_id": "case-08",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly addresses the question with actionable steps, including using Google Maps, checking reviews, and contacting the landlord. It avoids unsupported claims and provides clear, practical guidance without omissions, meeting all criteria for an excellent score.",
+          "latency_ms": 53101.05,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:11:49.031828+00:00"
+        },
+        {
+          "case_id": "case-09",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question with practical, actionable questions about repair response times. It is clear, organized, and concise, covering key points like emergency procedures and past examples. However, it is somewhat generic and lacks specific legal or numerical details, which minorly limits its depth.",
+          "latency_ms": 68631.06,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:12:57.685419+00:00"
+        },
+        {
+          "case_id": "case-10",
+          "human_score": 5,
+          "judge_score": 5,
+          "deepeval_normalized_score": 1.0,
+          "reason": "The response directly answers the question with accurate, actionable guidance on verifying security deposit details. It covers all critical points (amount, refundability, lease terms, withholding conditions, written agreement, return process) without inventing unsupported claims or legal specifics. The structure is clear, concise, and organized, making it highly useful for a renter.",
+          "latency_ms": 66709.92,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:14:04.407573+00:00"
+        },
+        {
+          "case_id": "case-11",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question with practical steps like listing requirements, inspecting furnishings, checking for hidden costs, and comparing options. It is clear, organized, and actionable, though it could include more specific details like verifying laundry facilities or parking. However, it avoids unsupported claims and covers key points effectively.",
+          "latency_ms": 67340.9,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:15:11.761002+00:00"
+        },
+        {
+          "case_id": "case-12",
+          "human_score": 5,
+          "judge_score": 4,
+          "deepeval_normalized_score": 0.75,
+          "reason": "The response directly addresses the question with actionable guidance on pet-related lease confirmations. It covers key points like pet allowance, fees, restrictions, and responsibilities without inventing unsupported details. The list is clear, concise, and well-organized, though minor wording improvements could enhance clarity further.",
+          "latency_ms": 56076.1,
+          "error": null,
+          "evaluated_at": "2026-11-14T00:16:07.849325+00:00"
+        },
+        {
+          "case_id": "case-13",
+          "human_score": 4,
+          "judge_score": null,
+          "reason": null,
+          "error": "JudgeTimeoutError: local judge exceeded the 180-second deadline",
+          "evaluated_at": "2026-11-14T00:31:31.371211+00:00"
+        }
+      ]
+    }
+  ]
+}

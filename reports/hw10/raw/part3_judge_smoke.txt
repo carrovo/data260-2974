@@ -1,0 +1,7 @@
+{
+  "case_id": "case-13",
+  "judge_score": 4,
+  "deepeval_normalized_score": 0.75,
+  "reason": "The response directly addresses the question by listing relevant questions a renter should ask about a move-in discount. It covers important points such as the duration of the discount, its applicability, conditions, required move-in date, and consequences of early termination. The answer is clear, organized, and actionable without inventing unsupported details. It meets the criteria for a good response.",
+  "latency_ms": 38340.58
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "case-01",
+  "judge_score": 4,
+  "deepeval_normalized_score": 0.75,
+  "reason": "The response directly addresses the question with actionable steps, covers key points like verifying legitimacy, fee details, refundability, and record-keeping, and avoids unsupported claims. It is clear and organized but could include more specific guidance on scam verification methods, earning it a slightly lower score than excellent.",
+  "latency_ms": 84127.95
+}
