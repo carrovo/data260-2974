@@ -1,0 +1,12 @@
+PYTHONPATH=code .venv-hw10/bin/python code/test_hw10_dashboard_offline.py -v
+test_missing_evidence_fails_loudly (__main__.HW10DashboardOfflineTests.test_missing_evidence_fails_loudly) ... ok
+test_part2_scores_and_coordination_interpretation (__main__.HW10DashboardOfflineTests.test_part2_scores_and_coordination_interpretation) ... ok
+test_part3_validation_metrics_are_preserved (__main__.HW10DashboardOfflineTests.test_part3_validation_metrics_are_preserved) ... ok
+test_required_trace_examples_have_distinct_paths (__main__.HW10DashboardOfflineTests.test_required_trace_examples_have_distinct_paths) ... ok
+test_summary_counts_every_saved_trace (__main__.HW10DashboardOfflineTests.test_summary_counts_every_saved_trace) ... ok
+test_trace_lookup_orders_spans_and_keeps_errors (__main__.HW10DashboardOfflineTests.test_trace_lookup_orders_spans_and_keeps_errors) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.005s
+
+OK
