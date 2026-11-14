@@ -13,7 +13,6 @@ from hw8_config import (
     FINAL_TOPIC,
     INBOX_TOPIC,
     KAFKA_BOOTSTRAP_SERVERS,
-    PREFIX,
     TRACE_TOPIC,
 )
 from hw10_tracing import make_span, queue_wait_ms, trace_identity, utc_now
@@ -43,7 +42,7 @@ async def run_hw8_agent_pipeline(question: str, trace_id: str | None = None) -> 
     consumer = AIOKafkaConsumer(
         FINAL_TOPIC,
         bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
-        group_id=f"{PREFIX}_hw9_result_{correlation_id}",
+        group_id=None,
         auto_offset_reset="latest",
         enable_auto_commit=False,
         value_deserializer=lambda value: json.loads(value.decode("utf-8")),
@@ -56,7 +55,7 @@ async def run_hw8_agent_pipeline(question: str, trace_id: str | None = None) -> 
     await consumer.start()
     await producer.start()
     try:
-        # Force the unique consumer group to join before an answer can be published.
+        # Force partition assignment before an answer can be published.
         await consumer.getmany(timeout_ms=1000)
         message = {
             "correlation_id": correlation_id,
